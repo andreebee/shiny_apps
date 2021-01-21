@@ -26,7 +26,7 @@ ui <- fluidPage(
             shinyjs::useShinyjs(),      #fuer Reset Button
             id = "side-panel",
             
-            "anleitung: Maximieren Sie das Fenster. Verändern Sie eines der 4 Momente der Verteilung, um deren Bedeutung zu ergründen. 
+            "Anleitung: Maximieren Sie das Fenster. Verändern Sie eines der 4 Momente der Verteilung, um deren Bedeutung zu ergründen. 
       Klicken Sie auf Zurücksetzen , bevor sie das nächste Moment verändern.",
             
             
