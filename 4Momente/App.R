@@ -1,3 +1,11 @@
+#Ziel dieser App: Studis verstehen, was die ersten 4 Momente einer Verteilung bedeuten
+#Ausgehend von der Standardnormalverteilung kann man je 1 Moment ver‰ndern und sieht den Effekt
+#auf die Dichte
+#Dazu wird die Familie der Johnson Distribution genutzt 
+#(die die Standartnormalverteilung als Spezialfall enth‰lt)
+
+
+
 #install.packages("shiny")
 #install.packages("shinyjs") 
 #der code f√ºr den rest Button ist von: https://stackoverflow.com/questions/24265980/reset-inputs-button-in-shiny-app 
