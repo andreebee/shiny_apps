@@ -34,7 +34,9 @@ ui <- fluidPage(
     )
   )
 )
+
 x    <- sample(1:6,size=5000, replace=T)
+
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
   
@@ -54,7 +56,9 @@ server <- function(input, output) {
     
     #bins <- seq(min(x), max(x), length.out = input$bins + 1)
     a=rep(0, 6); i=0
-    for (n in 1:6){if(all(x[1:input$bins]!=n)){a[n]=0; i=i+1}
+    for (n in 1:6){
+      if(all(x[1:input$bins]!=n))
+        {a[n]=0; i=i+1}
       else{a[n]=prop.table(table(x[1:input$bins]))[[n-i]]}}
     barplot(a, names.arg = c(1:6),
          xlab = "Augenzahl",
@@ -64,11 +68,13 @@ server <- function(input, output) {
  
   output$view <- renderTable({
     a=rep(0, 6); i=0
-    for (n in 1:6){if(all(x[1:input$bins]!=n)){a[n]=0; i=i+1}
+    for (n in 1:6){
+      if(all(x[1:input$bins]!=n))
+        {a[n] = 0; i = i+1}
       else{a[n]=prop.table(table(x[1:input$bins]))[[n-i]]}}
-    ans=data.frame(Augenzahl=c(1:6), 
-      Wahrscheinlichkeit=c(rep(1/6, 6)), 
-      Rel.Häufigkeit=a)
+    ans = data.frame(Augenzahl=c(1:6), 
+      Wahrscheinlichkeit = c(rep(1/6, 6)), 
+      Rel.Häufigkeit = a)
     ans 
   }, digits=3) 
   
