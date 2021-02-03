@@ -1,12 +1,12 @@
 library(shiny)
 library(ggplot2)
-
+options(encoding = "UTF-8")
 
 
 ui <- fluidPage(
   
   # App title ----
-  titlePanel("Wahrscheinlichkeiten wuerfeln"),
+  titlePanel("Wahrscheinlichkeiten würfeln"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
