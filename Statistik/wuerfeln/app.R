@@ -6,7 +6,7 @@ library(ggplot2)
 ui <- fluidPage(
   
   # App title ----
-  titlePanel("Wahrscheinlichkeiten würfeln"),
+  titlePanel("Wahrscheinlichkeiten wuerfeln"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -16,7 +16,7 @@ ui <- fluidPage(
       
       # Input: Slider for the number of bins ----
       sliderInput(inputId = "bins",
-                  label = "Anzahl Würfe:",
+                  label = "Anzahl Wuerfe:",
                   min = 5,
                   max = 5000,
                   value = 100)
@@ -62,7 +62,7 @@ server <- function(input, output) {
       else{a[n]=prop.table(table(x[1:input$bins]))[[n-i]]}}
     barplot(a, names.arg = c(1:6),
          xlab = "Augenzahl",
-         ylab = "Relative Häufigkeit", col = "steelblue3", ylim=(c(0,0.3)))
+         ylab = "Relative Haeufigkeit", col = "steelblue3", ylim=(c(0,0.3)))
     
   })
  
@@ -74,7 +74,7 @@ server <- function(input, output) {
       else{a[n]=prop.table(table(x[1:input$bins]))[[n-i]]}}
     ans = data.frame(Augenzahl=c(1:6), 
       Wahrscheinlichkeit = c(rep(1/6, 6)), 
-      Rel.Häufigkeit = a)
+      Rel.Haeufigkeit = a)
     ans 
   }, digits=3) 
   
