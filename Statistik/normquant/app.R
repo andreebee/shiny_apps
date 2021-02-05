@@ -1,3 +1,12 @@
+#Ziel dieser App: Studis verstehen zusammenhang zwischen Dichte, Verteilungsfunktion und Quantil
+#Man knann EW und Standardabwichung variieren, dadurch ändert sich die Dichte- und Verteilungsfunktion, zusätzlich 
+#kann man eine Ober- und Untergrenze eingeben, bezüglich dieser wirnd in der Dichte die Fläche dazwischen eingefärbt und in der
+#Verteilungsfunktion wird das dazu passende Quantil einmal für die Obere- und einmal für die Unteregrenze berechnet
+
+
+#Beschreibung an der Seite?
+
+
 library(shiny)
 library(ggplot2)
 
@@ -63,17 +72,19 @@ server <- function(input, output) {
   
   
   output$distPlot <- renderPlot({
-    x <- seq(-4,4,length=400)*input$s + input$m
-    dn=dnorm(x, input$m, input$s)
+    x <- seq(-4, 4, length=400) * input$s + input$m
+    dn = dnorm(x, input$m, input$s)
+    
     plot(x, dn, type="l", col=4, lwd=2, 
          xlab="x", ylab="", main="Dichte")
     i <- x >= min(input$u, input$o) & x <=max(input$o, input$u)
     #lines(x, dn, col=4)
-    polygon(c(min(input$u, input$o),x[i],max(input$o, input$u)), c(0,dn[i],0), 
+    polygon(c(min(input$u, input$o), x[i], max(input$o, input$u)), c(0, dn[i], 0), 
             col="steelblue3") 
     abline(h=0)
+    
     area <- pnorm(max(input$o, input$u), input$m, input$s) - pnorm(min(input$u, input$o), input$m, input$s)
-    result <- paste("P(",min(input$o, input$u),"< X <",max(input$o, input$u),") =",
+    result <- paste("P(", min(input$o, input$u),"< X <",max(input$o, input$u),") =",
                     round(area, digits=3))
     mtext(result,3, col=4)
     
@@ -82,15 +93,20 @@ server <- function(input, output) {
   
   output$vertPlot <- renderPlot({
     x <- seq(-4,4,length=100)*input$s + input$m
-    pn=pnorm(x, input$m, input$s)
+    pn = pnorm(x, input$m, input$s)
+    
     plot(x, pn, type="l", col=4, lwd=2, 
          xlab="x", ylab="", main="Verteilungsfunktion")
-    abline(h=0); abline(v=min(input$u, input$o), lty=2); abline(v=max(input$o, input$u), lty=2)
+    
+    abline(h=0)
+    abline(v=min(input$u, input$o), lty=2)
+    abline(v=max(input$o, input$u), lty=2)
     abline(h=pnorm(min(input$u, input$o), input$m, input$s), lty=2)
     abline(h=pnorm(max(input$o, input$u), input$m, input$s), lty=2)
+    
     result <- paste("P(X <",min(input$u, input$o),") =", 
                     round(pnorm(min(input$u, input$o), input$m, input$s), 3),", P(X <",max(input$o, input$u),") =", round(pnorm(max(input$o, input$u), input$m, input$s), 3))
-    mtext(result,3, col=4)
+    mtext(result, 3, col=4)
     #text(-3*input$s + input$m-.1, pnorm(min(input$u, input$o), input$m, input$s)+.05, 
          #labels=paste("P(X <",min(input$u, input$o),") =", round(pnorm(min(input$u, input$o), input$m, input$s), 3)),
          #cex = 1.1, col=4)

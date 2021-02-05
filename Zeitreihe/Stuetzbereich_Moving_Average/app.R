@@ -1,3 +1,8 @@
+#Ziel dieser App: Studis verstehen, welchen Einfluss die Höhe des Glättungparameters auf die Glättung hat
+#M kann zwischen 2 une 100 variiert werden
+
+
+
 library(shiny)
 library(ggplot2)
 library(Matrix) #to use bandSparse to create band matrix
@@ -35,20 +40,20 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-    wn1 = rnorm(150,0,1)
+    wn1 = rnorm(150, 0 ,1)
     
     output$distPlot <- renderPlot({
         if(2 %% input$M == 0){
-            wn_ma = filter(wn1, c(0.5,rep(1, input$M-1),0.5), sides = 2)/input$M
+            wn_ma = filter(wn1, c(0.5, rep(1, input$M-1), 0.5), sides = 2) / input$M
         }
         else{
-            wn_ma = filter(wn1, rep(1, input$M), sides = 2)/input$M
+            wn_ma = filter(wn1, rep(1, input$M), sides = 2) / input$M
             
         }
         plot.ts(wn1, 
                 main="Glaettung von White Noise mit Moving Average", 
                 ylab="", lwd=1.5)
-        lines(wn_ma,type="l",col=2,lwd=3)
+        lines(wn_ma, type="l", col=2, lwd=3)
         
         
         

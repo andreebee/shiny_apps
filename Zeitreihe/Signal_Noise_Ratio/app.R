@@ -1,3 +1,9 @@
+#Ziel dieser App: Studis verstehen, was es bedeutet, wenn ein Signal von einem WN überlagert wird
+#Dazu kann die Signalfunktion per Hand verändert werden und die Varianz und der EW des WN können variiert werden
+
+
+
+
 library(shiny)
 library(ggplot2)
 library(Matrix) #to use bandSparse to create band matrix
@@ -50,7 +56,7 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-    x=seq(from=1,to=100)
+    x = seq(from=1, to=100)
     
     
     
@@ -60,19 +66,19 @@ server <- function(input, output) {
         #create multivariate Gaussian Vector
         w = rnorm(n = 100, mean = input$mean, sd = input$variance)
         s = eval(parse(text=input$formula))
-        ws = w+s
-        snratio = (var(s)-(mean(s)^2))/(input$variance-(input$mean^2))
-        ts.plot(as.ts(ws), gpars=list(ylim=c(-10,10), main="Trajektorie", ylab="")
+        ws = w + s
+        snratio = (var(s) - (mean(s)^2)) / (input$variance - (input$mean^2))
+        ts.plot(as.ts(ws), gpars=list(ylim=c(-10, 10), main="Trajektorie", ylab="")
         )
         abline(h=0, lty=2)
     })
     output$snratio <- renderText({
         w = rnorm(n = 100, mean = input$mean, sd = input$variance)
         s = eval(parse(text=input$formula))
-        ws = w+s
-        snratio = round((var(s))/(input$variance),2)
+        ws = w + s
+        snratio = round((var(s)) / (input$variance), 2)
         
-        paste("Die Signal-to-noise ratio ist",snratio)
+        paste("Die Signal-to-noise ratio ist", snratio)
     })
     
     

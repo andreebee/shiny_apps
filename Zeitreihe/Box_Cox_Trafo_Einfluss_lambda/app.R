@@ -1,3 +1,10 @@
+#Ziel dieser App: Studis verstehen, wie die Box-Cox Trafo aussieht
+#Es kann Lambda variiert werden, dazu wird angezeit, wie sich diese variistion auf die Box-Cox Trafo auswirkt,
+#diese wird mit der ZR ohne Traf und der mit dem Log transformierten ZR verglichen.
+#Zusätzlich wird aufgezeigt, wie sich die Trafos auf die Quartalsgewinne der JohnsonJohanson Aktien auswirken
+#Es werden die in R vorhandenen Quartalsgewinne der JohnsonJohnson Aktie verwendet
+
+
 library(shiny)
 #library(ggplot2)
 #library(Matrix) #to use bandSparse to create band matrix

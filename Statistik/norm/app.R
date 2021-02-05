@@ -1,3 +1,9 @@
+#Ziel dieser App: Studis verstehen welchen Einfluss der Erwartungwert und die Standartabweichung auf
+#die Dichte und die Verteilungsfunktion der Normalverteilung haben
+#Der Erwatungswert und die Standartabweichung können variierert werden
+
+#Vielleicht Button um auf Standartnormalverteilung einstellen oder Standartnormalverteilung als Referenz?
+
 library(shiny)
 library(ggplot2)
 
@@ -38,7 +44,7 @@ ui <- fluidPage(
     )
   )
 )
-x=seq(-15,15,length.out=500)
+x = seq(-15, 15, length.out=500)
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
   
@@ -54,9 +60,10 @@ server <- function(input, output) {
   
   output$distPlot <- renderPlot({
     
-    dn=dnorm(x, input$m, input$s)
+    dn = dnorm(x, input$m, input$s)
+    
     plot(x, dn, type="l", col="steelblue3", lwd=2, 
-         xlab="x", ylab="Dichte", ylim=c(0,.75))
+         xlab="x", ylab="Dichte", ylim=c(0, .75))
     #r=seq(input$m-input$s,input$m+input$s,length.out=500)
     #dr=dnorm(r, input$m, input$s)
     #abline(h=0,col="gray")
@@ -71,7 +78,8 @@ server <- function(input, output) {
   
   output$vertPlot <- renderPlot({
     
-    pn=pnorm(x, input$m, input$s)
+    pn = pnorm(x, input$m, input$s)
+    
     plot(x, pn, type="l", col="steelblue3", lwd=2, 
          xlab="x", ylab="Verteilungsfunktion")
     

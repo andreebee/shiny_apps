@@ -1,3 +1,10 @@
+#Ziel dieser App: Die relative Häufigkeit bei dem Würfel werfen 
+#anschaulich zu machen und der Wahrscheinlichkiet gegenüberstellen
+#Die Anzahl der würfe kann zwischen 5 und 5000 variiert werden
+
+
+
+
 library(shiny)
 library(ggplot2)
 options(encoding = "UTF-8")
@@ -35,7 +42,7 @@ ui <- fluidPage(
   )
 )
 
-x    <- sample(1:6,size=5000, replace=T)
+x    <- sample(1:6, size=5000, replace=T)
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
@@ -55,28 +62,40 @@ server <- function(input, output) {
     
     
     #bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    a=rep(0, 6); i=0
+    a = rep(0, 6)
+    i=0
     for (n in 1:6){
-      if(all(x[1:input$bins]!=n))
-        {a[n]=0; i=i+1}
-      else{a[n]=prop.table(table(x[1:input$bins]))[[n-i]]}}
+      if(all(x[1:input$bins]!=n)){
+        a[n] = 0
+        i = i + 1
+        }
+      else{
+        a[n] = prop.table(table(x[1:input$bins]))[[n-i]]
+        }
+      }
     barplot(a, names.arg = c(1:6),
          xlab = "Augenzahl",
-         ylab = "Relative Häufigkeit", col = "steelblue3", ylim=(c(0,0.3)))
+         ylab = "Relative Häufigkeit", col = "steelblue3", ylim = (c(0, 0.3)))
     
   })
  
   output$view <- renderTable({
-    a=rep(0, 6); i=0
+    a = rep(0, 6)
+    i = 0
     for (n in 1:6){
-      if(all(x[1:input$bins]!=n))
-        {a[n] = 0; i = i+1}
-      else{a[n]=prop.table(table(x[1:input$bins]))[[n-i]]}}
-    ans = data.frame(Augenzahl=c(1:6), 
+      if(all(x[1:input$bins]!=n)){
+        a[n] = 0
+        i = i + 1
+        }
+      else{
+        a[n] = prop.table(table(x[1:input$bins]))[[n-i]]
+      }
+      }
+    ans = data.frame(Augenzahl = c(1:6), 
       Wahrscheinlichkeit = c(rep(1/6, 6)), 
       Rel.Häufigkeit = a)
     ans 
-  }, digits=3) 
+  }, digits = 3) 
   
   
 }
