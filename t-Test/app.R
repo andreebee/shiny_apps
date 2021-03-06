@@ -22,13 +22,15 @@ ui <- fluidPage(
         inputId = "diff",
         label = "Differnz der Mittelwerte",
         min = 0,
-        max = 10,
-        value = 5),
+        max = 1,
+        value = 0.5),
 
         # Show a plot of the generated distribution
         mainPanel(
             plotOutput("boxPlot"),
-            verbatimTextOutput("p")   #t-Test Ausgabe ausgeben c
+            verbatimTextOutput("p"),   #t-Test Ausgabe ausgeben c
+            plotOutput("sigPlot")
+        
         )
     )
 
@@ -46,7 +48,7 @@ output$p = renderPrint({
     
     t.test(Gruppe1, Gruppe2, alternative = "two.sided" )$p.value   #2 Seitiger t-Test
 })
-#Boxplot
+#Boxplot, der Werte
 output$boxPlot = renderPlot({
     
     #ziehe Zweite Stichprobe, mit gegebner Differnz der Mittelwerte
@@ -64,6 +66,35 @@ output$boxPlot = renderPlot({
 }
     
 )
+
+#Plot der Anzahl der Signifianzen
+
+output$sigPlot = renderPlot({
+    p = 0.01
+    count = c()
+    #Gruppe2 = rnorm(100, input$diff, 1)
+    i = 0
+    
+    
+    
+    while(i < 100){
+        Gruppe2 = rnorm(100, input$diff, 1)
+        if(t.test(Gruppe1, Gruppe2, alternative = "two.sided" )$p.value > p){ #nicht Sig
+            count[i] = 1 # "nicht Signifikant"
+            i = i+1
+        }
+        else {
+            count[i] = 0 # "Signifikant"
+            i = i + 1
+        }
+    }
+    
+    
+    
+    
+   
+    hist(count)
+})
 }
 
 # Run the application 
