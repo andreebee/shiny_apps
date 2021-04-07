@@ -132,13 +132,13 @@ ui <- shinyUI(pageWithSidebar(
         
         # Output: Tabset with plots
       
-        tabsetPanel(type = "tabs",
+       tabsetPanel(type = "tabs",
                     
             #Ab hier Tab 1 #########################################################################
             
             tabPanel(
                 "Differenz",
-                value = 1,                      #Sidebar 1 wird eingeblendet
+                value = "1",                      #Sidebar 1 wird eingeblendet
                 
                
                 "Hier sieht man, welchen Effektes hat, wenn sich die
@@ -156,23 +156,26 @@ ui <- shinyUI(pageWithSidebar(
             
             
              #Ab hier Tab 2 ###############################################################################             
-                             
-           tabPanel("Differenz und Standardabweichung",
-                     value =2,                                              #Sidebar 2 wird eingeblendet
-                     
+                      
+            
             conditionalPanel("input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #Bedingung, wann der Inhalt angezeigt wird
-                            
                              
-                            # tabPanel(title="Differenz", value=2,
+           #tabPanel("Differenz und Standardabweichung",
+                     value = "2",                                              #Sidebar 2 wird eingeblendet
+                     
+            
+                             
+                             tabPanel(title="Differenz", 
+                                   # value = "2",
                      "Hier sieht man, welchen Effekt es hat, wenn sich die 
                       Standardabweichung ändert. Gruppe 1 bleibt fest. ",
                      
                      
                      
-                     plotOutput("boxPlot2"),
-                     HTML(paste0("<b>","p-Wert","</b>")),
-                     textOutput("p2"),
-                     textOutput("Erklaerung2")
+                   plotOutput("boxPlot2"),
+                    HTML(paste0("<b>","p-Wert","</b>")),
+                   textOutput("p2"),
+                  textOutput("Erklaerung2")
                     
                    
                      )#Ende CoditionalPanel
@@ -183,22 +186,23 @@ ui <- shinyUI(pageWithSidebar(
           
           #Ab hier Tab 3 #####################################################################################
    
-         tabPanel("Differenz, Standardabweichung und Anzahl",
-                     value =3,                                   #Sidebar 3 wird eingeblendet
-            
+         
             conditionalPanel("input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'",  #Bedingung, wann der Inhalt angezeigt wird
-                     
+                            
+                              tabPanel("Differenz, Standardabweichung und Anzahl",
+                                      value = 3,                                   #Sidebar 3 wird eingeblendet
+                                      
                      "Hier sieht man, welchen Effekt es hat, wenn sich die 
                       Anzahl der Merkmalsträger ändert. Gruppe 1 bleibt fest. ",
                      
                      
                      
                      
-                     plotOutput("boxPlot3"),
-                     HTML(paste0("<b>","p-Wert","</b>")),
-                     textOutput("p3"),
-                     plotOutput("sigPlot"),
-                     textOutput("Erklaerung3")
+                  plotOutput("boxPlot3"),
+                  HTML(paste0("<b>","p-Wert","</b>")),
+                  textOutput("p3"),
+                  plotOutput("sigPlot"),
+                  textOutput("Erklaerung3")
             ) #Ende Conditional Panel
                      
             ), #Ende TabPanel
