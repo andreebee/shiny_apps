@@ -1,3 +1,6 @@
+### Noch Frage stellen!!!
+#Stackoverflow
+
 library(shiny)
 
 
@@ -25,9 +28,18 @@ ui <- shinyUI(pageWithSidebar(
                 "input.submit!=0",
                 conditionalPanel(
                     "input.quiz1 === 'Right'",
-                    paste0("Text")
+                    paste0("Feedback: Right"),
+                    actionButton("Tab2", label = "Next Question ")
+                    
                 )
-            )
+            ),
+            conditionalPanel(
+                "input.submit!=0",
+                conditionalPanel(
+                    "input.quiz1 === 'Wrong'",
+                    paste0("Feedback: Wrong")
+               ) )
+               
         ),
         conditionalPanel(
             condition = "input.tabselected ==2",
@@ -37,27 +49,46 @@ ui <- shinyUI(pageWithSidebar(
                 min = 0,
                 max = 1,
                 value = 0.5
-                  )
-               )        
+                  ),
+            selectInput(
+                inputId = "quiz2",
+                label = " Red or Blue",
+                selected = NULL,
+                choices = c("Red",
+                            "Blue")
+            ),
+            actionButton("submit2", label = "Submit"),
+            conditionalPanel(
+                "input.submit2!=0",
+                conditionalPanel(
+                    "input.quiz2 === 'Blue'",
+                    paste0("Feedback: Right answer")#,
+                    #Button1_reactive
+                )
+            ),
+            conditionalPanel(
+                "input.submit2!=0",
+                conditionalPanel(
+                    "input.quiz2 === 'Red'",
+                    paste0("Feedback: Wrong answer")
+                ) 
+            )
+         )        
     ),
     mainPanel(
              tabsetPanel(
             type = "tabs",
           tabPanel(
-                "Tab 1",
-                titlePanel("Tab 1"),
-                value = "1",
-               htmlOutput("Erklaerung1"),
-                uiOutput("Button1")
+                "Question 1",
+                titlePanel("Description question 1"),
+                value = "1"
             ), 
     
-          tabPanel(title = "Tab 2" ,
+          tabPanel(title = "Question  2" ,
                 value = "2",
                 conditionalPanel("input.quiz1 === 'Right'",
-                    titlePanel("Tab 2"),
-                    htmlOutput("Erklaerung2"),
-                    uiOutput("Button2") 
-                    ) 
+                    titlePanel("Description question 2")
+                   ) 
             ), 
              id = "tabselected"
             )
@@ -67,31 +98,9 @@ ui <- shinyUI(pageWithSidebar(
 
 
 server = function(input, output, session) {
-    Erklaerung1_reactive = eventReactive(input$submit, {
-        if (input$quiz1 == "Right") {
-            HTML(paste0("<b>", "Right", "</b>"))
-        }
-        else{
-            HTML(paste0("<strong>", "Wrong", "</strong>"))
-        }
-    })
-    output$Erklaerung1 <- renderUI({
-        Erklaerung1_reactive()
-    })
-    Button1_reactive = eventReactive(input$submit, {
-        if (input$quiz1 == "Right") {
-            actionButton("Tab2", label = "Next")
-        }
-        else{
-            paste0("")
-        }
-    })
-    output$Button1 <- renderUI({
-        Button1_reactive()
-    })
     observeEvent(input$Tab2, {
-        updateTabsetPanel(session, "tabselected",
-                          selected = "2")
+       updateTabsetPanel(session, "tabselected",
+                        selected = "2")
     })
     
 }
