@@ -1,6 +1,7 @@
 ### Noch Frage stellen!!!
 #Stackoverflow
 
+
 library(shiny)
 
 
@@ -52,16 +53,16 @@ ui <- shinyUI(pageWithSidebar(
                   ),
             selectInput(
                 inputId = "quiz2",
-                label = " Red or Blue",
+                label = "True or false",
                 selected = NULL,
-                choices = c("Red",
-                            "Blue")
+                choices = c("false",
+                            "true")
             ),
             actionButton("submit2", label = "Submit"),
             conditionalPanel(
                 "input.submit2!=0",
                 conditionalPanel(
-                    "input.quiz2 === 'Blue'",
+                    "input.quiz2 === 'true'",
                     paste0("Feedback: Right answer")#,
                     #Button1_reactive
                 )
@@ -69,7 +70,7 @@ ui <- shinyUI(pageWithSidebar(
             conditionalPanel(
                 "input.submit2!=0",
                 conditionalPanel(
-                    "input.quiz2 === 'Red'",
+                    "input.quiz2 === 'false'",
                     paste0("Feedback: Wrong answer")
                 ) 
             )
