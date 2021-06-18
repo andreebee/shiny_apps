@@ -1,6 +1,7 @@
 ### Noch Frage stellen!!!
 #Stackoverflow
-
+#Problem: Nicht gleich die richtige Antwort anzeigen,soll erstkommen, wenn submit geklickt wenn das Zweite mal die Loesung versucht wird raus zu finden, Zeile 29
+#Tabs nicht gleich anzeigen , sollen erst erscheinen, wenn Frage richtig beantwortet
 
 library(shiny)
 
@@ -24,22 +25,22 @@ ui <- shinyUI(pageWithSidebar(
                 choices = c("Right",
                             "Wrong")
             ),
-            actionButton("submit", label = "Submit"),
-            conditionalPanel(
-                "input.submit!=0",
+           # actionButton("submit", label = "Submit"),
+           # conditionalPanel(
+            #    "input.submit!=0",
                 conditionalPanel(
                     "input.quiz1 === 'Right'",
                     paste0("Feedback: Right"),
-                    actionButton("Tab2", label = "Next Question ")
+                    actionButton("Tab2", label = "Next Question")
                     
-                )
+             #   )
             ),
-            conditionalPanel(
-                "input.submit!=0",
+          #  conditionalPanel(
+              #  "input.submit!=0",
                 conditionalPanel(
                     "input.quiz1 === 'Wrong'",
                     paste0("Feedback: Wrong")
-               ) )
+               ) #)
                
         ),
         conditionalPanel(
@@ -58,22 +59,22 @@ ui <- shinyUI(pageWithSidebar(
                 choices = c("false",
                             "true")
             ),
-            actionButton("submit2", label = "Submit"),
-            conditionalPanel(
-                "input.submit2!=0",
+            #actionButton("submit2", label = "Submit"),
+           # conditionalPanel(
+            #    "input.submit2!=0",
                 conditionalPanel(
                     "input.quiz2 === 'true'",
                     paste0("Feedback: Right answer")#,
                     #Button1_reactive
-                )
+               # )
             ),
-            conditionalPanel(
-                "input.submit2!=0",
+           # conditionalPanel(
+             #   "input.submit2!=0",
                 conditionalPanel(
                     "input.quiz2 === 'false'",
                     paste0("Feedback: Wrong answer")
                 ) 
-            )
+           # )
          )        
     ),
     mainPanel(

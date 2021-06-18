@@ -1,8 +1,9 @@
 #### Mit Quiz 2.0
 #fuer Conditional Panel:
 #https://stackoverflow.com/questions/53226229/conditionalpanel-with-tabpanel
+# ohne submit Button
 
-
+#https://www.ifad.de/mittelwertvergleiche-mittels-t-test/
 #To do: Formuliereungen/Erklärungen, eventuell tab namen erscheinen
 
 
@@ -43,19 +44,24 @@ ui <- shinyUI(pageWithSidebar(
                     "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"
                 )
             ),
-            # submit button
-            actionButton("submit", label = "Submit"),
+           
             
             #Erklaerung
-            conditionalPanel("input.submit!=0",   #Button geklickt
-                conditionalPanel("input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
-                        HTML(paste0("<b>", "Erklärung:", "</b>")),
-                        paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
+           
+                             conditionalPanel("input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
+                                              HTML(paste0("<b>", "Erklärung:", "</b>")),
+                                              paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
                              bei einem kleinem Effekt, sind diese nah ander und in dem p-Wert
                              des t-Tests. Der p-Wert sagt aus, ob der Unterschied signifikant ist oder nicht,
-                             aber er sagt nichts über die Stärke des Unterschieds aus.")
+                             aber er sagt nichts über die Stärke des Unterschieds aus.
+                             Für den Vergleich der Mittelwerte liegt es nahe, 
+                            dass in die Teststatistik die Differenz der Mittelwerte eingeht. 
+                            Trotz gleicher Differenzen können sich jedoch die p-Werte und somit auch
+                            die Beurteilungen im Hinblick auf die Signifikanz unterscheiden.
+                            Die Streuung ist mit einem kleinerem Mittelwert geringer als 
+                            mit einem größerem."),
                                               
-                ) 
+                      
             )
         ), #Ende von dem ersten conditional Panel
         
@@ -95,22 +101,23 @@ ui <- shinyUI(pageWithSidebar(
                     "Eine große Änderung der Standardabweichung erzeugt einen kleinen p-Wert"
                 )
             ),
-           
+            
             actionButton("vorher2", label = "Vorheriges Tab"), #zuruek Button
-            actionButton("submit2", label = "Submit"),         #submit button
+           
             
             #Erklaerung
-            conditionalPanel("input.submit2 == 1" ,   #Button geklickt
-                conditionalPanel("input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #richtige Antwort gegeben
-                     HTML(paste0("<b>", "Erklärung:", "</b>")),
-                     paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
+                             conditionalPanel("input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #richtige Antwort gegeben
+                                              HTML(paste0("<b>", "Erklärung:", "</b>")),
+                                              paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
                              bei einem kleinem Effekt, sind diese nah ander und in dem p-Wert
                              des t-Tests. Der p-Wert sagt aus, ob der Unterschied signifikant ist oder nicht,
-                             aber er sagt nichts über die Stärke des Unterschieds aus.")
-                               
-        ) 
-       )
-    ), #Ende zweites conditional Panel
+                             aber er sagt nichts über die Stärke des Unterschieds aus.
+                             Die Differenz der Mittelwerte wird in Relation zur 
+                             Standardabweichung des Merkmals beurteilt.")
+                                              
+                             ) 
+           
+        ), #Ende zweites conditional Panel
         
         conditionalPanel(
             "input.tabselected == 3",
@@ -155,23 +162,18 @@ ui <- shinyUI(pageWithSidebar(
                     "Die Änderung der Anzahl der Beobachtungen hat keine Auswirkung",
                     "Ein p-Wert < 0.05 ist signifikant",
                     "Die Änderung der Anzahl der Beobachtungen hat eine mittelmäßige auswirkung auf den p-Wert"
-                    )
-                 ),
+                )
+            ),
             
             actionButton("vorher3", label = "Vorheriges Tab"), #zuruek Button
-            actionButton("submit3", label = "Submit"),          #submit button
-           
+            
             #Erklaerung
-            conditionalPanel("input.submit3==1" ,   #Button geklickt
-                conditionalPanel("input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #richtige Antwort gegeben
-                    HTML(paste0("<b>", "Erklärung:", "</b>")),
-                    paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
-                             bei einem kleinem Effekt, sind diese nah ander und in dem p-Wert
-                             des t-Tests. Der p-Wert sagt aus, ob der Unterschied signifikant ist oder nicht,
-                             aber er sagt nichts über die Stärke des Unterschieds aus.")
-        ) 
-     )
-), #Ende drittes contitonal Panel
+             conditionalPanel("input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #richtige Antwort gegeben
+                                              HTML(paste0("<b>", "Erklärung:", "</b>")),
+                                              paste0("Ist der p-Wert „klein“, das bedeutet kleiner als ein vorgegebenes Signifikanzniveau
+                                                    im allgemein < 0.05, so lässt sich die Nullhypothese ablehvnen.")
+                             ) 
+        ), #Ende drittes contitonal Panel
         
         conditionalPanel(
             "input.tabselected == 4",
@@ -184,7 +186,7 @@ ui <- shinyUI(pageWithSidebar(
         tabsetPanel(
             type = "tabs",
             
-#Ab hier Tab 1 #########################################################################
+            #Ab hier Tab 1 #########################################################################
             
             tabPanel(
                 title = "",
@@ -202,7 +204,7 @@ ui <- shinyUI(pageWithSidebar(
                 uiOutput("Button1")        #Button um ins naechste Tab zu springen
             ), #Ende TabPanel
             
-#Ab hier Tab 2 ###############################################################################
+            #Ab hier Tab 2 ###############################################################################
             
             tabPanel(
                 title = "" ,
@@ -219,15 +221,15 @@ ui <- shinyUI(pageWithSidebar(
                     textOutput("p2"),          #p-Wert
                     htmlOutput("Erklaerung2"), #richtige oder falsche Antwort ausgeben
                     uiOutput("Button2")        #Button um ins naechste Tab zu springen
-                    )#Ende CoditionalPanel
+                )#Ende CoditionalPanel
             ), #Ende TabPanel
             
-#Ab hier Tab 3 #####################################################################################
+            #Ab hier Tab 3 #####################################################################################
             
             tabPanel(
                 title = "",
                 value = "3",  #Sidebar 3 wird eingeblendet
-                 conditionalPanel(
+                conditionalPanel(
                     "input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #Bedingung, wann der Inhalt angezeigt wird
                     titlePanel("Differenz, Standardabweichung und Anzahl"),
                     
@@ -244,7 +246,7 @@ ui <- shinyUI(pageWithSidebar(
                 ) #Ende Conditional Panel
             ),#Ende TabPanel
             
-#Ab hier Tab4 ##############################################
+            #Ab hier Tab4 ##############################################
             
             tabPanel(
                 title = " ",
@@ -252,17 +254,17 @@ ui <- shinyUI(pageWithSidebar(
                 conditionalPanel(
                     "input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #Bedingung, wann der Inhalt angezeigt wird
                     titlePanel("Ergebnis"),
-                     
+                    
                     #Quelle Bild: https://www.pinterest.de/pin/819373725934792787/
-                   # HTML(paste0("<b>", "p-Wert", "</b>")),
-                     img(src='Smiley.png', align = "bottomleft"),
+                    # HTML(paste0("<b>", "p-Wert", "</b>")),
+                    img(src='Smiley.png', align = "bottomleft"),
                     "Sie haben alle Fragen richtig beantwortet.  " 
                 )
             ),
-        id = "tabselected"    #Wichtig, fuer event Button und conditional Sidebar
+            id = "tabselected"    #Wichtig, fuer event Button und conditional Sidebar
         )
-     )
-  )
+    )
+)
 )
 
 
@@ -302,7 +304,7 @@ server = function(input, output, session) {
     
     
     ######################### Output fuer einzelne Tabs definieren #####################
-########################## fuer ersten Tab ( MW Differenz) ###########################
+    ########################## fuer ersten Tab ( MW Differenz) ###########################
     output$p1 = renderText({
         #Gruppe 2 durch anddieren der Differenz der Mittelwerte erzeugen, abschneiden, damit Gruppe1 und Gruppe2 gleiche Anzahl an Werten besitzen
         Gruppe2 = Gruppe2[1:500] + input$diff
@@ -317,9 +319,9 @@ server = function(input, output, session) {
     
     #Erklaerung als Text
     #Reactive
-    Erklaerung1_reactive = eventReactive(input$submit, {
+    Erklaerung1_reactive = eventReactive(input$quiz1, {
         if (input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert") {
-            HTML(paste0("<b>", "Richtige Antwort", "</b>"))
+           HTML(paste0("<b>", "Richtige Antwort", "</b>"))
         }
         else{
             HTML( paste0("<strong>", "Falsche Antwort", "</strong>"))
@@ -331,9 +333,9 @@ server = function(input, output, session) {
     })
     
     #Button um in naestes Tab zu springen
-    Button1_reactive = eventReactive(input$submit, {
+    Button1_reactive = eventReactive(input$quiz1, {
         if (input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert") {
-           actionButton("Tab2", label = "Nächstes Tab")
+            actionButton("Tab2", label = "Nächstes Tab")
         }
         else{
             paste0("")
@@ -345,7 +347,7 @@ server = function(input, output, session) {
         Button1_reactive()
     })
     
-######################  fuer Tab 2 SD ###################################################
+    ######################  fuer Tab 2 SD ###################################################
     #Bei klingen des naestes Tab Button in Tab 1 springt man in Tab 2
     observeEvent(input$Tab2, {
         updateTabsetPanel(session, "tabselected",
@@ -367,7 +369,7 @@ server = function(input, output, session) {
     
     #Erklaerung als Text
     #Reactive
-    Erklaerung2_reactive = eventReactive(input$submit2, {
+    Erklaerung2_reactive = eventReactive(input$quiz2, {
         if (input$quiz2 == 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert') {
             HTML(paste0("<b>", "Richtige Antwort", "</b>"))
         }
@@ -381,7 +383,7 @@ server = function(input, output, session) {
     })
     
     #Button um in naestes Tab zu springen
-    Button2_reactive = eventReactive(input$submit2, {
+    Button2_reactive = eventReactive(input$quiz2, {
         if (input$quiz2 == "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert") {
             actionButton("Tab3", label = "Nächstes Tab")
         }
@@ -401,7 +403,7 @@ server = function(input, output, session) {
                           selected = "1")
     })
     
-################################### fuer Tab 3 Anzahl #######################################
+    ################################### fuer Tab 3 Anzahl #######################################
     observeEvent(input$Tab3, {
         updateTabsetPanel(session, "tabselected",
                           selected = "3")
@@ -455,7 +457,7 @@ server = function(input, output, session) {
     })
     #Erklaerung als Text
     #Reactive
-    Erklaerung3_reactive = eventReactive(input$submit3, {
+    Erklaerung3_reactive = eventReactive(input$quiz3, {
         if (input$quiz3 == "Ein p-Wert < 0.05 ist signifikant") {
             HTML(paste0("<b>", "Richtige Antwort", "</b>"))
         }
@@ -469,7 +471,7 @@ server = function(input, output, session) {
     })
     
     #Button um in naestes Tab zu springen
-    Button3_reactive = eventReactive(input$submit3, {
+    Button3_reactive = eventReactive(input$quiz3, {
         if (input$quiz3 == "Ein p-Wert < 0.05 ist signifikant") {
             actionButton("Tab4", label = "Nächstes Tab")
         }
@@ -488,7 +490,7 @@ server = function(input, output, session) {
                           selected = "2")
     })
     
-######################## Tab 4 ####################################################
+    ######################## Tab 4 ####################################################
     observeEvent(input$Tab4, {
         updateTabsetPanel(session, "tabselected",
                           selected = "4")
@@ -498,7 +500,7 @@ server = function(input, output, session) {
         updateTabsetPanel(session, "tabselected",
                           selected = "3")
     })
- }
+}
 
 
 shinyApp(ui = ui, server = server)
