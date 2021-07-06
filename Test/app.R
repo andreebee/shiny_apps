@@ -1,49 +1,37 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+library(gapminder)
 
-library(shiny)
-
-# Define UI for application that draws a histogram
+# Define UI for the application
 ui <- fluidPage(
-
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+            textInput("title", "Title", "GDP vs life exp"),
+            numericInput("size", "Point size", 1, 1),
+            checkboxInput("fit", "Add line of best fit", FALSE),
+            # Add radio buttons for colour
+            radioButtons("color", label="Point color", 
+                         choices= c("blue", "red", "green", "black"))
         ),
-
-        # Show a plot of the generated distribution
         mainPanel(
-           plotOutput("distPlot")
+            plotOutput("plot")
         )
     )
 )
 
-# Define server logic required to draw a histogram
+# Define the server logic
 server <- function(input, output) {
-
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    output$plot <- renderPlot({
+        p <- ggplot(gapminder, aes(gdpPercap, lifeExp)) +
+            # Use the value of the color input as the point colour
+            geom_point(size = input$size, col = input$color) +
+            scale_x_log10() +
+            ggtitle(input$title)
+        
+        if (input$fit) {
+            p <- p + geom_smooth(method = "lm")
+        }
+        p
     })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
