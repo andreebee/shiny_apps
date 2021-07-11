@@ -1,15 +1,20 @@
 library(gapminder)
+require(ggplot2)
 
-# Define UI for the application
+
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       textInput("title", "Title", "GDP vs life exp"),
       numericInput("size", "Point size", 1, 1),
       checkboxInput("fit", "Add line of best fit", FALSE),
-      # Add radio buttons for colour
-      radioButtons("color", label="Point color", 
-                   choices= c("blue", "red", "green", "black"))
+      radioButtons("color", "Point color",
+                   choices = c("blue", "red", "green", "black")),
+      # Add a continent dropdown selector
+      selectInput("continents", "Continents",
+                  choices = levels(gapminder$continent),
+                  multiple = TRUE,
+                  selected = "Europe")
     ),
     mainPanel(
       plotOutput("plot")
@@ -20,8 +25,11 @@ ui <- fluidPage(
 # Define the server logic
 server <- function(input, output) {
   output$plot <- renderPlot({
-    p <- ggplot(gapminder, aes(gdpPercap, lifeExp)) +
-      # Use the value of the color input as the point colour
+    # Subset the gapminder dataset by the chosen continents
+    data <- subset(gapminder,
+                   continent %in% input$continents)
+    
+    p <- ggplot(data, aes(gdpPercap, lifeExp)) +
       geom_point(size = input$size, col = input$color) +
       scale_x_log10() +
       ggtitle(input$title)
@@ -33,5 +41,4 @@ server <- function(input, output) {
   })
 }
 
-# Run the application
 shinyApp(ui = ui, server = server)
