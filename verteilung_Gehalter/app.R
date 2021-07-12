@@ -1,11 +1,8 @@
-library(tidyverse)
+library(plotly)
 library(dplyr)
 library(shiny)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-data <-  read_csv("./salaries.csv")
-
-
+load("salaries.RData")
 
 ### Cleaning dataset ###
   data <- data[!(is.na(data$BasePay)), ]
@@ -19,17 +16,15 @@ data <-  read_csv("./salaries.csv")
 ###
   
 ### Outlier Detection ###
-iqr <- IQR(data$BasePay)
-Q <- quantile(data$BasePay, probs=c(.25, .75))
-up <-  Q[2] + (1.5*iqr) # Upper Range  
-low<- Q[1]-1.5*iqr # Lower Range
-
-incomes <- subset(data, data$BasePay < up)
-upIncomes <- subset(data, data$BasePay >= up)
-numRows <- nrow(upIncomes)
-######
+  iqr <- IQR(data$BasePay)
+  Q <- quantile(data$BasePay, probs=c(.25, .75))
+  up <-  Q[2] + (1.5*iqr) # Upper Range  
+  low<- Q[1]-1.5*iqr # Lower Range
   
-
+  incomes <- subset(data, data$BasePay < up)
+  upIncomes <- subset(data, data$BasePay >= up)
+  numRows <- nrow(upIncomes)
+######
 
 ui <- fluidPage(
   titlePanel('Verteilung Gehälter'),
@@ -48,8 +43,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   output$histogram <- renderPlotly({
-    
-   
+  
     percentage <- as.integer(numRows * (input$percentage[2] / 100) )
     
     sliderPercentage <- (input$percentage[2] / 100)  # 0.2 , 0.3
