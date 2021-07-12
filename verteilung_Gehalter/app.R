@@ -1,6 +1,6 @@
-
 library(dplyr)
 library(shiny)
+library(plotly)
 
 load("salaries.RData")
 
