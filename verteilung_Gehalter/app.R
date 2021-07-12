@@ -1,4 +1,4 @@
-library(plotly)
+
 library(dplyr)
 library(shiny)
 
@@ -30,7 +30,7 @@ ui <- fluidPage(
   titlePanel('Verteilung Gehälter'),
   sidebarLayout(
     sidebarPanel(
-      sliderInput("percentage", "Percentage",
+      sliderInput("percentage", "Percentage of richiest to delete",
                   value=c(0, 0),
                   min=0, 
                   max=70)
@@ -46,7 +46,7 @@ server <- function(input, output, session) {
   
     percentage <- as.integer(numRows * (input$percentage[2] / 100) )
     
-    sliderPercentage <- (input$percentage[2] / 100)  # 0.2 , 0.3
+    sliderPercentage <- (input$percentage[2] / 100)
     percentageToKeep <- 1 - sliderPercentage
     rowToKeep <- as.integer(numRows * percentageToKeep)
     
