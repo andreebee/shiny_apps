@@ -3,6 +3,9 @@
 #Problem: Nicht gleich die richtige Antwort anzeigen,soll erstkommen, wenn submit geklickt wenn das Zweite mal die Loesung versucht wird raus zu finden, Zeile 29
 #Tabs nicht gleich anzeigen , sollen erst erscheinen, wenn Frage richtig beantwortet
 
+
+#Rohe Variante 
+
 library(shiny)
 
 
@@ -22,29 +25,27 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "quiz1",
                 label = " Right or wrong",
                 selected = NULL,
-                choices = c("Right",
+                choices = c("",
+                            "Right",
                             "Wrong")
             ),
-           # actionButton("submit", label = "Submit"),
-           # conditionalPanel(
-            #    "input.submit!=0",
+          
                 conditionalPanel(
                     "input.quiz1 === 'Right'",
                     paste0("Feedback: Right"),
                     actionButton("Tab2", label = "Next Question")
                     
-             #   )
+            
             ),
-          #  conditionalPanel(
-              #  "input.submit!=0",
+         
                 conditionalPanel(
                     "input.quiz1 === 'Wrong'",
                     paste0("Feedback: Wrong")
-               ) #)
+                )
                
         ),
         conditionalPanel(
-            condition = "input.tabselected ==2",
+            condition = "input.tabselected  ==2",
             sliderInput(
                 inputId = "slider2",
                 label = "Slider 2",
@@ -59,25 +60,21 @@ ui <- shinyUI(pageWithSidebar(
                 choices = c("false",
                             "true")
             ),
-            #actionButton("submit2", label = "Submit"),
-           # conditionalPanel(
-            #    "input.submit2!=0",
-                conditionalPanel(
-                    "input.quiz2 === 'true'",
+           
+               conditionalPanel(
+                   "input.quiz2 === 'true'",
                     paste0("Feedback: Right answer")#,
-                    #Button1_reactive
-               # )
+                 
             ),
-           # conditionalPanel(
-             #   "input.submit2!=0",
+           
                 conditionalPanel(
                     "input.quiz2 === 'false'",
                     paste0("Feedback: Wrong answer")
                 ) 
-           # )
-         )        
+        ) 
     ),
     mainPanel(
+      
              tabsetPanel(
             type = "tabs",
           tabPanel(
@@ -85,15 +82,12 @@ ui <- shinyUI(pageWithSidebar(
                 titlePanel("Description question 1"),
                 value = "1"
             ), 
-    
-          tabPanel(title = "Question  2" ,
-                value = "2",
-                conditionalPanel("input.quiz1 === 'Right'",
-                    titlePanel("Description question 2")
-                   ) 
-            ), 
-             id = "tabselected"
+         
+          id = "tabselected"
+           
+          
             )
+           
         )
 )
 )
@@ -101,9 +95,61 @@ ui <- shinyUI(pageWithSidebar(
 
 server = function(input, output, session) {
     observeEvent(input$Tab2, {
-       updateTabsetPanel(session, "tabselected",
-                        selected = "2")
+        updateTabsetPanel(session, "tabselected",
+                          selected = "2")
+    })
+    observeEvent(input$quiz1,{
+        
+        if(input$quiz1 == "Right" ){
+            insertTab(inputId = "tabselected",
+                      tabPanel(title = "Question2" ,
+                                value = "2"), target="1", position ="after" )
+        }
     })
     
+   
+    
 }
+
 shinyApp(ui = ui, server = server)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
