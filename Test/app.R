@@ -1,49 +1,53 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+require(gapminder)
+require(ggplot2)
+library(colourpicker)
+library(plotly)
 
-library(shiny)
-
-# Define UI for application that draws a histogram
 ui <- fluidPage(
-
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+            textInput("title", "Title", "GDP vs life exp"),
+            numericInput("size", "Point size", 1, 1),
+            checkboxInput("fit", "Add line of best fit", FALSE),
+            colourInput("color", "Point color", value = "blue"),
+            selectInput("continents", "Continents",
+                        choices = levels(gapminder$continent),
+                        multiple = TRUE,
+                        selected = "Europe"),
+            sliderInput("years", "Years",
+                        min(gapminder$year), max(gapminder$year),
+                        value = c(1977, 2002))
         ),
-
-        # Show a plot of the generated distribution
         mainPanel(
-           plotOutput("distPlot")
+            # Replace the `plotOutput()` with the plotly version
+            plotlyOutput("plot")
         )
     )
 )
 
-# Define server logic required to draw a histogram
+# Define the server logic
 server <- function(input, output) {
-
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    # Replace the `renderPlot()` with the plotly version
+    output$plot <- renderPlotly({
+        # Convert the existing ggplot2 to a plotly plot
+        ggplotly({
+            data <- subset(gapminder,
+                           continent %in% input$continents &
+                               year >= input$years[1] & year <= input$years[2])
+            
+            p <- ggplot(data, aes(gdpPercap, lifeExp)) +
+                geom_point(size = input$size, col = input$color) +
+                scale_x_log10() +
+                ggtitle(input$title)
+            
+                quantile(cars$mpg, probs = c(0.05, 0.95))
+            
+            if (input$fit) {
+                p <- p + geom_smooth(method = "lm")
+            }
+            p
+        })
     })
 }
 
-# Run the application 
 shinyApp(ui = ui, server = server)
