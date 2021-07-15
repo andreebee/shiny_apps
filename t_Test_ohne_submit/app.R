@@ -38,7 +38,7 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "quiz1",
                 label = " Welche Aussage stimmt",
                 selected = NULL,
-                choices = c(
+                choices = c(" ",
                     "Die Änderung der Differenz des Mittelwertes hat keine Auswirkung",
                     "Eine größe Differenz der Mittelwerte erzeugt einen großen p-Wert",
                     "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"
@@ -49,6 +49,8 @@ ui <- shinyUI(pageWithSidebar(
             #Erklaerung
            
                              conditionalPanel("input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
+                                              actionButton("Tab2", label = "Nächstes Tab"),
+                                              HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
                                               paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
                              bei einem kleinem Effekt, sind diese nah ander und in dem p-Wert
@@ -62,7 +64,12 @@ ui <- shinyUI(pageWithSidebar(
                             mit einem größerem."),
                                               
                       
-            )
+            ),
+            # Bei falscher Antwort
+            conditionalPanel("input.quiz1 !== 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
+                            HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
+                              )              
+            
         ), #Ende von dem ersten conditional Panel
         
         conditionalPanel(
@@ -95,7 +102,7 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "quiz2",
                 label = " Welche Aussage stimmt",
                 selected = NULL,
-                choices = c(
+                choices = c("",
                     "Die Änderung der Standardabweichung hat keine Auswirkung",
                     "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert",
                     "Eine große Änderung der Standardabweichung erzeugt einen kleinen p-Wert"
@@ -107,6 +114,8 @@ ui <- shinyUI(pageWithSidebar(
             
             #Erklaerung
                              conditionalPanel("input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #richtige Antwort gegeben
+                                              actionButton("Tab3", label = "Nächstes Tab"),
+                                              HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
                                               paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
                              bei einem kleinem Effekt, sind diese nah ander und in dem p-Wert
@@ -115,8 +124,13 @@ ui <- shinyUI(pageWithSidebar(
                              Die Differenz der Mittelwerte wird in Relation zur 
                              Standardabweichung des Merkmals beurteilt.")
                                               
-                             ) 
-           
+                             ) ,
+            
+            #Output bei Falscher Antwort
+            conditionalPanel("input.quiz2 !== 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #richtige Antwort gegeben
+                             HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
+            ) 
+            
         ), #Ende zweites conditional Panel
         
         conditionalPanel(
@@ -158,7 +172,7 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "quiz3",
                 label = " Welche Aussage stimmt",
                 selected = NULL,
-                choices = c(
+                choices = c("",
                     "Die Änderung der Anzahl der Beobachtungen hat keine Auswirkung",
                     "Ein p-Wert < 0.05 ist signifikant",
                     "Die Änderung der Anzahl der Beobachtungen hat eine mittelmäßige auswirkung auf den p-Wert"
@@ -166,13 +180,21 @@ ui <- shinyUI(pageWithSidebar(
             ),
             
             actionButton("vorher3", label = "Vorheriges Tab"), #zuruek Button
-            
+           
             #Erklaerung
              conditionalPanel("input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #richtige Antwort gegeben
+                                              actionButton("Tab4", label = "Nächstes Tab"),
+                                              HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
                                               paste0("Ist der p-Wert „klein“, das bedeutet kleiner als ein vorgegebenes Signifikanzniveau
                                                     im allgemein < 0.05, so lässt sich die Nullhypothese ablehvnen.")
-                             ) 
+                             ),
+            
+            #Output bei falscher Antwort
+            conditionalPanel("input.quiz3 !== 'Ein p-Wert < 0.05 ist signifikant'", #richtige Antwort gegeben
+                              HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>"))
+            ) 
+            
         ), #Ende drittes contitonal Panel
         
         conditionalPanel(
@@ -200,8 +222,8 @@ ui <- shinyUI(pageWithSidebar(
                 plotOutput("boxPlot1"),    #Box-Plot
                 HTML(paste0("<b>", "p-Wert", "</b>")),
                 textOutput("p1"),          #p-Wert
-                htmlOutput("Erklaerung1"), #richtige oder falsche Antwort ausgeben
-                uiOutput("Button1")        #Button um ins naechste Tab zu springen
+                #htmlOutput("Erklaerung1")#, #richtige oder falsche Antwort ausgeben
+               # uiOutput("Button1")        #Button um ins naechste Tab zu springen
             ), #Ende TabPanel
             
             #Ab hier Tab 2 ###############################################################################
@@ -219,8 +241,8 @@ ui <- shinyUI(pageWithSidebar(
                     plotOutput("boxPlot2"),    #Box-Plot
                     HTML(paste0("<b>", "p-Wert", "</b>")),
                     textOutput("p2"),          #p-Wert
-                    htmlOutput("Erklaerung2"), #richtige oder falsche Antwort ausgeben
-                    uiOutput("Button2")        #Button um ins naechste Tab zu springen
+                    #htmlOutput("Erklaerung2")#, #richtige oder falsche Antwort ausgeben
+                    #uiOutput("Button2")        #Button um ins naechste Tab zu springen
                 )#Ende CoditionalPanel
             ), #Ende TabPanel
             
@@ -240,8 +262,8 @@ ui <- shinyUI(pageWithSidebar(
                     HTML(paste0("<b>", "p-Wert", "</b>")),
                     textOutput("p3"),          #p-Wert
                     plotOutput("sigPlot"),     #Histogramm zu Signifikanz
-                    htmlOutput("Erklaerung3"), #richtige oder falsche Antwort ausgeben
-                    uiOutput("Button3")        #Button um ins naechste Tab zu springen
+                    #htmlOutput("Erklaerung3")#, #richtige oder falsche Antwort ausgeben
+                    #uiOutput("Button3")        #Button um ins naechste Tab zu springen
                     
                 ) #Ende Conditional Panel
             ),#Ende TabPanel
@@ -319,33 +341,33 @@ server = function(input, output, session) {
     
     #Erklaerung als Text
     #Reactive
-    Erklaerung1_reactive = eventReactive(input$quiz1, {
-        if (input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert") {
-           HTML(paste0("<b>", "Richtige Antwort", "</b>"))
-        }
-        else{
-            HTML( paste0("<strong>", "Falsche Antwort", "</strong>"))
-        }
-    })
+#    Erklaerung1_reactive = eventReactive(input$quiz1, {
+#        if (input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert") {
+#           HTML(paste0("<b>", "Richtige Antwort", "</b>"))
+#        }
+#        else{
+#            HTML( paste0("<strong>", "Falsche Antwort", "</strong>"))
+#        }
+#    })
     #Text Output
-    output$Erklaerung1 <- renderUI({
-        Erklaerung1_reactive()
-    })
-    
+#    output$Erklaerung1 <- renderUI({
+#        Erklaerung1_reactive()
+#    })
+#    
     #Button um in naestes Tab zu springen
-    Button1_reactive = eventReactive(input$quiz1, {
-        if (input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert") {
-            actionButton("Tab2", label = "Nächstes Tab")
-        }
-        else{
-            paste0("")
-        }
-    })
+   # Button1_reactive = eventReactive(input$quiz1, {
+  #      if (input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert") {
+  #          actionButton("Tab2", label = "Nächstes Tab")
+  #      }
+  #      else{
+  #          paste0("")
+ #       }
+ #   })
     
     #Output id Button
-    output$Button1 <- renderUI({
-        Button1_reactive()
-    })
+  #  output$Button1 <- renderUI({
+ #       Button1_reactive()
+ #   })
     
     ######################  fuer Tab 2 SD ###################################################
     #Bei klingen des naestes Tab Button in Tab 1 springt man in Tab 2
@@ -369,33 +391,33 @@ server = function(input, output, session) {
     
     #Erklaerung als Text
     #Reactive
-    Erklaerung2_reactive = eventReactive(input$quiz2, {
-        if (input$quiz2 == 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert') {
-            HTML(paste0("<b>", "Richtige Antwort", "</b>"))
-        }
-        else{
-            HTML(paste0("<b>", "Falsche Antwort", "</b>"))
-        }
-    })
+ #   Erklaerung2_reactive = eventReactive(input$quiz2, {
+ #       if (input$quiz2 == 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert') {
+ #           HTML(paste0("<b>", "Richtige Antwort", "</b>"))
+ #       }
+ #       else{
+ #           HTML(paste0("<b>", "Falsche Antwort", "</b>"))
+ #       }
+#    })
     #Text Output
-    output$Erklaerung2 <- renderText({
-        Erklaerung2_reactive()
-    })
+#    output$Erklaerung2 <- renderText({
+#        Erklaerung2_reactive()
+#    })
     
     #Button um in naestes Tab zu springen
-    Button2_reactive = eventReactive(input$quiz2, {
-        if (input$quiz2 == "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert") {
-            actionButton("Tab3", label = "Nächstes Tab")
-        }
-        else{
-            paste0("")
-        }
-    })
+ #   Button2_reactive = eventReactive(input$quiz2, {
+ #       if (input$quiz2 == "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert") {
+ #           actionButton("Tab3", label = "Nächstes Tab")
+ #       }
+ #       else{
+ #           paste0("")
+ #       }
+ #   })
     
     #Button id
-    output$Button2 <- renderUI({
-        Button2_reactive()
-    })
+ #   output$Button2 <- renderUI({
+#        Button2_reactive()
+#    })
     
     #in vorheriges Tab springen
     observeEvent(input$vorher2, {
@@ -457,33 +479,33 @@ server = function(input, output, session) {
     })
     #Erklaerung als Text
     #Reactive
-    Erklaerung3_reactive = eventReactive(input$quiz3, {
-        if (input$quiz3 == "Ein p-Wert < 0.05 ist signifikant") {
-            HTML(paste0("<b>", "Richtige Antwort", "</b>"))
-        }
-        else{
-            HTML(paste0("<b>", "Falsche Antwort", "</b>"))
-        }
-    })
+#    Erklaerung3_reactive = eventReactive(input$quiz3, {
+#        if (input$quiz3 == "Ein p-Wert < 0.05 ist signifikant") {
+#            HTML(paste0("<b>", "Richtige Antwort", "</b>"))
+#        }
+#        else{
+#            HTML(paste0("<b>", "Falsche Antwort", "</b>"))
+#        }
+#    })
     #Text Output
-    output$Erklaerung3 <- renderText({
-        Erklaerung3_reactive()
-    })
+#    output$Erklaerung3 <- renderText({
+#        Erklaerung3_reactive()
+#    })
     
     #Button um in naestes Tab zu springen
-    Button3_reactive = eventReactive(input$quiz3, {
-        if (input$quiz3 == "Ein p-Wert < 0.05 ist signifikant") {
-            actionButton("Tab4", label = "Nächstes Tab")
-        }
-        else{
-            paste0("")
-        }
-    })
+#    Button3_reactive = eventReactive(input$quiz3, {
+#        if (input$quiz3 == "Ein p-Wert < 0.05 ist signifikant") {
+#            actionButton("Tab4", label = "Nächstes Tab")
+#        }
+#        else{
+#            paste0("")
+#        }
+#    })
     
     #Button id
-    output$Button3 <- renderUI({
-        Button3_reactive()
-    })
+ #   output$Button3 <- renderUI({
+ #       Button3_reactive()
+#    })
     #in vorheriges Tab springen
     observeEvent(input$vorher3, {
         updateTabsetPanel(session, "tabselected",

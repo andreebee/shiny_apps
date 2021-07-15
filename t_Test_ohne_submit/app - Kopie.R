@@ -369,10 +369,10 @@ server = function(input, output, session) {
                           selected = "1")
     })
     
+    # Tab erst nach der richtigen Antwort sichtbar
     observeEvent(input$quiz1,{
-      
-      if(input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){
-        insertTab(inputId = "tabselected",
+      if(input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #Bedingung
+        insertTab(inputId = "tabselected",                                                      #Hier wird das Tab eingefuegt
                   tabPanel(
                     title = "Standardabweichung" ,
                     value = "2",       #Sidebar 2 wird eingeblendet
@@ -482,11 +482,11 @@ server = function(input, output, session) {
                           selected = "2")
     })
     
-    
+    # Tab erst nach der richtigen Antwort sichtbar
     observeEvent(input$quiz2,{
       
       if(input$quiz2 == "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert" ){
-        insertTab(inputId = "tabselected",
+        insertTab(inputId = "tabselected",                                                           #Tab einfuegen
                   tabPanel(
                     title = "Anzahl",
                     value = "3",  #Sidebar 3 wird eingeblendet
@@ -522,11 +522,11 @@ server = function(input, output, session) {
                           selected = "3")
     })
     
-    
+    # Tab erst nach der richtigen Antwort sichtbar
     observeEvent(input$quiz3,{
       
       if(input$quiz3 == "Ein p-Wert < 0.05 ist signifikant" ){
-        insertTab(inputId = "tabselected",
+        insertTab(inputId = "tabselected",                                    #Tab einfuegen
                   tabPanel(
                     title = "Ergebnis",
                     value = "4",   #Sidebar 4 wird eingeblendet
