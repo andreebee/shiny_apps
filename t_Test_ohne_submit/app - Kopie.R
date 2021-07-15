@@ -374,7 +374,7 @@ server = function(input, output, session) {
       if(input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #Bedingung
         insertTab(inputId = "tabselected",                                                      #Hier wird das Tab eingefuegt
                   tabPanel(
-                    title = "Standardabweichung" ,
+                    title = "Differenz und Standardabweichung" ,
                     value = "2",       #Sidebar 2 wird eingeblendet
                     conditionalPanel(
                       "input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'", #Bedingung, wann der Inhalt angezeigt wird
@@ -391,6 +391,11 @@ server = function(input, output, session) {
                     )#Ende CoditionalPanel
                   ) #Ende TabPanel
                   , target="1", position ="after" )
+      }
+      
+      if(input$quiz1 != "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #Bedingung
+        removeTab(inputId = "tabselected",                                                      #Hier wird das Tab geloescht, wenn die falsche ANtwort nach der richtigen eingegeben wird
+                   target="2" )
       }
     })
     
@@ -488,7 +493,7 @@ server = function(input, output, session) {
       if(input$quiz2 == "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert" ){
         insertTab(inputId = "tabselected",                                                           #Tab einfuegen
                   tabPanel(
-                    title = "Anzahl",
+                    title = "Differenz, Standardabweichung und Anzahl",
                     value = "3",  #Sidebar 3 wird eingeblendet
                     conditionalPanel(
                       "input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #Bedingung, wann der Inhalt angezeigt wird
@@ -507,6 +512,11 @@ server = function(input, output, session) {
                     ) #Ende Conditional Panel
                   )#Ende TabPanel
                   , target="2", position ="after" )
+      }
+      
+      if(input$quiz2 != "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert" ){
+        removeTab(inputId = "tabselected",                                                           #Tab loeschen bei falscher Antwort
+                   target="3")
       }
     })
     
@@ -542,6 +552,13 @@ server = function(input, output, session) {
                   )
                   , target="3", position ="after" )
       }
+      if(input$quiz3 != "Ein p-Wert < 0.05 ist signifikant" ){
+        removeTab(inputId = "tabselected",                                    #Tab loeschen, wenn falsche Antwort
+                   target="4" )
+      }
+      
+      
+      
     })
     
   }
