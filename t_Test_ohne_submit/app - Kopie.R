@@ -6,6 +6,9 @@
 #https://www.ifad.de/mittelwertvergleiche-mittels-t-test/
 #To do: Formuliereungen/Erklärungen, eventuell tab namen erscheinen
 
+#https://stackoverflow.com/questions/68079731/how-to-create-a-shiny-app-where-tabs-are-only-become-visible-if-a-condition-is-m
+# insertTab, Tabs erscheinen erst nach richtiger Antwort
+
 
 library(shiny)
 library(ggplot2)
@@ -376,8 +379,8 @@ server = function(input, output, session) {
                   tabPanel(
                     title = "Differenz und Standardabweichung" ,
                     value = "2",       #Sidebar 2 wird eingeblendet
-                    conditionalPanel(
-                      "input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'", #Bedingung, wann der Inhalt angezeigt wird
+                   # conditionalPanel(
+                   #   "input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'", #Bedingung, wann der Inhalt angezeigt wird
                       titlePanel("Differenz und Standardabweichung"),
                       
                       "Hier sieht man, welchen Effekt es hat, wenn sich die
@@ -388,7 +391,7 @@ server = function(input, output, session) {
                       textOutput("p2"),          #p-Wert
                       #htmlOutput("Erklaerung2")#, #richtige oder falsche Antwort ausgeben
                       #uiOutput("Button2")        #Button um ins naechste Tab zu springen
-                    )#Ende CoditionalPanel
+                   # )#Ende CoditionalPanel
                   ) #Ende TabPanel
                   , target="1", position ="after" )
       }
@@ -495,8 +498,8 @@ server = function(input, output, session) {
                   tabPanel(
                     title = "Differenz, Standardabweichung und Anzahl",
                     value = "3",  #Sidebar 3 wird eingeblendet
-                    conditionalPanel(
-                      "input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #Bedingung, wann der Inhalt angezeigt wird
+                   # conditionalPanel(
+                   #   "input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #Bedingung, wann der Inhalt angezeigt wird
                       titlePanel("Differenz, Standardabweichung und Anzahl"),
                       
                       "Hier sieht man, welchen Effekt es hat, wenn sich die
@@ -509,7 +512,7 @@ server = function(input, output, session) {
                       #htmlOutput("Erklaerung3")#, #richtige oder falsche Antwort ausgeben
                       #uiOutput("Button3")        #Button um ins naechste Tab zu springen
                       
-                    ) #Ende Conditional Panel
+                   # ) #Ende Conditional Panel
                   )#Ende TabPanel
                   , target="2", position ="after" )
       }
@@ -540,15 +543,15 @@ server = function(input, output, session) {
                   tabPanel(
                     title = "Ergebnis",
                     value = "4",   #Sidebar 4 wird eingeblendet
-                    conditionalPanel(
-                      "input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #Bedingung, wann der Inhalt angezeigt wird
+                  #  conditionalPanel(
+                  #    "input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #Bedingung, wann der Inhalt angezeigt wird #bracuht mna das?
                       titlePanel("Ergebnis"),
                       
                       #Quelle Bild: https://www.pinterest.de/pin/819373725934792787/
                       # HTML(paste0("<b>", "p-Wert", "</b>")),
-                      img(src='Smiley.png', align = "bottomleft"),
+                     # img(src='Smiley.png', align = "bottomleft"),
                       "Sie haben alle Fragen richtig beantwortet.  " 
-                    )
+                    #)
                   )
                   , target="3", position ="after" )
       }
