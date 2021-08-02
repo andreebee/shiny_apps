@@ -1,26 +1,60 @@
+library(ggplot2)
+library(lattice)
+library(tibble)
+library(plyr)
 library(dplyr)
-library(shiny)
-library(plotly)
+library(scales)
 
-load("salaries.RData")
+data <- read.csv(file = './Salaries.csv')
+TotalPay <- data$TotalPay
+TotalPays <-  as.data.frame(TotalPay)
 
-### Cleaning dataset ###
-  data <- data[!(is.na(data$BasePay)), ]
-  data <- data[data$BasePay >= 200, ]
-  data <- data %>% arrange(BasePay)
-###
+length(TotalPays[TotalPays>= 250000 & TotalPays<= 270000])
+typeof(TotalPays)
+
+start <- 210000
+till <- 180
+
+while (start < 600000) {
+  i <- 0
+  
+  while (i < till) {
+    newrow1 <- data.frame(start);
+    names(newrow1) <- c("TotalPay" )  
+    TotalPays <- rbind(TotalPays, newrow1) 
+    i <- i + 1
+  }
+  till <- till - 2
+  start = start + 5000
+}
+
+
+salaries <- TotalPays
+
 
 ### Getting Highest values ###
-  rowsData <- nrow(data)
-   
-  incomes <- data[0:as.integer(rowsData * 0.8),]
-  upIncomes <- data[as.integer(rowsData * 0.8): nrow(data),]
-  numRows <- nrow(upIncomes)
+rowsData <- nrow(salaries)
+
+incomes <-  as.data.frame(filter(salaries, TotalPay < 200000))
+upIncomes <- filter(salaries, TotalPay >= 200000)
+upIncomes <- upIncomes %>% arrange(desc(TotalPay))
+numRows <- nrow(upIncomes)
 ######
 
+
+
+
 ### Global Variables ###
-  maxPercentage <- 20  
+maxPercentage <- 5 
+ui <- fluidPage(      
 #####
+  sliderInput("percentage", "Percentage of richiest to exclude",
+              value=0,
+              min=0, 
+              max=maxPercentage),
+  # Plot
+  plotOutput("plot")
+)
 
 ### Functions ###
 getRowsToKeep <-  function(percentage) {
@@ -31,70 +65,28 @@ getRowsToKeep <-  function(percentage) {
 }
 #####
 
-ui <- fluidPage(
-  titlePanel('Verteilung Gehälter'),
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput("percentage", "Percentage of richiest to delete",
-                  value=0,
-                  min=0, 
-                  max=maxPercentage)
-    ),
-    mainPanel(
-      plotlyOutput("histogram")
-    )
-  )
-)
 
-server <- function(input, output, session) {
-  output$histogram <- renderPlotly({
+server <- function(input, output) {
+  # verhindert "Springen der Punkte"
+  set.seed(10)
   
+  # Plot zeichnen
+  output$plot <-  renderPlot({
     rowsToKeep <- getRowsToKeep(input$percentage)
-    filteredData <- rbind(incomes,upIncomes[0:rowsToKeep,])
-    vline <- function(x = 0, color = "red") {
-      list(
-        type = "line", 
-        y0 = 0, 
-        y1 = 1, 
-        yref = "paper",
-        x0 = x, 
-        x1 = x,
-        line = list(color = color)
-      )
-    }
-    
-  meanValue <- mean(filteredData$BasePay)
-  medianValue <- median(filteredData$BasePay) 
-  h <- 37000
-  
-  plot_ly(filteredData) %>%
-      add_histogram(
-        x = ~BasePay, 
-        nbinsx=20, 
-        name = "Salary", 
-        color = I("#0c3880")
-      ) %>% 
-      layout(
-        xaxis = list(range = c(-10000, 419275)),
-        yaxis = list(range = c(0,h))
-      ) %>% 
-      add_segments(x = meanValue, 
-                    xend = meanValue + 1, 
-                    y = 0,
-                    yend = h, 
-                    name = "Mean",
-                    color = I("#636ef9"))  %>% 
-      add_segments(x = medianValue, 
-                    xend = medianValue + 1, 
-                    y = 0, 
-                    yend = h, 
-                    name = "Median", 
-                    color = I("#f96663"),
-                    line = list(dash = "dash"))
-  
-  
-    
+    filteredData <- rbind(incomes, tail(upIncomes,rowsToKeep))
+    ggplot(filteredData, aes(x=TotalPay)) +
+      geom_histogram() +
+      #mean
+      geom_vline(aes(xintercept=mean(TotalPay, na.rm=T), colour = "mean"),       
+                 linetype="dashed", size=1)                                   +
+      # blank, solid, dashed, dotted, dotdash, longdash, twodash
+      #median
+      geom_vline(aes(xintercept=median(TotalPay, na.rm=T), colour = "median"),   
+                 linetype="longdash", size=1)         +
+      scale_x_continuous(limits=c(0, 600000), labels = comma) +
+      scale_colour_manual("legend", values = c("mean" = "blue", 
+                                               "median" = "red"))   
   })
 }
 
-shinyApp(ui, server)
+shinyApp(ui=ui, server = server)
