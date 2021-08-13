@@ -103,8 +103,14 @@ server = function(input, output, session) {
         if(input$quiz1 == "Right" ){
             insertTab(inputId = "tabselected",
                       tabPanel(title = "Question2" ,
+                               titlePanel("Description question 2"),
                                 value = "2"), target="1", position ="after" )
         }
+      
+      if(input$quiz1 != "Right" ){
+        removeTab(inputId = "tabselected",                                                           #Tab loeschen bei falscher Antwort
+                  target="2")
+      }
     })
     
    
