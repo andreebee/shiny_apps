@@ -1,10 +1,11 @@
 # **************************************************************************** #
-# Representation of correlation
-# Description:  How does the measure of association change based on the 
-#               Cohen effect sizes? Representation of small, medium and 
-#               large and negative connections / correlations.
+# Effect of outliers on mean (distribution of salaries)
+# Description:  Application displaying a histogram with salaries distributions
+#               where there is a 5% with high salaries affecting the 
+#               median and mean values.
+#               
 # Ticket on 
-# Trello board: https://trello.com/c/t7Z2AK6W/13-darstellung-von-korrelationen
+# Trello board: https://trello.com/c/WqjcJllb/11-auswirkung-von-ausrei%C3%9Fern-auf-mittelwert-verteilung-geh%C3%A4lter
 # **************************************************************************** #
 
 library(ggplot2)
@@ -16,19 +17,17 @@ library(shinythemes)
 
 salaries <- readRDS(file = "adjustedData.rds")
 
-### Getting Highest values ###
-rowsData <- nrow(salaries)
-
+# Separating higher salaries from lower ones. 
 incomes <-  as.data.frame(filter(salaries, TotalPay < 200000))
+
+# Getting Highest salaries greater than 200k
 upIncomes <- filter(salaries, TotalPay >= 200000)
 upIncomes <- upIncomes %>% arrange(desc(TotalPay))
 numRows <- nrow(upIncomes)
-######
 
 
-### Global Variables ###
+# Percentage of highest salaries to exclude on distribution.
 maxPercentage <- 5 
-#####
 
 ui <- fluidPage(      
   theme = shinytheme("paper"),
@@ -56,12 +55,16 @@ ui <- fluidPage(
     ),
   ),
   
-  
   # Plot
   plotOutput("plot")
 )
 
-### Functions ###
+# ***************** Functions ***************** #
+
+# This function calculates the number of rows from the highest salaries to keep.
+# @percentage: Percentage of rows to keep among the highest salaries previously
+#             selected.
+# @returns:   Number of rows to keep from the highest salaries previously chosen.
 getRowsToKeep <-  function(percentage) {
   percentageToDelete <- 1 - (((percentage * 100) / maxPercentage) / 100)
   rowsToKeep <- as.integer(numRows * percentageToDelete)
@@ -69,49 +72,71 @@ getRowsToKeep <-  function(percentage) {
   return(rowsToKeep)
 }
 
+# This function returns a formatted number replacing thousands by a K symbol
+# @x: Number to be formatted
+# @returns: Formatted number as a string.
 formatNumK <- function(x) {
   x <- trunc(x)
-  x <- round((x / 1000), digits=0) 
+  x <- round((x / 1000), digits=0)
+  
   return (paste(toString(x), 'K'))
 }
-
-#####
+# ********************************************** #
 
 
 server <- function(input, output) {
-  # verhindert "Springen der Punkte"
   set.seed(10)
   
-  # Plot zeichnen
+  # Histogram
   output$plot <-  renderPlot({
-    rowsToKeep <- getRowsToKeep(input$percentage)
-    filteredData <- rbind(incomes, tail(upIncomes,rowsToKeep))
     
+    # Obtains the number of rows to keep from highest salaries based upon
+    # percentaged selected by the user.
+    rowsToKeep <- getRowsToKeep(input$percentage)
+
+    # Combines incomes average salaries with the percentage of high salaries 
+    # chosen to be kept on the distribution.
+    filteredData <- rbind(incomes, tail(upIncomes, rowsToKeep))
+    
+    # Calculates and creates the label for the mean value to be 
+    # displayed in the legend.
     meanFormatted <- formatNumK(mean(filteredData$TotalPay))
     meanValue <- paste('Mittel (', meanFormatted, ' )') 
     
+    # Calculates and creates the label for the median value to be 
+    # displayed in the legend.
     medianFormatted <- formatNumK(median(filteredData$TotalPay))
     medianValue <- paste('Mittelwert (', medianFormatted, ' )')
     
-    totalIncomes <- rbind(incomes, upIncomes)
+    # Original Dataset
+    #totalIncomes <- rbind(incomes, upIncomes)
+    
     
     ggplot(filteredData, aes(x=TotalPay)) +
-      geom_histogram(data=totalIncomes, fill="#0a279a", bins = 30) + 
-      geom_histogram(fill="#9fade5", bins = 30) +
+      
+      # Here two histograms are needed, the fisrt one in order 
+      # to display the original information and will be placed 
+      # at the back. The second histogram will display only the 
+      # data selected after applying the percentage filter.
+      # The effect these two histograms create are shadowing,
+      # therefore it is possible to see which areas are been 
+      # removed.
+      geom_histogram(data = salaries, fill = "#0a279a", bins = 30) + 
+      geom_histogram(fill = "#9fade5", bins = 30) +
       labs(x = "Brutto-Jahresgehalt (US-Dollar)", y = 'Anzahl') + 
       
-      #mean
+      #mean line
       geom_vline(
-        aes(xintercept = mean(TotalPay, na.rm = T),colour = "mean"),
+        aes(xintercept = mean(TotalPay, na.rm = T), colour = "mean"),
         linetype="dashed", 
-        size=1
+        size = 1
       ) +
 
-      #median
+      #median line
       geom_vline(
-        aes(xintercept = median(TotalPay, na.rm=T),colour = "median"),
-        linetype="longdash", 
-        size=1
+        aes(xintercept = median(TotalPay, na.rm = T),colour = "median"),
+        linetype = "longdash", 
+        size = 1
       ) +
       
       # x Axis
@@ -122,9 +147,10 @@ server <- function(input, output) {
       
       # legend
       scale_colour_manual("Beschriftung", 
-                          values = c("mean" = "blue", "median" = "red"), 
-                          labels = c(meanValue, medianValue)) 
+        values = c("mean" = "blue", "median" = "red"), 
+        labels = c(meanValue, medianValue)
+      ) 
   })
 }
 
-shinyApp(ui=ui, server = server)
+shinyApp(ui = ui, server = server)
