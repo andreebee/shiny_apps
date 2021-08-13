@@ -5,31 +5,9 @@ library(plyr)
 library(dplyr)
 library(scales)
 
-data <- read.csv(file = './Salaries.csv')
-TotalPay <- data$TotalPay
-TotalPays <-  as.data.frame(TotalPay)
 
-length(TotalPays[TotalPays>= 250000 & TotalPays<= 270000])
-typeof(TotalPays)
+salaries <- readRDS(file = "adjustedData.rds")
 
-start <- 210000
-till <- 180
-
-while (start < 600000) {
-  i <- 0
-  
-  while (i < till) {
-    newrow1 <- data.frame(start);
-    names(newrow1) <- c("TotalPay" )  
-    TotalPays <- rbind(TotalPays, newrow1) 
-    i <- i + 1
-  }
-  till <- till - 2
-  start = start + 5000
-}
-
-
-salaries <- TotalPays
 
 
 ### Getting Highest values ###

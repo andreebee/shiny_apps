@@ -5,9 +5,9 @@ account: KarenNino
 server: rconnect.f3.htw-berlin.de
 hostUrl: https://rconnect.f3.htw-berlin.de/__api__
 appId: 52
-bundleId: 158
+bundleId: 159
 url: https://rconnect.f3.htw-berlin.de/content/52/
-when: 1627887512.96779
-lastSyncTime: 1627887512.96781
+when: 1627920862.1134
+lastSyncTime: 1627920862.11341
 asMultiple: FALSE
 asStatic: FALSE
