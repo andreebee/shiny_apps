@@ -1,9 +1,5 @@
 # shiny_apps
 
-
-
-Verbinden
-
 ### 1) RStudio mit Git
 
 - In RStudio folgndes auswählen: new Project -> Version Control -> URL usw. eingeben
