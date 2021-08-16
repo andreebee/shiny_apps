@@ -6,8 +6,11 @@
 #https://www.ifad.de/mittelwertvergleiche-mittels-t-test/
 #To do: Formuliereungen/Erklärungen, eventuell tab namen erscheinen
 
-#https://stackoverflow.com/questions/68079731/how-to-create-a-shiny-app-where-tabs-are-only-become-visible-if-a-condition-is-m
+# https://stackoverflow.com/questions/68079731/how-to-create-a-shiny-app-where-tabs-are-only-become-visible-if-a-condition-is-m
 # insertTab, Tabs erscheinen erst nach richtiger Antwort
+
+#richtige Antwort als Umgebungsvariable, macht den Code einfacher -> vielleicht noch aendern
+
 
 
 library(shiny)

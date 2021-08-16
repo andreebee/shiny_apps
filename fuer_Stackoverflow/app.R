@@ -101,14 +101,14 @@ server = function(input, output, session) {
     observeEvent(input$quiz1,{
         
         if(input$quiz1 == "Right" ){
-            insertTab(inputId = "tabselected",
+            insertTab(inputId = "tabselected",                                      #HIER Tab erscheint erst bei richtiger Antwort
                       tabPanel(title = "Question2" ,
                                titlePanel("Description question 2"),
                                 value = "2"), target="1", position ="after" )
         }
       
       if(input$quiz1 != "Right" ){
-        removeTab(inputId = "tabselected",                                                           #Tab loeschen bei falscher Antwort
+        removeTab(inputId = "tabselected",                                          #Tab loeschen bei falscher Antwort
                   target="2")
       }
     })
