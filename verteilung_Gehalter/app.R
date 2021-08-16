@@ -15,17 +15,6 @@ library(dplyr)
 library(scales)
 library(shinythemes)
 
-salaries <- readRDS(file = "adjustedData.rds")
-
-# Separating higher salaries from lower ones. 
-incomes <-  as.data.frame(filter(salaries, TotalPay < 200000))
-
-# Getting Highest salaries greater than 200k
-upIncomes <- filter(salaries, TotalPay >= 200000)
-upIncomes <- upIncomes %>% arrange(desc(TotalPay))
-numRows <- nrow(upIncomes)
-
-
 # Percentage of highest salaries to exclude on distribution.
 maxPercentage <- 5 
 
@@ -59,54 +48,29 @@ ui <- fluidPage(
   plotOutput("plot")
 )
 
-# ***************** Functions ***************** #
-
-# This function calculates the number of rows from the highest salaries to keep.
-# @percentage: Percentage of rows to keep among the highest salaries previously
-#             selected.
-# @returns:   Number of rows to keep from the highest salaries previously chosen.
-getRowsToKeep <-  function(percentage) {
-  percentageToDelete <- 1 - (((percentage * 100) / maxPercentage) / 100)
-  rowsToKeep <- as.integer(numRows * percentageToDelete)
-  
-  return(rowsToKeep)
-}
-
-# This function returns a formatted number replacing thousands by a K symbol
-# @x: Number to be formatted
-# @returns: Formatted number as a string.
-formatNumK <- function(x) {
-  x <- trunc(x)
-  x <- round((x / 1000), digits=0)
-  
-  return (paste(toString(x), 'K'))
-}
-# ********************************************** #
-
 
 server <- function(input, output) {
   set.seed(10)
   
   # Histogram
   output$plot <-  renderPlot({
-    
-    # Obtains the number of rows to keep from highest salaries based upon
-    # percentaged selected by the user.
-    rowsToKeep <- getRowsToKeep(input$percentage)
+    fileName <- "adjustedData.rds" 
 
-    # Combines incomes average salaries with the percentage of high salaries 
-    # chosen to be kept on the distribution.
-    filteredData <- rbind(incomes, tail(upIncomes, rowsToKeep))
+    if (input$percentage != 0) {
+      fileName <-  paste("incomes_", input$percentage, "_percent.rds", sep ="")
+    }
+    
+    filteredData <- readRDS(file = fileName)
     
     # Calculates and creates the label for the mean value to be 
     # displayed in the legend.
-    meanFormatted <- formatNumK(mean(filteredData$TotalPay))
-    meanValue <- paste('Mittel (', meanFormatted, ' )') 
+    meanValue <- mean(filteredData$TotalPay, na.rm =T) 
+    meanAnnotation <- paste('Mittel (', formatNumK(meanValue), ')')  
     
     # Calculates and creates the label for the median value to be 
     # displayed in the legend.
-    medianFormatted <- formatNumK(median(filteredData$TotalPay))
-    medianValue <- paste('Mittelwert (', medianFormatted, ' )')
+    medianValue <- median(filteredData$TotalPay, na.rm =T)
+    medianAnnotation <- paste('Mittelwert (', formatNumK(medianValue), ')')
     
     # Original Dataset
     #totalIncomes <- rbind(incomes, upIncomes)
@@ -114,43 +78,63 @@ server <- function(input, output) {
     
     ggplot(filteredData, aes(x=TotalPay)) +
       
-      # Here two histograms are needed, the fisrt one in order 
+      # Here two histograms are needed, the first one in order 
       # to display the original information and will be placed 
       # at the back. The second histogram will display only the 
       # data selected after applying the percentage filter.
-      # The effect these two histograms create are shadowing,
+      # The effect these two histograms create is shadowing,
       # therefore it is possible to see which areas are been 
-      # removed.
-      geom_histogram(data = salaries, fill = "#0a279a", bins = 30) + 
-      geom_histogram(fill = "#9fade5", bins = 30) +
-      labs(x = "Brutto-Jahresgehalt (US-Dollar)", y = 'Anzahl') + 
-      
+      # removed since both are overlaping one over the other one.
+      geom_histogram(data = salaries, fill = "#9fade5", bins = 30) + 
+      geom_histogram(fill = "#050558", bins = 30) +
+      labs(x = "Brutto-Jahresgehalt (in Tausend US-Dollar)", y = 'Anzahl') + 
+    
       #mean line
       geom_vline(
-        aes(xintercept = mean(TotalPay, na.rm = T), colour = "mean"),
+        aes(xintercept = meanValue, colour = "mean"),
+        data.frame(),
         linetype="dashed", 
         size = 1
       ) +
 
+      annotate("text", 
+                angle = 90, 
+                x = meanValue + (meanValue * 0.1), 
+                y = 10000, 
+                label = meanAnnotation, 
+                color = "white",
+                fontface = "bold") + 
+      
       #median line
       geom_vline(
-        aes(xintercept = median(TotalPay, na.rm = T),colour = "median"),
+        aes(xintercept = medianValue, colour = "median"),
+        data.frame(),
         linetype = "longdash", 
         size = 1
       ) +
       
+      annotate("text", 
+               angle = 90, 
+               x = medianValue - (medianValue * 0.1), 
+               y = 10000, 
+               label = medianAnnotation, 
+               color = "white",
+               fontface = "bold") + 
+      
       # x Axis
       scale_x_continuous(
         breaks = seq(from = 0, to = 600000, by = 50000), 
-        labels = scales::dollar_format(scale = .001, suffix = "K")
+        labels = scales::number_format(scale = .001, suffix = "K")
       ) +
       
       # legend
       scale_colour_manual("Beschriftung", 
         values = c("mean" = "blue", "median" = "red"), 
-        labels = c(meanValue, medianValue)
+        labels = c("Mittel", "Mittelwert")
       ) 
-  })
+      
+  }) %>% 
+    bindCache(input$percentage)
 }
 
 shinyApp(ui = ui, server = server)
