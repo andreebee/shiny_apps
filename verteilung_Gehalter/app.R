@@ -18,6 +18,39 @@ library(shinythemes)
 # Percentage of highest salaries to exclude on distribution.
 maxPercentage <- 5 
 
+salaries <- readRDS(file = "adjustedData.rds")
+
+# Separating higher salaries from lower ones. 
+incomes <-  as.data.frame(filter(salaries, TotalPay < 200000))
+
+# Getting Highest salaries greater than 200k
+upIncomes <- filter(salaries, TotalPay >= 200000)
+upIncomes <- upIncomes %>% arrange(desc(TotalPay))
+numRows <- nrow(upIncomes)
+
+
+
+getRowsToKeep <-  function(percentage) {
+  percentageToDelete <- 1 - (((percentage * 100) / maxPercentage) / 100)
+  rowsToKeep <- as.integer(numRows * percentageToDelete)
+  
+  return(rowsToKeep)
+}
+
+# This function returns a formatted number replacing thousands by a K symbol
+# @x: Number to be formatted
+# @returns: Formatted number as a string.
+formatNumK <- function(x) {
+  x <- trunc(x)
+  x <- round((x / 1000), digits=0)
+  
+  return (paste(toString(x), "K"))
+}
+# ********************************************** #
+
+
+
+
 ui <- fluidPage(      
   theme = shinytheme("paper"),
   navbarPage(
@@ -54,13 +87,8 @@ server <- function(input, output) {
   
   # Histogram
   output$plot <-  renderPlot({
-    fileName <- "adjustedData.rds" 
-
-    if (input$percentage != 0) {
-      fileName <-  paste("incomes_", input$percentage, "_percent.rds", sep ="")
-    }
-    
-    filteredData <- readRDS(file = fileName)
+    rowsToKeep <- getRowsToKeep(input$percentage)
+    filteredData <- rbind(incomes, tail(upIncomes, rowsToKeep))
     
     # Calculates and creates the label for the mean value to be 
     # displayed in the legend.
