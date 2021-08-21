@@ -20,14 +20,17 @@ maxPercentage <- 5
 
 salaries <- readRDS(file = "adjustedData.rds")
 
-# Separating higher salaries from lower ones. 
-incomes <-  as.data.frame(filter(salaries, TotalPay < 200000))
+# Using an upper bound of 5% to detect outliers, 
+# that for this scenario are the richest salaries among the Dataset.
+upperBound <- quantile(salaries$TotalPay, 0.950)
 
-# Getting Highest salaries greater than 200k
-upIncomes <- filter(salaries, TotalPay >= 200000)
+# Separating higher salaries from lower ones. 
+incomes <-  as.data.frame(filter(salaries, TotalPay < upperBound))
+
+# Getting Highest salaries greater than upperBound
+upIncomes <- filter(salaries, TotalPay >= upperBound)
 upIncomes <- upIncomes %>% arrange(desc(TotalPay))
 numRows <- nrow(upIncomes)
-
 
 
 getRowsToKeep <-  function(percentage) {
