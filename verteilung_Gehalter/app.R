@@ -96,12 +96,12 @@ server <- function(input, output) {
     # Calculates and creates the label for the mean value to be 
     # displayed in the legend.
     meanValue <- mean(filteredData$TotalPay, na.rm =T) 
-    meanAnnotation <- paste('Mittel (', formatNumK(meanValue), ')')  
+    meanAnnotation <- paste('Mittelwert (', formatNumK(meanValue), ')')  
     
     # Calculates and creates the label for the median value to be 
     # displayed in the legend.
     medianValue <- median(filteredData$TotalPay, na.rm =T)
-    medianAnnotation <- paste('Mittelwert (', formatNumK(medianValue), ')')
+    medianAnnotation <- paste('Median (', formatNumK(medianValue), ')')
     
     # Original Dataset
     #totalIncomes <- rbind(incomes, upIncomes)
@@ -161,7 +161,7 @@ server <- function(input, output) {
       # legend
       scale_colour_manual("Beschriftung", 
         values = c("mean" = "blue", "median" = "red"), 
-        labels = c("Mittel", "Mittelwert")
+        labels = c("Mittelwert", "Median")
       ) 
       
   }) %>% 
