@@ -1,0 +1,7 @@
+{
+  "cultural_date_format": "%d-%m-%Y",
+  "languages": ["en", "de", "es"],
+  "translation": [
+    {"en": "Hello World", "de": "Hallo Welt", "es": "Hola Mundo"}
+  ]
+}

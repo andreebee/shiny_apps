@@ -14,6 +14,7 @@ data <- read.csv(file = './Salaries.csv')
 
 # Extracting the Salary column
 TotalPays <- as.data.frame(data$TotalPay)
+names(TotalPays) <- c("TotalPay")  
 
 # After creating a histogram of the original DataSet, it was noticed that 
 # salaries distribution started decreasing at 210k, then this value will be used
