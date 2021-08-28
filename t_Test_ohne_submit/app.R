@@ -10,8 +10,12 @@
 # insertTab, Tabs erscheinen erst nach richtiger Antwort
 
 #richtige Antwort als Umgebungsvariable, macht den Code einfacher -> vielleicht noch aendern
-
-
+# -> Geht nicht https://stackoverflow.com/questions/34658490/conditionalpanel-in-shiny-not-working
+# Fragen
+# Antwort1_1 = "Die Änderung der Differenz des Mittelwertes hat keine Auswirkung"
+# Antwort1_2 = "Eine größe Differenz der Mittelwerte erzeugt einen großen p-Wert"
+# Antwort1_3_R = "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"
+#   
 
 library(shiny)
 library(ggplot2)
@@ -42,19 +46,17 @@ ui <- shinyUI(pageWithSidebar(
             #Quiz
             selectInput(
                 inputId = "quiz1",
-                label = " Welche Aussage stimmt",
+                label = "Welche Aussage stimmt",
                 selected = NULL,
-                choices = c(" ",
-                    "Die Änderung der Differenz des Mittelwertes hat keine Auswirkung",
-                    "Eine größe Differenz der Mittelwerte erzeugt einen großen p-Wert",
-                    "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"
-                )
+                choices = c(" ","Die Änderung der Differenz des Mittelwertes hat keine Auswirkung",
+                            "Eine größe Differenz der Mittelwerte erzeugt einen großen p-Wert",
+                            "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"     )
             ),
            
             
             #Erklaerung
            
-                             conditionalPanel("input.quiz1 === 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
+                             conditionalPanel("input.quiz1 ===  'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
                                               actionButton("Tab2", label = "Nächstes Tab"),
                                               HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),

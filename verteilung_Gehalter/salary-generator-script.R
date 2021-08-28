@@ -10,7 +10,7 @@
 
 # Original Dataset with salaries obtained 
 # from Kaggle https://www.kaggle.com/datasets
-data <- read.csv(file = './Salaries.csv')
+data <- read.csv(file = 'Salaries.csv')
 
 # Extracting the Salary column
 TotalPays <- as.data.frame(data$TotalPay)
