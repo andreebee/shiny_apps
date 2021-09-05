@@ -1,19 +1,19 @@
 library(shiny)
 library(R.utils)
-source("../global.R")
+source("../binarySelector.R")
 
 ui <- fluidPage(
-  languageSelector("langSelect"),
+  languageBinarySelector("langSelect"),
   uiOutput('page_content')
 )
 
 
 server <- function(input, output, session) {
-  i18n <-languageServer('langSelect', "./translations.json")
-
+  i18n <-languageBinaryServer('langSelect')
+ 
   output$page_content <- renderUI({
     tagList(
-      p(i18n()$t("msg_HelloWorld"))
+      p(i18n()(c("Hello World", "Hallo Welt")))
     )
   })
 }

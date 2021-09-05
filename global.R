@@ -2,7 +2,7 @@ library(shiny)
 library(shiny.i18n)
 
 # File with translations
-langList <- c("English" = "en",
+langList <- c("English" = "messageId",
               "German" = "de",
               "Spanish" = "es")
 
@@ -20,6 +20,10 @@ languageServer <- function(id, translationsPath) {
   moduleServer(id, function(input, output, session) {
     i18n <- reactive({
       selected <- input$langSelect
+      if(input$langSelect == 'messageId') {
+        selected <- "en"
+      }
+        
       if (length(selected) > 0 && selected %in% translator$get_languages()) {
         translator$set_translation_language(selected)
       }
