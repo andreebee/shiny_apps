@@ -13,6 +13,7 @@ library(tidyverse)
 library(plotly)
 # Library MASS used for mvrnorm
 library(MASS)
+source("../global.R")
 
 # Planting a seed so that random values 
 # will be the same on every computer
@@ -33,6 +34,7 @@ ui <- fluidPage(
   ),
   sidebarLayout(
     sidebarPanel(
+      languageSelector("langSelect"),
       sliderInput("covariance", 
                   label="r",
                   value= 0,
@@ -41,7 +43,6 @@ ui <- fluidPage(
                   step = 0.1)
     ),
     mainPanel(
-      
       tags$div(style="margin: auto;", 
           plotlyOutput("plot"),
       ),
@@ -61,26 +62,26 @@ ui <- fluidPage(
 # Parameter (double):  Correlation number.     
 # Returns (vector):    Color indicating the status of the correlation.
 #                      Text making reference to how strong the correlation is.
-getCorrelationText <- function(corrValue) {
-  corrStatus <- c("lineare Korrelation")
+getCorrelationText <- function(corrValue, i18n) {
+  corrStatus <- c(i18n()$t("msg_linear_correlation"))
   green <- "green"
   yellow <- "#c1ae06"
   softGreen <- "#84d236"
   
   if(corrValue == 1 ) {
-    corrStatus <- c(corrStatus, green, "Perfekte positive")
+    corrStatus <- c(corrStatus, green, i18n()$t("msg_perf_pos"))
   } else if (corrValue == -1) {
-    corrStatus <- c(corrStatus, green, "Perfekte negative")
+    corrStatus <- c(corrStatus, green, i18n()$t("msg_perf_neg"))
   } else if (corrValue >= 0.3 && corrValue < 0.5) {
-    corrStatus <- c(corrStatus, yellow, "Schwache positive")
+    corrStatus <- c(corrStatus, yellow, i18n()$t("msg_weak_pos"))
   } else if (corrValue > -0.5 && corrValue <= -0.3) {
-    corrStatus <- c(corrStatus, yellow, "Schwache negative")
+    corrStatus <- c(corrStatus, yellow, i18n()$t("msg_weak_neg"))
   } else if (corrValue >= 0.5 && corrValue < 1) {
-    corrStatus <- c(corrStatus, softGreen, "Starke positive")
+    corrStatus <- c(corrStatus, softGreen, i18n()$t("msg_strong_pos"))
   } else if (corrValue > -1 && corrValue <= -0.5 ) {
-    corrStatus <- c(corrStatus, softGreen, "Starke negative")
+    corrStatus <- c(corrStatus, softGreen, i18n()$t("msg_strong_neg"))
   } else {
-    corrStatus <- c("linearer Zusammenhang", "red","Kein")
+    corrStatus <- c(i18n()$t("msg_linear_relation"), "red", i18n()$t("msg_no"))
   }
   
   return(corrStatus)
@@ -88,6 +89,9 @@ getCorrelationText <- function(corrValue) {
 
 
 server <- function(input, output, session) {
+  # Localization
+  i18n <-languageServer('langSelect', "./translations.json")
+  
   # Listening to changes on correlation slider.
   corrSliderValue <- reactive({
     input$covariance
@@ -96,7 +100,8 @@ server <- function(input, output, session) {
   # Whenever the slider's value changes a new text is 
   # displayed indicating how strong the correlation is.
   output$correlationLabel <- renderText({
-    correlationStatus <- getCorrelationText(corrSliderValue())
+    
+    correlationStatus <- getCorrelationText(corrSliderValue(), i18n)
     
     # Index 1 -> Linear Correlation text
     # Index 2 -> Color
@@ -160,15 +165,14 @@ server <- function(input, output, session) {
     
     
     # Scatter Plot Y vs X with a given correlation.
-    plot_ly(data = df, x = ~df$V1, y = ~df$V2, 
+    plot_ly(data = df, x = ~df$V1, y = ~df$V2, type ='scatter', mode='markers',
             marker = list(size = 8,
                           color = '#145dada6',
                           line = list(color = '#145dad',
                                       width = 0.5))
             ) %>% 
-      layout(xaxis = x, yaxis = y) %>% 
-      layout(autosize = TRUE, scaleanchor = "x",
-             scaleratio = 1)
+      layout(xaxis = ~x, yaxis = ~y) %>% 
+      layout(autosize = TRUE)
 
   })
 }

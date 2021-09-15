@@ -3,8 +3,7 @@ library(shiny.i18n)
 
 # File with translations
 langList <- c("English" = "messageId",
-              "German" = "de",
-              "Spanish" = "es")
+              "German" = "de")
 
 # Module UI function
 languageSelector <- function(id, label = "Language Selector") {

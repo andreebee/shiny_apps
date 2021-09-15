@@ -1,0 +1,42 @@
+{
+  "cultural_date_format": "%d-%m-%Y",
+  "languages": [ "messageId", "en", "de"],
+  "translation": [
+      { "messageId": "msg_perf_pos", 
+        "en": "Perfect positive", 
+        "de": "Perfekte positive"
+      },
+       { "messageId": "msg_perf_neg", 
+        "en": "Perfect negative", 
+        "de": "Perfekte negative"
+      },
+      { "messageId": "msg_weak_pos", 
+        "en": "Weak positive", 
+        "de": "Schwache positive"
+      },
+      { "messageId": "msg_weak_neg", 
+        "en": "Weak negative", 
+        "de": "Schwache negative"
+      },
+      { "messageId": "msg_strong_pos", 
+        "en": "Strong positive", 
+        "de": "Starke positive"
+      },
+      { "messageId": "msg_strong_neg", 
+        "en": "Strong negative", 
+        "de": "Starke negative"
+      },
+      { "messageId": "msg_linear_relation", 
+        "en": "linear relationship", 
+        "de": "linearer Zusammenhang"
+      },
+      { "messageId": "msg_no", 
+        "en": "No", 
+        "de": "Kein"
+      },
+      { "messageId": "msg_linear_correlation", 
+        "en": "Linear correlation", 
+        "de": "lineare Korrelation"
+      }
+    ]
+}

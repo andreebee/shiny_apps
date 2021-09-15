@@ -13,7 +13,8 @@ server <- function(input, output, session) {
 
   output$page_content <- renderUI({
     tagList(
-      p(i18n()$t("msg_HelloWorld"))
+      p(i18n()$t("msg_HiThere")),
+      p(i18n()$t("msg_Fruits"))
     )
   })
 }
