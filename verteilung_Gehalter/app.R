@@ -103,10 +103,6 @@ server <- function(input, output) {
     medianValue <- median(filteredData$TotalPay, na.rm =T)
     medianAnnotation <- paste('Median (', formatNumK(medianValue), ')')
     
-    # Original Dataset
-    #totalIncomes <- rbind(incomes, upIncomes)
-    
-    
     ggplot(filteredData, aes(x=TotalPay)) +
       
       # Here two histograms are needed, the first one in order 
@@ -116,8 +112,15 @@ server <- function(input, output) {
       # The effect these two histograms create is shadowing,
       # therefore it is possible to see which areas are been 
       # removed since both are overlaping one over the other one.
-      geom_histogram(data = salaries, fill = "#9fade5", bins = 30) + 
-      geom_histogram(fill = "#050558", bins = 30) +
+      geom_histogram(data = salaries, 
+                     fill = "#9fade5", 
+                     bins = 30,
+                     breaks = seq(from = 1000, to = 600000, by = 25000)) +
+      geom_histogram(fill = "#050558", 
+                     bins = 30, 
+                     colour='#b8b8e8', 
+                     size=0.5,
+                     breaks = seq(from = 1000, to = 600000, by = 25000)) +
       labs(x = "Brutto-Jahresgehalt (in Tausend US-Dollar)", y = 'Anzahl') + 
     
       #mean line
@@ -154,7 +157,7 @@ server <- function(input, output) {
       
       # x Axis
       scale_x_continuous(
-        breaks = seq(from = 0, to = 600000, by = 50000), 
+        breaks = seq(from = 1000, to = 600000, by = 25000), 
         labels = scales::number_format(scale = .001, suffix = "K")
       ) +
       
