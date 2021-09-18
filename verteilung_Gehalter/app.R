@@ -156,7 +156,7 @@ server <- function(input, output) {
       
       # x Axis
       scale_x_continuous(
-        breaks = seq(from = 0, to = 600000, by = 25000), 
+        breaks = seq(from = 0, to = 600000, by = 50000), 
         labels = scales::number_format(scale = .001, suffix = "K")
       ) +
       
