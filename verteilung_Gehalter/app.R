@@ -115,12 +115,11 @@ server <- function(input, output) {
       geom_histogram(data = salaries, 
                      fill = "#9fade5", 
                      bins = 30,
-                     breaks = seq(from = 1000, to = 600000, by = 25000)) +
+                     breaks = seq(from = 25000, to = 600000, by = 25000)) +
       geom_histogram(fill = "#050558", 
                      bins = 30, 
                      colour='#b8b8e8', 
-                     size=0.5,
-                     breaks = seq(from = 1000, to = 600000, by = 25000)) +
+                     breaks = seq(from = 25000, to = 600000, by = 25000)) +
       labs(x = "Brutto-Jahresgehalt (in Tausend US-Dollar)", y = 'Anzahl') + 
     
       #mean line
@@ -157,7 +156,7 @@ server <- function(input, output) {
       
       # x Axis
       scale_x_continuous(
-        breaks = seq(from = 1000, to = 600000, by = 25000), 
+        breaks = seq(from = 0, to = 600000, by = 25000), 
         labels = scales::number_format(scale = .001, suffix = "K")
       ) +
       
