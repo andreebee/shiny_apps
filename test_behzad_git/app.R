@@ -7,9 +7,8 @@
 #    http://shiny.rstudio.com/
 #
 
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(pacman,tidyverse)
 library(shiny)
+library(tidyverse)
 
 # Define UI for application that draws two normal distributions using given mean and standard deviation
 ui <- fluidPage(
