@@ -1,10 +1,10 @@
 library(shiny)
 library(R.utils)
 source("../binarySelector.R")
-#Variante für wenig Text
+#Variant for little text
 
 ui <- fluidPage(
-  languageBinarySelector("langSelect"), # Dropdown menue Spache auwählen
+  languageBinarySelector("langSelect"), # Dropdownmenu: select language
   uiOutput('page_content')
 )
 

@@ -1,6 +1,7 @@
 library(shiny)
 library(R.utils)
 source("../global.R")
+#Variant for a lot of text
 
 ui <- fluidPage(
   languageSelector("langSelect"),

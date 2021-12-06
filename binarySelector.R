@@ -8,7 +8,7 @@ langList <- c("English" = "en",
 languageBinarySelector <- function(id, label = "Language Selector") {
   tagList(
     selectInput(NS(id, "langSelect"), label, choices = langList),
-    textOutput(NS(id,"textTest"))
+    textOutput(NS(id, "textTest"))
   )
 }
 
