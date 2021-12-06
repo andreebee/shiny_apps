@@ -1,0 +1,26 @@
+{
+  "cultural_date_format": "%d-%m-%Y",
+  "languages": ["messageId","en", "de"],
+  "translation": [
+      {"messageId": "Title",
+        "en": "Simulation signal + WhiteNoise", 
+        "de": "Simulation Signal + WhiteNoise"
+      },
+       {"messageId": "Title1",
+        "en": "Variance WhiteNoise", 
+        "de": "Varianz WhiteNoise"
+      },
+      {"messageId": "Title2",
+        "en": "Expected value WhiteNoise", 
+        "de": "Erwatungswert WhiteNoise"
+      },
+      {"messageId": "Title3",
+        "en": "Signal function", 
+        "de": "Signalfunktion"
+      },
+      {"messageId": "Output",
+        "en": "The Signal-to-noise ratio is", 
+        "de": "Die Signal-to-noise ratio ist"
+      }
+    ]
+}
