@@ -2,7 +2,7 @@
 #Dazu kann die Signalfunktion per Hand verändert werden und die Varianz und der EW des WN können variiert werden
 
 #https://github.com/Appsilon/shiny.i18n/blob/master/examples/basic/app_json.R
-
+#mit Hilfe von Conditional Panels Lösen
 
 
 
@@ -25,28 +25,30 @@ source("C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps//binarySelector.R")  #
 
 ui <- fluidPage(
     languageSelector("langSelect"),
-   # i18n = languageServer('langSelect',"C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/Zeitreihe/Signal_Noise_Ratio/Übersetzung.json")
+  #  i18n = languageServer('langSelect',"C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/Zeitreihe/Signal_Noise_Ratio/Übersetzung.json")
 #,
-
-#shiny.i18n::usei18n(i18n),
-# div(style = "float: right;",
-#     selectInput('selected_language',
-#                 i18n$t("Change language"),
-#                 choices = i18n$get_languages(),
-#                 selected = i18n$get_key_translation()
-#                 )
-# ),
+#i18n <-languageBinaryServer('langSelect'),
+# shiny.i18n::usei18n(i18n),
+#  div(style = "float: right;",
+#      selectInput('langSelect',
+#                  i18n$t("Change language"),
+#                  choices = i18n$get_languages(),
+#                  selected = i18n$get_key_translation()
+#                  )
+#  ),
 
     
     # App title ----
-    titlePanel("Simulation signal + WhiteNoise"),
-    
+
+    titlePanel("Test"
+               ),
     # Sidebar layout with input and output definitions ----
     sidebarLayout(
         
         # Sidebar panel for inputs ----
         sidebarPanel(
-            
+            conditionalPanel(
+                condition = "input.langSelect==German",
             # Input: Slider for the number of bins ----
             sliderInput(inputId = "variance",
                         label = "Variance WhiteNoise" ,
@@ -68,7 +70,7 @@ ui <- fluidPage(
                       placeholder = NULL
                       
             ),
-            
+            ) 
         ),
         # Main panel for displaying outputs ----
         mainPanel(
@@ -82,8 +84,8 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-    #i18n = languageServer('langSelect', "C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/Zeitreihe/Signal_Noise_Ratio/Übersetzung.json")
-    i18n <-languageBinaryServer('langSelect')
+   # i18n = languageServer('langSelect', "C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/Zeitreihe/Signal_Noise_Ratio/Übersetzung.json")
+    #i18n <-languageBinaryServer('langSelect')
     x    = seq(from=1, to=100)
     
     
@@ -107,8 +109,10 @@ server <- function(input, output) {
         snratio = round((var(s)) / (input$variance), 2)
         
        paste(
-           p(i18n()(c("The Signal-to-noise ratio is", "Die Signal-to-noise ratio ist")))
-               , snratio)
+           #p(i18n()(c("The Signal-to-noise ratio is", "Die Signal-to-noise ratio ist"))),
+                snratio,
+           p(i18n()$t("Title3"))
+           )
         
     })
     
