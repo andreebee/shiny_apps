@@ -1,8 +1,8 @@
-#Ziel dieser App: Studis vertshen anschaulich, was die Nullstellen der char. Gleichung bedeuten, weöchen Einfluss die Parameter auf 
-#den prozess haben und wie sich die Nullstellen auf die stationarität auswirken
-#Phi_1 und Phi_2 können zwischen -2 und 2 varrierte werden, dazu wird der AR(2) Prozess simuliert und die 
-#Nullstellen der char. Gleichung bestimmt und in Lage zum Einheitskreis dargestellt, zusätzlich wird die Lage 
-#im stationaritaetsdreick aufgezeigt 
+#Aim of this app: Students clearly understand what the zeros of the characteristic equation mean,
+#what influence the parameters have on the process and how the zeros affect the stationary state
+#Phi_1 and Phi_2 can be varied between -2 and 2, the AR (2) process is simulated and
+#the zeros of the char. Equation determined and shown in position to the unit circle, 
+#in addition, the position is shown in the stationary triangle
 
 
 
@@ -56,28 +56,28 @@ ui <- fluidPage(
 server <- function(input, output) {
     output$textOutput <- renderUI({
         
-        #Definiere Characteristische Funktion
+        #Define characteristic function
         z = c(1, -input$phi_1, -input$phi_2)
         #Nullstellen
         a <- polyroot(z)
         
-        #Fallunterscheidung da unterschiedliche Gleichungssysteme geloest werden.
+        #Case distinction because different systems of equations are solved.
         
         if(all(round(Im(a),1))==0 && input$phi_2 != 0){
-            #falls z1 = z2 aber reel Fall b
+            #if z1 = z2 but real case b
             if(Re(a[1]) == Re(a[2])){
-                x = 1             #Schalter Text
-                #Loese GLS rho(1)=1/z_1*(1+C_2) nach C auf
+                x = 1             #Switch text
+                #solve GLS rho(1)=1/z_1*(1+C_2) for c
                 K <- c(1/a[1]) 
                 b <- c(input$phi_1 / (1 - input$phi_2) - (1/Re(a[1])))
                 C <- solve(K, b) 
                 
             }
             
-            #falls z1 != z2 aber reel Fall a
+            #if z1 != z2 but real case a
             if(Re(a[1]) != Re(a[2]) && input$phi_2 != 0){
-                x = 2 #Schalter
-                #Loese GLS rho(1)=1/z_1*(1+C_1)+1/z_2*(1+C_2) nach C_1,C_2 auf
+                x = 2 #switch
+                #solve GLS rho(1)=1/z_1*(1+C_1)+1/z_2*(1+C_2) for C_1, C_2 
                 #         rho(0)=C_1+C_2
                 #A*C=b 
                 
@@ -89,14 +89,14 @@ server <- function(input, output) {
             }
         }
         
-        #falls Loesung komplex Fall c
+        #if solution is complex case c
         if(a[1]!=a[2] && all(round(Im(a), 1)) != 0 && input$phi_2 != 0){
-            x = 3 #Schalter text
+            x = 3 #switch text
             
             a1 = a[1]
             r = Mod(a1) #r=1/|z_1|
             theta = Arg(a1) # theta
-            #Loese GLS rho(1)=1/|z_1|*(cos(theta)+C_2*sin(theta))
+            #solve GLS rho(1)=1/|z_1|*(cos(theta)+C_2*sin(theta))
             
             K <- sin(theta) / r #Matrix A
             b <- input$phi_1 / (1 - input$phi_2) - cos(theta) / r #b
@@ -106,10 +106,10 @@ server <- function(input, output) {
             
         }
         if (input$phi_2 == 0){
-            x = 4 # Schalter
-            #Wenn Phi_2=0, dann ist es ein AR(1) Prozess -> Fehlermeldung
+            x = 4 #switch
+            #if Phi_2=0, then it is an AR (1) process -> error message
         }
-        #verschiedene text outputs je nach Fall.
+        #different text outputs depending on the case.
         text1=""
         if(x==1){text1=c("Die Charakteristische Funktion", "hat reelle Loesungen", "z1=z2=", round(Re(a[1]),3))} #,"und ","C2=",round(C,3)
         if(x==2){
@@ -119,7 +119,7 @@ server <- function(input, output) {
         if(x==4){
             text1="Wenn Phi_2=0 ist es ein AR(1), kein AR(2)-Prozess. Bitte anderes Phi_2 waehlen."}
         
-        ##Warnung wegen Zulaessigkeit
+        ##Warning about Admissibility
         text2=""
         text3=""
         text4=""
@@ -146,7 +146,7 @@ server <- function(input, output) {
         
     })
     output$plotOutput2 <- renderPlot({
-        #Erzeuge einen Ar2 Prozess Manuell.
+        #Create an Ar2 process manually.
         par(mfcol=c(1,2))
         
         plot(input$phi_1, input$phi_2, xlim=c(-2, 2), ylim = c(-2, 2), col=2, type="p", pch=4, 
@@ -184,11 +184,11 @@ server <- function(input, output) {
     },height = 250, width = 500)
     
     output$plotOutput <- renderPlot({
-        #Erzeuge einen Ar2 Prozess Manuell.
+        #Create an Ar2 process manually.
         ar2 = rep(0, 200)
         sigma_e = 1
         #X_t=phi_1*X_{t-1}+phi_2*X_{t-2}+epsilon
-        #Start erst bei 3, damit vorrangegangene Werte existieren.
+        #Start at 3, so that prior values exist.
         for (i in 3:200) {
             ar2[i] = ar2[i-1] * input$phi_1 + ar2[i-2] * input$phi_2 + rnorm(1, 0, sigma_e)
             

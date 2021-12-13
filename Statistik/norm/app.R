@@ -1,8 +1,8 @@
-#Ziel dieser App: Studis verstehen welchen Einfluss der Erwartungwert und die Standartabweichung auf
-#die Dichte und die Verteilungsfunktion der Normalverteilung haben
-#Der Erwatungswert und die Standartabweichung können variierert werden
+#Aim of this app: Students understand what influence the expected value and the standard deviation on
+#have the density and the distribution function of the normal distribution
+#The expected value and the standard deviation can be varied
 
-#Vielleicht Button um auf Standartnormalverteilung einstellen oder Standartnormalverteilung als Referenz?
+#Perhaps the button to adjust to standard normal distribution or standard normal distribution as a reference?
 
 library(shiny)
 library(ggplot2)

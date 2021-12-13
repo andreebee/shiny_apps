@@ -1,8 +1,8 @@
-#Ziel dieser App: Studis verstehen, was es bedeutet, wenn ein Signal von einem WN überlagert wird
-#Dazu kann die Signalfunktion per Hand verändert werden und die Varianz und der EW des WN können variiert werden
+#Aim of this app: Students understand what it means when a signal is overlaid by a WN
+#For this purpose, the signal function can be changed by hand and the variance and the EW of the WN can be varied
 
 #https://github.com/Appsilon/shiny.i18n/blob/master/examples/basic/app_json.R
-#mit Hilfe von Conditional Panels Lösen
+#Maybe solve with conditional panels
 
 
 

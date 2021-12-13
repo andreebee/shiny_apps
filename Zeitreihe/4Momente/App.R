@@ -1,14 +1,13 @@
-#Ziel dieser App: Studis verstehen, was die ersten 4 Momente einer Verteilung bedeuten
-#Ausgehend von der Standardnormalverteilung kann man je 1 Moment ver‰ndern und sieht den Effekt
-#auf die Dichte
-#Dazu wird die Familie der Johnson Distribution genutzt 
-#(die die Standartnormalverteilung als Spezialfall enth‰lt)
+#Aim of this app: Students understand what the first 4 moments of a distribution mean
+#Starting from the standard normal distribution, one can change 1 moment at a time and see the effect on the density
+#The Johnson Distribution family is used for this
+# (which contains the standard normal distribution as a special case)
 
 
 
 #install.packages("shiny")
 #install.packages("shinyjs") 
-#der code f√ºr den rest Button ist von: https://stackoverflow.com/questions/24265980/reset-inputs-button-in-shiny-app 
+#the code for the rest button is taken from: https://stackoverflow.com/questions/24265980/reset-inputs-button-in-shiny-app 
 library(shinyjs)
 library(shiny)
 library(ggplot2)
@@ -31,7 +30,7 @@ ui <- fluidPage(
         
         # Sidebar panel for inputs ----
         sidebarPanel(
-            shinyjs::useShinyjs(),      #fuer Reset Button
+            shinyjs::useShinyjs(),      #for Reset Button
             id = "side-panel",
             
             "Anleitung: Maximieren Sie das Fenster. Ver√§ndern Sie eines der 4 Momente der Verteilung, um deren Bedeutung zu ergr√ºnden. 
