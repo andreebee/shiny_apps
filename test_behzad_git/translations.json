@@ -1,0 +1,18 @@
+{
+  "cultural_date_format": "%d-%m-%Y",
+  "languages": [ "messageId", "en", "de"],
+  "translation": [
+      { "messageId": "msg_title", 
+        "en": "Compare 2 normal distributions", 
+        "de": "Vergleiche 2 Normalverteilungen"
+      },
+       { "messageId": "msg_HiThere", 
+        "en": "Hi there", 
+        "de": "Hallo"
+      },
+      { "messageId": "msg_Fruits", 
+        "en": "Fruits", 
+        "de": "Obst"
+      }
+    ]
+}

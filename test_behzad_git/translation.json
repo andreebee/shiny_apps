@@ -1,0 +1,11 @@
+{
+	"languages": ["en", "de"],
+	"translation": [{
+		"en": "Compare 2 normal distributions",
+		"de": "Vergleiche 2 Normalverteilungen"
+	},
+			{
+		"en": "Average of var1",
+		"de": "Durchschnitt von var1"		       
+			}]
+}
