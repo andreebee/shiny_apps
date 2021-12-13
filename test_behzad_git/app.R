@@ -12,8 +12,7 @@ library(tidyverse)
 library(R.utils)
 library(shiny.i18n)
 
-#i18n <- Translator$new(translation_json_path = "https://raw.githubusercontent.com/bezbezi/vanil/master/translation.json") 
-i18n <- Translator$new(translation_json_path = "https://raw.githubusercontent.com/andreebee/shiny_apps/main/test_behzad_git/translation.json")
+i18n <- Translator$new(translation_json_path = "./translation.json")
 
 #i18n$set_translation_language("en")
 
