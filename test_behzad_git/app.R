@@ -37,11 +37,24 @@ ui <- fluidPage(
         # For getting the mean and std of 2 variables
         # and specifying the alpha to shade the alpha and 1-beta in the graph
         sidebarPanel(
+          conditionalPanel(
+            condition = "input.language == 'de'",
+            conditionalPanel('false', i18n$set_translation_language("de")),
             numericInput("mean1",i18n$t("Average of var1"),value=-2.5),
             numericInput("sd1","Standard Deviation of var1",value=3,min=0),
             numericInput("mean2","Average of var2",value=2),
             numericInput("sd2","Standard Deviation of var2",value=3.5,min=0),
             sliderInput("alpha","Alpha for Var1:",min = 0.01,max = 0.20,value = 0.05,step = 0.01)
+          ),
+          conditionalPanel(
+            condition = "input.language == 'en'",
+            conditionalPanel('false', i18n$set_translation_language("en")),
+            numericInput("mean1",i18n$t("Average of var1"),value=-2.5),
+            numericInput("sd1","Standard Deviation of var1",value=3,min=0),
+            numericInput("mean2","Average of var2",value=2),
+            numericInput("sd2","Standard Deviation of var2",value=3.5,min=0),
+            sliderInput("alpha","Alpha for Var1:",min = 0.01,max = 0.20,value = 0.05,step = 0.01)
+          )
         ),
 
         # Show plots of the generated distribution
