@@ -1,9 +1,8 @@
-#Ziel dieser App: Studis verstehen, wie die Box-Cox Trafo aussieht
-#Es kann Lambda variiert werden, dazu wird angezeit, wie sich diese variistion auf die Box-Cox Trafo auswirkt,
-#diese wird mit der ZR ohne Traf und der mit dem Log transformierten ZR verglichen.
-#Zusätzlich wird aufgezeigt, wie sich die Trafos auf die Quartalsgewinne der JohnsonJohanson Aktien auswirken
-#Es werden die in R vorhandenen Quartalsgewinne der JohnsonJohnson Aktie verwendet
-
+#Aim of this app: Students understand what the Box-Cox transformer looks like
+#The lambda can be varied, for this purpose it is indicated how this variistion affects the Box-Cox transformer,
+#this is compared with the time series without a transformer and the time series transformed with the log.
+#In addition, it is shown how the transformers affect the quarterly earnings of JohnsonJohanson shares
+#The quarterly earnings of the JohnsonJohnson share in R are used
 
 library(shiny)
 #library(ggplot2)
@@ -41,18 +40,18 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-    #x und y-Werte der Zeitreihe, die wir transformieren werden
+    #x and y values of the time series that we are going to transform
     x  = time(JohnsonJohnson)
     y  = JohnsonJohnson
-    #x und y-Werte der Identitätsfunktion, die wir transformieren werden
+    #x and y values of the identity function that we are going to transform
     xf = seq(from=0, to=3, by=0.05)
     yf = xf
     #c  = 0 #Konstante for Trafo
     
     output$distPlot <- renderPlot({
         c = input$lambda
-        #y_t: transformierte Zeitreihe
-        #yf_t: transformierte Werte der Identitätsfunktion
+        #y_t: transformed time series
+        #yf_t: transformed values of the identity function
         if(input$lambda != 0){
             y_t  = ((y  + c) ^ input$lambda - 1) / input$lambda
             yf_t = ((yf + c) ^ input$lambda - 1) / input$lambda
@@ -63,7 +62,7 @@ server <- function(input, output) {
         }
         
         #1.Plot: J&J
-        #Boxcox transformierte Daten plotten
+        #Boxcox plot transformed data 
         ts.plot(y_t, ylim = c(-2, 14), ylab="",
                 main="Quartalsgewinne pro Aktie von Johnson & Johnson ",
                 col="blue")
@@ -71,9 +70,9 @@ server <- function(input, output) {
                c("ohne Trafo", "log-Trafo", "Box-Cox-Trafo"),
                lwd = 2,
                col=c("black", "red", "blue"))
-        #Originaldaten plotten
+        #Plot original data
         lines(x=x, y=y, col="black", type="l", lty="dashed")
-        #logarithmierte Daten plotten
+        #Plot logarithmic data
         y_2 = log(y)
         lines(x=x, y=y_2, col="red", type="l", lty="dashed")
         
@@ -82,8 +81,8 @@ server <- function(input, output) {
     
     output$functionPlot <- renderPlot({
         c = input$lambda
-        #y_t: transformierte Zeitreihe
-        #yf_t: transformierte Werte der Identitätsfunktion
+        #y_t: transformed time series
+        #yf_t: transformed values of the identity function
         if(input$lambda != 0){
             y_t  = ((y  + c) ^ input$lambda - 1) / input$lambda
             yf_t = ((yf + c) ^ input$lambda - 1) / input$lambda
@@ -95,8 +94,8 @@ server <- function(input, output) {
         
         
         
-        #2.Plot: Transformationsfunktionen
-        #Plotte Box-Cox Trafo-Funktion
+        #2.Plot: Transformation functions
+        #Plot Box-Cox transformer function
         plot(x=xf, yf_t, xlim=c(0, 3), ylim=c(0, 3), xlab="x", ylab="f(x)",
              main="Tranformationsfunktionen", type="l",
              col="blue")
@@ -105,9 +104,9 @@ server <- function(input, output) {
                lwd = 2,
                col=c("black", "red", "blue"))
         yf_2 = log(yf)
-        #Plotte Logarithmusfunktion
+        #Plot logarithm function
         lines(x=xf, y=yf_2, col="red", type="l", lty="dashed")
-        #Plotte Identität
+        #Plot identity function
         lines(x=xf, y=yf, col="black", type="l", lty="dashed")
     })
     
