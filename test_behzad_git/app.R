@@ -59,6 +59,7 @@ ui <- fluidPage(
 
         # Show plots of the generated distribution
         mainPanel(
+            textOutput("title"),
            plotOutput("distPlot")
         )
     )
@@ -66,7 +67,22 @@ ui <- fluidPage(
 
 # Define server logic required to draw the normal curves
 server <- function(input, output) {
-
+  
+      test <- reactive({
+        if (input$language=='en'){
+          i18n$set_translation_language("en")
+          
+        } else{
+          i18n$set_translation_language("de")
+        }
+        
+      })
+    
+      output$title <- renderText({
+        test()
+        i18n$t("Average of var1")
+      })
+      
     output$distPlot <- renderPlot({
     
         # Assigning input to the variable to create the data frame which will be use to create graphs
