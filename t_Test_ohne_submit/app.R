@@ -20,9 +20,9 @@
 library(shiny)
 library(ggplot2)
 
-#Gruppen zu beginn ziehen, damit sie gleich bleiben und nur die Veraenderungen der Parameter einen Einfluss haben und nicht der Zufall
+#Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
 Gruppe1 = rnorm(500)   
-Gruppe2 = rnorm(1000) #mehr erzeugen, damit die Stichprobe auch bei der Variation der Anzahl gleich bleibt
+Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
 ui <- shinyUI(pageWithSidebar(
     headerPanel("Zweiseitiger t-Test"),
@@ -30,7 +30,7 @@ ui <- shinyUI(pageWithSidebar(
     sidebarPanel(
         conditionalPanel(
             condition = "input.tabselected ==1",
-            #Bedingung, damit diese Sidebar eingeblendet wird
+            #Condition for this sidebar to be displayed
             #Add a Slider
             sliderInput(
                 inputId = "diff",
@@ -54,7 +54,7 @@ ui <- shinyUI(pageWithSidebar(
             ),
            
             
-            #Erklaerung
+            #Explanation
            
                              conditionalPanel("input.quiz1 ===  'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
                                               actionButton("Tab2", label = "Nächstes Tab"),
@@ -73,15 +73,15 @@ ui <- shinyUI(pageWithSidebar(
                                               
                       
             ),
-            # Bei falscher Antwort
+            #Output if the answer is wrong
             conditionalPanel("input.quiz1 !== 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
                             HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
                               )              
             
-        ), #Ende von dem ersten conditional Panel
+        ), #End of the first conditional panel
         
         conditionalPanel(
-            condition = "input.tabselected == 2", #Bedingung, damit diese Sidebar eingeblendet wird
+            condition = "input.tabselected == 2", #Condition for this sidebar to be displayed
             
             # Add a slider
             sliderInput(
@@ -117,11 +117,11 @@ ui <- shinyUI(pageWithSidebar(
                 )
             ),
             
-            actionButton("vorher2", label = "Vorheriges Tab"), #zuruek Button
+            actionButton("vorher2", label = "Vorheriges Tab"), #Back Button
            
             
-            #Erklaerung
-                             conditionalPanel("input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #richtige Antwort gegeben
+            #Explanation
+                             conditionalPanel("input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
                                               actionButton("Tab3", label = "Nächstes Tab"),
                                               HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
@@ -134,16 +134,16 @@ ui <- shinyUI(pageWithSidebar(
                                               
                              ) ,
             
-            #Output bei Falscher Antwort
-            conditionalPanel("input.quiz2 !== 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #richtige Antwort gegeben
+            #Output if the answer is wrong
+            conditionalPanel("input.quiz2 !== 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
                              HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
             ) 
             
-        ), #Ende zweites conditional Panel
+        ), #End of the second conditional panel
         
         conditionalPanel(
             "input.tabselected == 3",
-            #Bedingung, damit diese Sidebar eingeblendet wird
+            #Condition for this sidebar to be displayed
             #Add a Slider
             sliderInput(
                 inputId = "diff3",
@@ -187,10 +187,10 @@ ui <- shinyUI(pageWithSidebar(
                 )
             ),
             
-            actionButton("vorher3", label = "Vorheriges Tab"), #zuruek Button
+            actionButton("vorher3", label = "Vorheriges Tab"), #Back Button
            
-            #Erklaerung
-             conditionalPanel("input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #richtige Antwort gegeben
+            #Explanation
+             conditionalPanel("input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #the answer is correct
                                               actionButton("Tab4", label = "Nächstes Tab"),
                                               HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
@@ -198,30 +198,30 @@ ui <- shinyUI(pageWithSidebar(
                                                     im allgemein < 0.05, so lässt sich die Nullhypothese ablehvnen.")
                              ),
             
-            #Output bei falscher Antwort
-            conditionalPanel("input.quiz3 !== 'Ein p-Wert < 0.05 ist signifikant'", #richtige Antwort gegeben
+            #Output if the answer is wrong
+            conditionalPanel("input.quiz3 !== 'Ein p-Wert < 0.05 ist signifikant'", #the answer is correct
                               HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>"))
             ) 
             
-        ), #Ende drittes contitonal Panel
+        ), #End of the third contitonal panel
         
         conditionalPanel(
             "input.tabselected == 4",
             actionButton("vorher4", label = "Vorheriges Tab")
         )
-    ), #Ende Sidebar Panel
+    ), #End of the Sidebar Panel
     
     mainPanel(
         #Output: Tabset with plots
         tabsetPanel(
             type = "tabs",
             
-            #Ab hier Tab 1 #########################################################################
+            #From here  Tab 1 #########################################################################
             
             tabPanel(
                 title = "Differenz",
                 titlePanel("Differenz"),
-                value = "1",    #Sidebar 1 wird eingeblendet, Value in "" damit man in das naechste Tab springen kann
+                value = "1",    #Sidebar 1 is displayed, Value in " " so that you can jump to the next tab
                 
                 "Hier sieht man, welchen Effektes hat, wenn sich die
                  Differenz der Mittelwerte zweier normalverteilten
@@ -229,12 +229,12 @@ ui <- shinyUI(pageWithSidebar(
                 
                 plotOutput("boxPlot1"),    #Box-Plot
                 HTML(paste0("<b>", "p-Wert", "</b>")),
-                textOutput("p1"),          #p-Wert
+                textOutput("p1"),          #p-value
                
-            ), #Ende TabPanel
-            id = "tabselected"    #Wichtig, fuer event Button und conditional Sidebar
+            ), #End of TabPanel
+            id = "tabselected"    #Important for event button and conditional sidebar
             
-        ) #Ende TabsetPanel
+        ) #End of TabsetPanel
       )
     )
 )
@@ -242,30 +242,30 @@ ui <- shinyUI(pageWithSidebar(
 
 
 server = function(input, output, session) {
-    ################### Funktionen schreiben #########################################
-    #Boxplot mit Hilfe einer Funktion erzeugen
-    #Eingabe: zwei Stichproben
-    #Ausgabe: boxplot der Stichproben
+    ################### Create function #########################################
+    #Create a box plot with the help of a function
+    #Input: two samples
+    #Output: boxplot of the samples
     BoxPlot = function(Gruppe1, Gruppe2) {
-        #Data frame bauen, um boxplot nach Gruppen getrennt mit ggplot zu erzeugen
+        #Build a data frame to create a boxplot separated by groups with ggplot
         Wert = c(Gruppe1, Gruppe2)
         Gruppe = c(rep("1", length(Gruppe1)), rep("2", length(Gruppe2)))
         daten = data.frame(Gruppe, Wert)
         
-        #Boxplot mit zwei Var erstellen
-        ggplot(daten, aes(x = Gruppe, y = Wert, fill = factor(Gruppe))) +   #benoetigt DataFrame
+        #Create a box plot with two variables
+        ggplot(daten, aes(x = Gruppe, y = Wert, fill = factor(Gruppe))) +   #need a DataFrame
             geom_boxplot() +
             labs(title = "Auswirkung der Änderung") +
             ylim(-5, 5) +
             geom_jitter(width = 0.1, alpha = 0.2)
-    } #Ende BoxPlot
+    } #End of BoxPlot
     
-    #p-Wert berechnung als Funktion
-    #Eingabe: Stichproben von denen der p-Wert berechnet werden soll
-    #Ausgabe: kurzer Text: "p-Wert des zweiseitigen t-Tests: " und der p-Wert
+    #p-value calculation as a function
+    #Input: Samples from which the p-value is to be calculated
+    #Output: short text: "p-value of the two-tailed t-test:" and the p-value
     p_Wert = function(Gruppe1, Gruppe2) {
-        p = t.test(Gruppe1, Gruppe2, alternative = "two.sided")$p.value   #2 seitiger t-Test
-        p = round(p, digits = 10) #runden
+        p = t.test(Gruppe1, Gruppe2, alternative = "two.sided")$p.value   #2-sided t-test
+        p = round(p, digits = 10) #round
         if (p < 0.001) {
             p = "<0.001"
         }
@@ -273,59 +273,59 @@ server = function(input, output, session) {
             p = p
         }
         paste("p-Wert des zweiseitigen t-Tests: ", p)
-    } #Ende p_Wert
+    } #End of p_Wert
     
     
-    ######################### Output fuer einzelne Tabs definieren #####################
-    ########################## fuer ersten Tab ( MW Differenz) ###########################
+    ######################### Define output for individual tabs #####################
+    ##########################for first tab (MW difference)###########################
     output$p1 = renderText({
-        #Gruppe 2 durch anddieren der Differenz der Mittelwerte erzeugen, abschneiden, damit Gruppe1 und Gruppe2 gleiche Anzahl an Werten besitzen
+        #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
         Gruppe2 = Gruppe2[1:500] + input$diff
         p_Wert(Gruppe1, Gruppe2)
     })
     
-    #Boxplot, der Werte, nur MW Diff geht ein
+    #create the Boxplot and the values,only the differences of the MW is included
     output$boxPlot1 = renderPlot({
         Gruppe2 = Gruppe2[1:500] + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
     
     
-    ######################  fuer Tab 2 SD ###################################################
-    #Bei klingen des naestes Tab Button in Tab 1 springt man in Tab 2
+    ######################  for Tab 2 SD ###################################################
+    #When you click the "next tab button" in tab 1, you jump to tab 2
     observeEvent(input$Tab2, {
         updateTabsetPanel(session, "tabselected",
                           selected = "2")
     })
     
     output$p2 <- renderText({
-        #nutze Trafo, z=x-mu/sigam -> x= z*sigma +mu
+        #use transformation: z=x-mu/sigam -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
         p_Wert(Gruppe1, Gruppe2)
     })
     
-    #Boxplot, der Werte
+    #Box plot of the values
     output$boxPlot2 = renderPlot({
-        #nutze Trafo, z=x-mu/sigam -> x= z*sigma +mu
+        ##use transformation: z=x-mu/sigam -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
         BoxPlot(Gruppe1, Gruppe2)
     })
     
  
     
-    #in vorheriges Tab springen
+    #go to the previous tab
     observeEvent(input$vorher2, {
         updateTabsetPanel(session, "tabselected",
                           selected = "1")
     })
     
-    # Tab erst nach der richtigen Antwort sichtbar
+    #Tab only visible after the correct answer
     observeEvent(input$quiz1,{
-      if(input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #Bedingung
-        insertTab(inputId = "tabselected",                                                      #Hier wird das Tab eingefuegt
+      if(input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #condition
+        insertTab(inputId = "tabselected",                                                      #The tab is inserted here
                   tabPanel(
                     title = "Differenz und Standardabweichung" ,
-                    value = "2",       #Sidebar 2 wird eingeblendet
+                    value = "2",       #Sidebar 2 is displayed
                     titlePanel("Differenz und Standardabweichung"),
                       
                       "Hier sieht man, welchen Effekt es hat, wenn sich die
@@ -333,54 +333,54 @@ server = function(input, output, session) {
                       
                       plotOutput("boxPlot2"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
-                      textOutput("p2"),          #p-Wert
+                      textOutput("p2"),          #p-value
                       
                    
-                  ) #Ende TabPanel
+                  ) #End of the TabPanel
                   , target="1", position ="after" )
       }
       
-      if(input$quiz1 != "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #Bedingung
-        removeTab(inputId = "tabselected",                                                      #Hier wird das Tab geloescht, wenn die falsche ANtwort nach der richtigen eingegeben wird
+      if(input$quiz1 != "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #condition
+        removeTab(inputId = "tabselected",                                                      #Here the tab is cleared if the wrong answer is entered after the correct one
                    target="2" )
       }
     })
     
     
-    ################################### fuer Tab 3 Anzahl #######################################
+    ################################### for Tab 3: Anzahl #######################################
     observeEvent(input$Tab3, {
         updateTabsetPanel(session, "tabselected",
                           selected = "3")
     })
     
     output$p3 = renderText({
-        #Gruppe2 durch Trafo + abschneiden erzeugen
+        #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         p_Wert(Gruppe1, Gruppe2)
     })
     
-    #Boxplot, der Werte
+    #Boxplot, of the Values
     output$boxPlot3 = renderPlot({
-        #Gruppe2 durch Trafo + abschneiden erzeugen
+        #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         BoxPlot(Gruppe1, Gruppe2)
     })
     
-    #Idee: man zieht 100 Mal die Gruppe2 und schaut wie oft das ergebniss signifikant ist
-    #Vektor mit b einträgen erzeugen
+    #Idea: you draw group 2 100 times and see how often the result is significant
+    #Generate vector with b entries
     #Vektor = rep(0, 100)
     #Vektor[i] = rnorm(input$n, input$diff, input$sd)
     
     output$sigPlot = renderPlot({
-        Stichproben = replicate(100, rnorm(input$n, input$diff3, input$sd2))     #Ziehe 100 Stichproben
+        Stichproben = replicate(100, rnorm(input$n, input$diff3, input$sd2))     #Take 100 samples
         t = apply(Stichproben,
                   2 ,
                   t.test,
                   y = Gruppe1,
-                  alternative = "two.sided")    #Liste die Listen enthält, mache den t-Test fuer alle Strichproben bezueglich Gruppe1
+                  alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
         #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
-        p_Wert = lapply(t, '[[', 3)             #Vektor mit den p_Werten erzeugen
-        signifikant = sum(p_Wert < 0.05)        #Anzahl der Signifikanten und nicht signifikanten p_Werte
+        p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
+        signifikant = sum(p_Wert < 0.05)        #Number of significant and insignificant p-values
         nicht_signifikant = sum(p_Wert >= 0.05)
         #Plot mit Legende erzeugen
         barplot(
@@ -400,20 +400,20 @@ server = function(input, output, session) {
         )
     })
 
-    #in vorheriges Tab springen
+    #go to the previous tab
     observeEvent(input$vorher3, {
         updateTabsetPanel(session, "tabselected",
                           selected = "2")
     })
     
-    # Tab erst nach der richtigen Antwort sichtbar
+    #Tab only visible after the correct answer is given
     observeEvent(input$quiz2,{
       
       if(input$quiz2 == "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert" ){
-        insertTab(inputId = "tabselected",                                                           #Tab einfuegen
+        insertTab(inputId = "tabselected",                                                           #Insert tab
                   tabPanel(
                     title = "Differenz, Standardabweichung und Anzahl",
-                    value = "3",  #Sidebar 3 wird eingeblendet
+                    value = "3",  #Sidebar 3 is displayed
                    titlePanel("Differenz, Standardabweichung und Anzahl"),
                       
                       "Hier sieht man, welchen Effekt es hat, wenn sich die
@@ -421,15 +421,15 @@ server = function(input, output, session) {
                       
                       plotOutput("boxPlot3"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
-                      textOutput("p3"),          #p-Wert
-                      plotOutput("sigPlot"),     #Histogramm zu Signifikanz
+                      textOutput("p3"),          #p-value
+                      plotOutput("sigPlot"),     #Significance histogram
                       
-                  )#Ende TabPanel
+                  )#End of TabPanel
                   , target="2", position ="after" )
       }
       
       if(input$quiz2 != "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert" ){
-        removeTab(inputId = "tabselected",                                                           #Tab loeschen bei falscher Antwort
+        removeTab(inputId = "tabselected",                                                           #Delete tab if the answer is wrong
                    target="3")
       }
     })
@@ -440,20 +440,20 @@ server = function(input, output, session) {
         updateTabsetPanel(session, "tabselected",
                           selected = "4")
     })
-    #in vorheriges Tab springen
+    #go to the previous tab
     observeEvent(input$vorher4, {
         updateTabsetPanel(session, "tabselected",
                           selected = "3")
     })
     
-    # Tab erst nach der richtigen Antwort sichtbar
+    #Tab only visible after the correct answer is given
     observeEvent(input$quiz3,{
       
       if(input$quiz3 == "Ein p-Wert < 0.05 ist signifikant" ){
-        insertTab(inputId = "tabselected",                                    #Tab einfuegen
+        insertTab(inputId = "tabselected",                                    #Insert tab
                   tabPanel(
                     title = "Ergebnis",
-                    value = "4",   #Sidebar 4 wird eingeblendet
+                    value = "4",   #Sidebar 4 is displayed
                    titlePanel("Ergebnis"),
                       
                       #Quelle Bild: https://www.pinterest.de/pin/819373725934792787/
@@ -465,7 +465,7 @@ server = function(input, output, session) {
                   , target="3", position ="after" )
       }
       if(input$quiz3 != "Ein p-Wert < 0.05 ist signifikant" ){
-        removeTab(inputId = "tabselected",                                    #Tab loeschen, wenn falsche Antwort
+        removeTab(inputId = "tabselected",                                    #Delete tab if the wrong answer is given
                    target="4" )
       }
       

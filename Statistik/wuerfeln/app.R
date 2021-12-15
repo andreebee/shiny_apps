@@ -1,6 +1,5 @@
-#Ziel dieser App: Die relative Häufigkeit bei dem Würfel werfen 
-#anschaulich zu machen und der Wahrscheinlichkiet gegenüberstellen
-#Die Anzahl der würfe kann zwischen 5 und 5000 variiert werden
+#Aim of this app: To illustrate the relative frequency of throwing the dice and to compare it with the probability
+#The number of throws can be varied between 5 and 5000
 
 
 

@@ -1,6 +1,5 @@
-#Ziel dieser App: Studis verstehen, welchen Einfluss die Höhe des Glättungparameters auf die Glättung hat
-#M kann zwischen 2 une 100 variiert werden
-
+#Aim of this app: Students understand what influence the level of the smoothing parameter has on the smoothing
+#M can be varied between 2 and 100
 
 
 library(shiny)

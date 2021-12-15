@@ -1,10 +1,10 @@
-#Ziel dieser App: Studis verstehen zusammenhang zwischen Dichte, Verteilungsfunktion und Quantil
-#Man knann EW und Standardabwichung variieren, dadurch ändert sich die Dichte- und Verteilungsfunktion, zusätzlich 
-#kann man eine Ober- und Untergrenze eingeben, bezüglich dieser wirnd in der Dichte die Fläche dazwischen eingefärbt und in der
-#Verteilungsfunktion wird das dazu passende Quantil einmal für die Obere- und einmal für die Unteregrenze berechnet
+#Aim of this app: Students understand the relationship between density, distribution function and quantile
+#You can vary EW and standard deviation, which also changes the density and distribution function
+#you can enter an upper and lower limit, with regard to this, the area in between is colored in the density and in the
+#Distribution function, the appropriate quantile is calculated once for the upper limit and once for the lower limit
 
 
-#Beschreibung an der Seite?
+#Add description on the side?
 
 
 library(shiny)
