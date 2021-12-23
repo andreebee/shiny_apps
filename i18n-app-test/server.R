@@ -1,13 +1,6 @@
 library(shiny)
 library(R.utils)
 source("../global.R")
-#Variant for a lot of text
-
-ui <- fluidPage(
-  languageSelector("langSelect"),
-  uiOutput('page_content')
-)
-
 
 server <- function(input, output, session) {
   i18n <-languageServer('langSelect', "./translations.json")
@@ -18,7 +11,8 @@ server <- function(input, output, session) {
       p(i18n()$t("msg_Fruits"))
     )
   })
+  
+  output$hi <- renderText({
+    i18n()$t("msg_HelloWorld")
+  })
 }
-
-
-shinyApp(ui, server)
