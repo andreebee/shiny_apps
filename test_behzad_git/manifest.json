@@ -2313,7 +2313,7 @@
         "Author": "JJ Allaire [aut],\n  Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>),\n  Jonathan McPherson [aut],\n  Javier Luraschi [aut],\n  Kevin Ushey [aut],\n  Aron Atkins [aut],\n  Hadley Wickham [aut],\n  Joe Cheng [aut],\n  Winston Chang [aut],\n  Richard Iannone [aut] (<https://orcid.org/0000-0003-3925-190X>),\n  Andrew Dunning [ctb] (<https://orcid.org/0000-0003-0464-5036>),\n  Atsushi Yasumoto [ctb, cph] (<https://orcid.org/0000-0002-8335-495X>,\n    Number sections Lua filter),\n  Barret Schloerke [ctb],\n  Carson Sievert [ctb] (<https://orcid.org/0000-0002-4958-2844>),\n  Christophe Dervieux [ctb],\n  Devon Ryan [ctb] (<https://orcid.org/0000-0002-8549-0971>),\n  Frederik Aust [ctb] (<https://orcid.org/0000-0003-4900-788X>),\n  Jeff Allen [ctb],\n  JooYoung Seo [ctb] (<https://orcid.org/0000-0002-4064-6012>),\n  Malcolm Barrett [ctb],\n  Rob Hyndman [ctb],\n  Romain Lesur [ctb],\n  Roy Storey [ctb],\n  Ruben Arslan [ctb],\n  Sergio Oller [ctb],\n  RStudio, PBC [cph],\n  jQuery UI contributors [ctb, cph] (jQuery UI library; authors listed in\n    inst/rmd/h/jqueryui-AUTHORS.txt),\n  Mark Otto [ctb] (Bootstrap library),\n  Jacob Thornton [ctb] (Bootstrap library),\n  Bootstrap contributors [ctb] (Bootstrap library),\n  Twitter, Inc [cph] (Bootstrap library),\n  Alexander Farkas [ctb, cph] (html5shiv library),\n  Scott Jehl [ctb, cph] (Respond.js library),\n  Ivan Sagalaev [ctb, cph] (highlight.js library),\n  Greg Franko [ctb, cph] (tocify library),\n  John MacFarlane [ctb, cph] (Pandoc templates),\n  Google, Inc. [ctb, cph] (ioslides library),\n  Dave Raggett [ctb] (slidy library),\n  W3C [cph] (slidy library),\n  Dave Gandy [ctb, cph] (Font-Awesome),\n  Ben Sperry [ctb] (Ionicons),\n  Drifty [cph] (Ionicons),\n  Aidan Lister [ctb, cph] (jQuery StickyTabs),\n  Benct Philip Jonsson [ctb, cph] (pagebreak Lua filter),\n  Albert Krewinkel [ctb, cph] (pagebreak Lua filter)",
         "Repository": "CRAN",
         "Date/Publication": "2021-09-14 14:10:02 UTC",
-        "Built": "R 4.1.1; ; 2021-09-17 08:28:26 UTC; windows"
+        "Built": "R 4.1.2; ; 2021-11-24 01:13:41 UTC; windows"
       }
     },
     "rstudioapi": {
@@ -2480,6 +2480,33 @@
         "Repository": "CRAN",
         "Date/Publication": "2021-10-02 04:30:02 UTC",
         "Built": "R 4.1.1; ; 2021-10-04 18:08:24 UTC; windows"
+      }
+    },
+    "shiny.i18n": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com/",
+      "description": {
+        "Package": "shiny.i18n",
+        "Title": "Shiny Applications Internationalization",
+        "Version": "0.2.0",
+        "Authors@R": "c(person(\"Dominik\", \"Krzeminski\",\n                    email = \"dominik@appsilon.com\",\n                    role = c(\"cre\", \"aut\")),\n            person(\"Krystian\", \"Igras\",\n                    email = \"krystian@appsilon.com\",\n                    role = c(\"aut\")),\n             person(family = \"Appsilon\", role = c(\"cph\")))            ",
+        "Description": "It provides easy internationalization of Shiny\n    applications. It can be used as standalone translation package\n    to translate reports, interactive visualizations or\n    graphical elements as well.",
+        "Depends": "R (>= 3.3.0)",
+        "Imports": "yaml, jsonlite, methods, stringr, R6, glue, shiny, rstudioapi,\nutils",
+        "License": "MIT + file LICENSE",
+        "Encoding": "UTF-8",
+        "LazyData": "true",
+        "URL": "https://github.com/Appsilon/shiny.i18n",
+        "BugReports": "https://github.com/Appsilon/shiny.i18n/issues",
+        "RoxygenNote": "7.1.1",
+        "Suggests": "knitr, googleLanguageR, rmarkdown, testthat, covr",
+        "NeedsCompilation": "no",
+        "Packaged": "2020-10-02 13:37:04 UTC; dominik",
+        "Author": "Dominik Krzeminski [cre, aut],\n  Krystian Igras [aut],\n  Appsilon [cph]",
+        "Maintainer": "Dominik Krzeminski <dominik@appsilon.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2020-10-02 14:00:02 UTC",
+        "Built": "R 4.1.2; ; 2021-12-07 13:41:56 UTC; windows"
       }
     },
     "sourcetools": {
@@ -3031,8 +3058,14 @@
     }
   },
   "files": {
-    "app.R": {
-      "checksum": "b18fb3edb3d478b46ff0d6155d5975fa"
+    "server.R": {
+      "checksum": "f8f5fad5f5b09024f6e3ee64572f3c18"
+    },
+    "translation.json": {
+      "checksum": "a61ce15637e215086c7ece1bd58d8267"
+    },
+    "ui.R": {
+      "checksum": "c13184fc718ff0a23e127cc616866ef8"
     }
   },
   "users": null
