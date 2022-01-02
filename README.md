@@ -53,6 +53,8 @@
 		
 
 #### Hinweis:
+- Wenn man für den Upload ein MAC-Book benutzt, muss dort ein anderer Browser als Safari genutzt werden, sonst funktioniert es nicht
+
 - Sind alle Apps in einem Ordner, kommt bei RStudio Connect ein Fehler, wenn man diese öffnen möchte
 
 - Man muss die Apps wenn man sie bearbeiten möchte und dann die Änderung in git haben möchte in dem Projekt öffnen
