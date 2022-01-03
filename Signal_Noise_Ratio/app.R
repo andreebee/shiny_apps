@@ -11,66 +11,45 @@ library(ggplot2)
 library(Matrix) #to use bandSparse to create band matrix
 library(MASS)   #to use mvrnorm to create multivar Gaussian vector
 #library(graphics)
-library(R.utils) #for bilingual
-#source("C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/global.R")  #for bilingual
-source("C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps//binarySelector.R")  #for bilingual
 
 
-# File with translations
-#i18n <- Translator$new(translation_json_path ="C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/Zeitreihe/Signal_Noise_Ratio/Übersetzung.json")
-#i18n$set_translation_language("en") # here you select the default translation to display
 
 
 
 
 ui <- fluidPage(
-    languageSelector("langSelect"),
-  #  i18n = languageServer('langSelect',"C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/Zeitreihe/Signal_Noise_Ratio/Übersetzung.json")
-#,
-#i18n <-languageBinaryServer('langSelect'),
-# shiny.i18n::usei18n(i18n),
-#  div(style = "float: right;",
-#      selectInput('langSelect',
-#                  i18n$t("Change language"),
-#                  choices = i18n$get_languages(),
-#                  selected = i18n$get_key_translation()
-#                  )
-#  ),
-
     
-    # App title ----
 
-    titlePanel("Test"
+    titlePanel("Simulation signal + WhiteNoise"
                ),
     # Sidebar layout with input and output definitions ----
     sidebarLayout(
         
         # Sidebar panel for inputs ----
         sidebarPanel(
-            conditionalPanel(
-                condition = "input.langSelect==German",
+           
             # Input: Slider for the number of bins ----
             sliderInput(inputId = "variance",
-                        label = "Variance WhiteNoise" ,
+                        label = "Varianz WhiteNoise" ,
                         min = 0,
                         max = 3,
                         step = 0.1,
                         value = 1),
             #verbatimTextOutput("value"),
             sliderInput(inputId = "mean",
-                        label = "Expected value WhiteNoise",
+                        label = "Erwatungswert WhiteNoise",
                         min = 0,
                         max = 3,
                         step = 0.1,
                         value = 0),
             textInput(inputId = "formula",
-                      label = "Signal function",
+                      label = "Signalfunktion",
                       value = "2*cos(2*pi*x/(50+0.6*pi))",
                       width = NULL,
                       placeholder = NULL
                       
             ),
-            ) 
+             
         ),
         # Main panel for displaying outputs ----
         mainPanel(
@@ -84,8 +63,7 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
-   # i18n = languageServer('langSelect', "C:/Users/lisaa/OneDrive/Desktop/GitHub/shiny_apps/Zeitreihe/Signal_Noise_Ratio/Übersetzung.json")
-    #i18n <-languageBinaryServer('langSelect')
+   
     x    = seq(from=1, to=100)
     
     
@@ -108,11 +86,7 @@ server <- function(input, output) {
         ws = w + s
         snratio = round((var(s)) / (input$variance), 2)
         
-       paste(
-           #p(i18n()(c("The Signal-to-noise ratio is", "Die Signal-to-noise ratio ist"))),
-                snratio,
-           p(i18n()$t("Title3"))
-           )
+       paste("Die Signal-to-noise ratio ist", snratio )
         
     })
     
