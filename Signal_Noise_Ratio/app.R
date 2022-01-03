@@ -20,7 +20,7 @@ library(MASS)   #to use mvrnorm to create multivar Gaussian vector
 ui <- fluidPage(
     
 
-    titlePanel("Simulation signal - WhiteNoise"
+    titlePanel("Simulation signal + WhiteNoise"
                ),
     # Sidebar layout with input and output definitions ----
     sidebarLayout(
