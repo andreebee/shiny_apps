@@ -10,81 +10,6 @@
     "has_parameters": false
   },
   "packages": {
-    "R.methodsS3": {
-      "Source": "CRAN",
-      "Repository": "https://cran.rstudio.com/",
-      "description": {
-        "Package": "R.methodsS3",
-        "Version": "1.8.1",
-        "Depends": "R (>= 2.13.0)",
-        "Imports": "utils",
-        "Suggests": "codetools",
-        "Title": "S3 Methods Simplified",
-        "Authors@R": "c(person(\"Henrik\", \"Bengtsson\", role=c(\"aut\", \"cre\", \"cph\"),\n                                          email = \"henrikb@braju.com\"))",
-        "Author": "Henrik Bengtsson [aut, cre, cph]",
-        "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
-        "Description": "Methods that simplify the setup of S3 generic functions and S3 methods.  Major effort has been made in making definition of methods as simple as possible with a minimum of maintenance for package developers.  For example, generic functions are created automatically, if missing, and naming conflict are automatically solved, if possible.  The method setMethodS3() is a good start for those who in the future may want to migrate to S4.  This is a cross-platform package implemented in pure R that generates standard S3 methods.",
-        "License": "LGPL (>= 2.1)",
-        "LazyLoad": "TRUE",
-        "URL": "https://github.com/HenrikBengtsson/R.methodsS3",
-        "BugReports": "https://github.com/HenrikBengtsson/R.methodsS3/issues",
-        "NeedsCompilation": "no",
-        "Packaged": "2020-08-24 14:42:23 UTC; hb",
-        "Repository": "CRAN",
-        "Date/Publication": "2020-08-26 16:20:06 UTC",
-        "Built": "R 4.1.1; ; 2021-09-10 15:51:03 UTC; windows"
-      }
-    },
-    "R.oo": {
-      "Source": "CRAN",
-      "Repository": "https://cran.rstudio.com/",
-      "description": {
-        "Package": "R.oo",
-        "Version": "1.24.0",
-        "Depends": "R (>= 2.13.0), R.methodsS3 (>= 1.8.0)",
-        "Imports": "methods, utils",
-        "Suggests": "tools",
-        "Title": "R Object-Oriented Programming with or without References",
-        "Authors@R": "c(person(\"Henrik\", \"Bengtsson\", role=c(\"aut\", \"cre\", \"cph\"),\n                                          email = \"henrikb@braju.com\"))",
-        "Author": "Henrik Bengtsson [aut, cre, cph]",
-        "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
-        "Description": "Methods and classes for object-oriented programming in R with or without references.  Large effort has been made on making definition of methods as simple as possible with a minimum of maintenance for package developers.  The package has been developed since 2001 and is now considered very stable.  This is a cross-platform package implemented in pure R that defines standard S3 classes without any tricks.",
-        "License": "LGPL (>= 2.1)",
-        "LazyLoad": "TRUE",
-        "URL": "https://github.com/HenrikBengtsson/R.oo",
-        "BugReports": "https://github.com/HenrikBengtsson/R.oo/issues",
-        "NeedsCompilation": "no",
-        "Packaged": "2020-08-24 16:24:06 UTC; hb",
-        "Repository": "CRAN",
-        "Date/Publication": "2020-08-26 16:11:58 UTC",
-        "Built": "R 4.1.1; ; 2021-09-10 18:22:52 UTC; windows"
-      }
-    },
-    "R.utils": {
-      "Source": "CRAN",
-      "Repository": "https://cran.rstudio.com/",
-      "description": {
-        "Package": "R.utils",
-        "Version": "2.11.0",
-        "Depends": "R (>= 2.14.0), R.oo (>= 1.24.0)",
-        "Imports": "methods, utils, tools, R.methodsS3 (>= 1.8.1)",
-        "Suggests": "digest (>= 0.6.10)",
-        "Title": "Various Programming Utilities",
-        "Authors@R": "c(person(\"Henrik\", \"Bengtsson\", role=c(\"aut\", \"cre\", \"cph\"),\n                                          email = \"henrikb@braju.com\"))",
-        "Author": "Henrik Bengtsson [aut, cre, cph]",
-        "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
-        "Description": "Utility functions useful when programming and developing R packages.",
-        "License": "LGPL (>= 2.1)",
-        "LazyLoad": "TRUE",
-        "URL": "https://github.com/HenrikBengtsson/R.utils",
-        "BugReports": "https://github.com/HenrikBengtsson/R.utils/issues",
-        "NeedsCompilation": "no",
-        "Packaged": "2021-09-26 07:18:48 UTC; hb",
-        "Repository": "CRAN",
-        "Date/Publication": "2021-09-26 08:30:02 UTC",
-        "Built": "R 4.1.2; ; 2021-12-03 14:33:52 UTC; windows"
-      }
-    },
     "R6": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com/",
@@ -731,6 +656,31 @@
         "Built": "R 4.1.1; x86_64-w64-mingw32; 2021-09-10 15:50:03 UTC; windows"
       }
     },
+    "rstudioapi": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com/",
+      "description": {
+        "Package": "rstudioapi",
+        "Title": "Safely Access the RStudio API",
+        "Description": "Access the RStudio API (if available) and provide informative error\n    messages when it's not.",
+        "Version": "0.13",
+        "Authors@R": "c(\n    person(\"Kevin\", \"Ushey\", role = c(\"aut\", \"cre\"), email = \"kevin@rstudio.com\"),\n    person(\"JJ\", \"Allaire\", role = c(\"aut\"), email = \"jj@rstudio.com\"),\n    person(\"Hadley\", \"Wickham\", role = c(\"aut\"), email = \"hadley@rstudio.com\"),\n    person(\"Gary\", \"Ritchie\", role = c(\"aut\"), email = \"gary@rstudio.com\"),\n    person(family = \"RStudio\", role = \"cph\")\n    )",
+        "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
+        "License": "MIT + file LICENSE",
+        "URL": "https://github.com/rstudio/rstudioapi",
+        "BugReports": "https://github.com/rstudio/rstudioapi/issues",
+        "RoxygenNote": "7.1.1",
+        "Suggests": "testthat, knitr, rmarkdown, clipr",
+        "VignetteBuilder": "knitr",
+        "Encoding": "UTF-8",
+        "NeedsCompilation": "no",
+        "Packaged": "2020-11-11 23:34:30 UTC; kevinushey",
+        "Author": "Kevin Ushey [aut, cre],\n  JJ Allaire [aut],\n  Hadley Wickham [aut],\n  Gary Ritchie [aut],\n  RStudio [cph]",
+        "Repository": "CRAN",
+        "Date/Publication": "2020-11-12 21:50:02 UTC",
+        "Built": "R 4.1.1; ; 2021-09-10 15:50:56 UTC; windows"
+      }
+    },
     "sass": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com/",
@@ -790,6 +740,33 @@
         "Built": "R 4.1.1; ; 2021-10-04 18:08:24 UTC; windows"
       }
     },
+    "shiny.i18n": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com/",
+      "description": {
+        "Package": "shiny.i18n",
+        "Title": "Shiny Applications Internationalization",
+        "Version": "0.2.0",
+        "Authors@R": "c(person(\"Dominik\", \"Krzeminski\",\n                    email = \"dominik@appsilon.com\",\n                    role = c(\"cre\", \"aut\")),\n            person(\"Krystian\", \"Igras\",\n                    email = \"krystian@appsilon.com\",\n                    role = c(\"aut\")),\n             person(family = \"Appsilon\", role = c(\"cph\")))            ",
+        "Description": "It provides easy internationalization of Shiny\n    applications. It can be used as standalone translation package\n    to translate reports, interactive visualizations or\n    graphical elements as well.",
+        "Depends": "R (>= 3.3.0)",
+        "Imports": "yaml, jsonlite, methods, stringr, R6, glue, shiny, rstudioapi,\nutils",
+        "License": "MIT + file LICENSE",
+        "Encoding": "UTF-8",
+        "LazyData": "true",
+        "URL": "https://github.com/Appsilon/shiny.i18n",
+        "BugReports": "https://github.com/Appsilon/shiny.i18n/issues",
+        "RoxygenNote": "7.1.1",
+        "Suggests": "knitr, googleLanguageR, rmarkdown, testthat, covr",
+        "NeedsCompilation": "no",
+        "Packaged": "2020-10-02 13:37:04 UTC; dominik",
+        "Author": "Dominik Krzeminski [cre, aut],\n  Krystian Igras [aut],\n  Appsilon [cph]",
+        "Maintainer": "Dominik Krzeminski <dominik@appsilon.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2020-10-02 14:00:02 UTC",
+        "Built": "R 4.1.2; ; 2021-12-07 13:41:56 UTC; windows"
+      }
+    },
     "sourcetools": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com/",
@@ -813,6 +790,63 @@
         "Repository": "CRAN",
         "Date/Publication": "2018-04-25 03:38:09 UTC",
         "Built": "R 4.1.1; x86_64-w64-mingw32; 2021-09-29 16:09:26 UTC; windows"
+      }
+    },
+    "stringi": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com/",
+      "description": {
+        "Package": "stringi",
+        "Version": "1.7.4",
+        "Date": "2021-08-12",
+        "Title": "Character String Processing Facilities",
+        "Description": "A multitude of character string/text/natural language\n    processing tools: pattern searching (e.g., with 'Java'-like regular\n    expressions or the 'Unicode' collation algorithm), random string generation,\n    case mapping, string transliteration, concatenation, sorting, padding,\n    wrapping, Unicode normalisation, date-time formatting and parsing,\n    and many more. They are fast, consistent, convenient, and -\n    thanks to 'ICU' (International Components for Unicode) -\n    portable across all locales and platforms.",
+        "URL": "https://stringi.gagolewski.com/ http://site.icu-project.org/\nhttps://www.unicode.org/",
+        "BugReports": "https://github.com/gagolews/stringi/issues",
+        "SystemRequirements": "C++11, ICU4C (>= 55, optional)",
+        "Type": "Package",
+        "Depends": "R (>= 3.1)",
+        "Imports": "tools, utils, stats",
+        "Biarch": "TRUE",
+        "License": "file LICENSE",
+        "Author": "Marek Gagolewski [aut, cre, cph] (<https://orcid.org/0000-0003-0637-6028>),\n    Bartek Tartanus [ctb],\n    and others (stringi source code);\n    IBM, Unicode, Inc. and others (ICU4C source code, Unicode Character Database)",
+        "Maintainer": "Marek Gagolewski <marek@gagolewski.com>",
+        "RoxygenNote": "7.1.1",
+        "Encoding": "UTF-8",
+        "NeedsCompilation": "yes",
+        "Packaged": "2021-08-12 01:53:02 UTC; gagolews",
+        "License_is_FOSS": "yes",
+        "Repository": "CRAN",
+        "Date/Publication": "2021-08-25 12:50:02 UTC",
+        "Built": "R 4.1.1; x86_64-w64-mingw32; 2021-09-10 15:50:41 UTC; windows"
+      }
+    },
+    "stringr": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com/",
+      "description": {
+        "Package": "stringr",
+        "Title": "Simple, Consistent Wrappers for Common String Operations",
+        "Version": "1.4.0",
+        "Authors@R": "\n    c(person(given = \"Hadley\",\n             family = \"Wickham\",\n             role = c(\"aut\", \"cre\", \"cph\"),\n             email = \"hadley@rstudio.com\"),\n      person(given = \"RStudio\",\n             role = c(\"cph\", \"fnd\")))",
+        "Description": "A consistent, simple and easy to use set of\n    wrappers around the fantastic 'stringi' package. All function and\n    argument names (and positions) are consistent, all functions deal with\n    \"NA\"'s and zero length vectors in the same way, and the output from\n    one function is easy to feed into the input of another.",
+        "License": "GPL-2 | file LICENSE",
+        "URL": "http://stringr.tidyverse.org, https://github.com/tidyverse/stringr",
+        "BugReports": "https://github.com/tidyverse/stringr/issues",
+        "Depends": "R (>= 3.1)",
+        "Imports": "glue (>= 1.2.0), magrittr, stringi (>= 1.1.7)",
+        "Suggests": "covr, htmltools, htmlwidgets, knitr, rmarkdown, testthat",
+        "VignetteBuilder": "knitr",
+        "Encoding": "UTF-8",
+        "LazyData": "true",
+        "RoxygenNote": "6.1.1",
+        "NeedsCompilation": "no",
+        "Packaged": "2019-02-09 16:03:19 UTC; hadley",
+        "Author": "Hadley Wickham [aut, cre, cph],\n  RStudio [cph, fnd]",
+        "Maintainer": "Hadley Wickham <hadley@rstudio.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2019-02-10 03:40:03 UTC",
+        "Built": "R 4.1.1; ; 2021-09-10 18:22:37 UTC; windows"
       }
     },
     "withr": {
@@ -867,17 +901,43 @@
         "Date/Publication": "2019-04-21 12:20:03 UTC",
         "Built": "R 4.1.1; ; 2021-09-23 21:26:38 UTC; windows"
       }
+    },
+    "yaml": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com/",
+      "description": {
+        "Package": "yaml",
+        "Type": "Package",
+        "Title": "Methods to Convert R Data to YAML and Back",
+        "Date": "2020-01-23",
+        "Version": "2.2.1",
+        "Suggests": "RUnit",
+        "Author": "Jeremy Stephens [aut, cre], Kirill Simonov [aut], Yihui Xie [ctb],\n  Zhuoer Dong [ctb], Hadley Wickham [ctb], Jeffrey Horner [ctb], reikoch [ctb],\n  Will Beasley [ctb], Brendan O'Connor [ctb], Gregory R. Warnes [ctb]",
+        "Maintainer": "Jeremy Stephens <jeremy.f.stephens@vumc.org>",
+        "License": "BSD_3_clause + file LICENSE",
+        "Description": "Implements the 'libyaml' 'YAML' 1.1 parser and emitter\n  (<http://pyyaml.org/wiki/LibYAML>) for R.",
+        "URL": "https://github.com/viking/r-yaml/",
+        "BugReports": "https://github.com/viking/r-yaml/issues",
+        "NeedsCompilation": "yes",
+        "Packaged": "2020-01-30 20:29:56 UTC; stephej1",
+        "Repository": "CRAN",
+        "Date/Publication": "2020-02-01 05:50:02 UTC",
+        "Built": "R 4.1.1; x86_64-w64-mingw32; 2021-09-10 15:51:47 UTC; windows"
+      }
     }
   },
   "files": {
+    "README.md": {
+      "checksum": "940569e286f902fceb22d6a0fecde81a"
+    },
     "server.R": {
-      "checksum": "5b6e6c13069d1f12fb13d2e7aed18a4c"
+      "checksum": "774386b9354ebc403d3af2be49273d9e"
     },
     "translations.json": {
-      "checksum": "035459fb1b1913e74cc651de18b5fc68"
+      "checksum": "fbd17a5eac0feb06dd2ce1f679321b5d"
     },
     "ui.R": {
-      "checksum": "08cefb62e6157a855067f085ff5b2134"
+      "checksum": "a452aee7c36582ed908a990837a343d5"
     }
   },
   "users": null
