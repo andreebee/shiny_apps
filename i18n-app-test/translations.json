@@ -1,17 +1,15 @@
 {
-  "languages": ["en", "de"],
-  "translation": [
-      {
+	"languages": ["en", "de"],
+	"translation": [{
         "en": "Hello World", 
         "de": "Hallo Welt"
-      },
-       {
+			},
+			{
         "en": "Hi there", 
-        "de": "Hallo"
-      },
-      {
+        "de": "Hallo"      
+			},
+			{
         "en": "Fruits", 
-        "de": "Obst"
-      }
-    ]
+        "de": "Obst"		       
+			}]
 }

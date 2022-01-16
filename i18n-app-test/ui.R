@@ -1,13 +1,12 @@
-# load packages and global.r for translation
+# load packages
 library(shiny)
-library(R.utils)
-source("../global.R")
+library(shiny.i18n)
 
 ui <- fluidPage(
   # adding a selector to choose the app language
-  languageSelector("langSelect"),
+  selectInput("language","please select language",c("en","de")),
   # using uiOutput to translate ui input elements
   uiOutput('page_content'),
   # adding a sample output elements
-  textOutput("hi")
+  textOutput("fruits")
 )
