@@ -1,16 +1,15 @@
 {
-  "cultural_date_format": "%d-%m-%Y",
-  "languages": [ "messageId", "en", "de"],
+  "languages": ["en", "de"],
   "translation": [
-      { "messageId": "msg_HelloWorld", 
+      {
         "en": "Hello World", 
         "de": "Hallo Welt"
       },
-       { "messageId": "msg_HiThere", 
+       {
         "en": "Hi there", 
         "de": "Hallo"
       },
-      { "messageId": "msg_Fruits", 
+      {
         "en": "Fruits", 
         "de": "Obst"
       }
