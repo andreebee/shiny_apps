@@ -279,6 +279,8 @@ server = function(input, output, session) {
     ######################### Define output for individual tabs #####################
     ##########################for first tab (MW difference)###########################
     output$p1 = renderText({
+        #set seed to generate same random values
+        set.seed(5)
         #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
         Gruppe2 = Gruppe2[1:500] + input$diff
         p_Wert(Gruppe1, Gruppe2)
@@ -299,7 +301,9 @@ server = function(input, output, session) {
     })
     
     output$p2 <- renderText({
-        #use transformation: z=x-mu/sigam -> x= z*sigma +mu
+        #set seed to generate same random values
+        set.seed(5)
+        #use transformation: z=x-mu/sigma -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
         p_Wert(Gruppe1, Gruppe2)
     })
@@ -361,6 +365,8 @@ server = function(input, output, session) {
     
     #Boxplot, of the Values
     output$boxPlot3 = renderPlot({
+        #set seed to generate same random values
+        set.seed(5)
         #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         BoxPlot(Gruppe1, Gruppe2)
