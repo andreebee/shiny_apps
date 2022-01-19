@@ -21,7 +21,7 @@ library(shiny)
 library(ggplot2)
 
 #Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
-Gruppe1 = rnorm(500)   
+Gruppe1 = rnorm(1000)   
 Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
 ui <- shinyUI(pageWithSidebar(
@@ -100,7 +100,7 @@ ui <- shinyUI(pageWithSidebar(
                 min = 0,
                 max = 10,
                 step = 0.1,
-                value = 5
+                value = 1
             ),
             
             "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab.",
@@ -112,8 +112,8 @@ ui <- shinyUI(pageWithSidebar(
                 selected = NULL,
                 choices = c("",
                     "Die Änderung der Standardabweichung hat keine Auswirkung",
-                    "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert",
-                    "Eine große Änderung der Standardabweichung erzeugt einen kleinen p-Wert"
+                    "Eine größere Standardabweichung erzeugt einen großen p-Wert",
+                    "Eine größere Standardabweichung erzeugt einen kleinen p-Wert"
                 )
             ),
             
@@ -121,7 +121,7 @@ ui <- shinyUI(pageWithSidebar(
            
             
             #Explanation
-                             conditionalPanel("input.quiz2 === 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
+                             conditionalPanel("input.quiz2 === 'Eine größere Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
                                               actionButton("Tab3", label = "Nächstes Tab"),
                                               HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
@@ -135,7 +135,7 @@ ui <- shinyUI(pageWithSidebar(
                              ) ,
             
             #Output if the answer is wrong
-            conditionalPanel("input.quiz2 !== 'Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
+            conditionalPanel("input.quiz2 !== 'Eine größere Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
                              HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
             ) 
             
@@ -161,7 +161,7 @@ ui <- shinyUI(pageWithSidebar(
                 min = 0,
                 max = 10,
                 step = 0.1,
-                value = 5
+                value = 1
             ),
             
             # Add a slider
@@ -286,7 +286,9 @@ server = function(input, output, session) {
     ##########################for first tab (MW difference)###########################
     output$p1 <- renderUI({
         #set seed to generate same random values
-        set.seed(5)
+        set.seed(1)
+        Gruppe1 = Gruppe1[1:500]
+        set.seed(2)
         #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
         Gruppe2 = Gruppe2[1:500] + input$diff
         p <- p_Wert(Gruppe1, Gruppe2)
@@ -297,8 +299,9 @@ server = function(input, output, session) {
     
     #create the Boxplot and the values,only the differences of the MW is included
     output$boxPlot1 = renderPlot({
-        #set seed to generate same random values
-        set.seed(5)
+        set.seed(1)
+        Gruppe1 = Gruppe1[1:500]
+        set.seed(2)
         Gruppe2 = Gruppe2[1:500] + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
@@ -313,7 +316,9 @@ server = function(input, output, session) {
     
     output$p2 <- renderUI({
         #set seed to generate same random values
-        set.seed(5)
+        set.seed(1)
+        Gruppe1 = Gruppe1[1:500] * input$sd
+        set.seed(2)
         #use transformation: z=x-mu/sigma -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
         p <- p_Wert(Gruppe1, Gruppe2)
@@ -325,7 +330,9 @@ server = function(input, output, session) {
     #Box plot of the values
     output$boxPlot2 = renderPlot({
         #set seed to generate same random values
-        set.seed(5)
+        set.seed(1)
+        Gruppe1 = Gruppe1[1:500] * input$sd
+        set.seed(2)
         ##use transformation: z=x-mu/sigam -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
         BoxPlot(Gruppe1, Gruppe2)
@@ -348,7 +355,7 @@ server = function(input, output, session) {
                     value = "2",       #Sidebar 2 is displayed
                     titlePanel("Differenz und Standardabweichung"),
                       
-                      "Hier sieht man, welchen Effekt es hat, wenn sich die
+                      "Hier sieht man den Effekt auf den p-Wert, wenn sich die
                      Standardabweichung ändert. Gruppe 1 bleibt fest.",
                       
                       plotOutput("boxPlot2"),    #Box-Plot
@@ -375,7 +382,9 @@ server = function(input, output, session) {
     
     output$p3 = renderUI({
         #set seed to generate same random values
-        set.seed(5)
+        set.seed(1)
+        Gruppe1 = Gruppe1[1:input$n] * input$sd2
+        set.seed(2)
         #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         p <- p_Wert(Gruppe1, Gruppe2)
@@ -387,7 +396,9 @@ server = function(input, output, session) {
     #Boxplot, of the Values
     output$boxPlot3 = renderPlot({
         #set seed to generate same random values
-        set.seed(5)
+        set.seed(1)
+        Gruppe1 = Gruppe1[1:input$n] * input$sd2
+        set.seed(2)
         #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         BoxPlot(Gruppe1, Gruppe2)
@@ -436,14 +447,14 @@ server = function(input, output, session) {
     #Tab only visible after the correct answer is given
     observeEvent(input$quiz2,{
       
-      if(input$quiz2 == "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert" ){
+      if(input$quiz2 == "Eine größere Standardabweichung erzeugt einen großen p-Wert" ){
         insertTab(inputId = "tabselected",                                                           #Insert tab
                   tabPanel(
                     title = "Differenz, Standardabweichung und Anzahl",
                     value = "3",  #Sidebar 3 is displayed
                    titlePanel("Differenz, Standardabweichung und Anzahl"),
                       
-                      "Hier sieht man, welchen Effekt es hat, wenn sich die
+                      "Hier sieht man den Effekt auf den p-Wert, wenn sich die
                      Anzahl der Merkmalsträger ändert. Gruppe 1 bleibt fest.",
                       
                       plotOutput("boxPlot3"),    #Box-Plot
@@ -455,7 +466,7 @@ server = function(input, output, session) {
                   , target="2", position ="after" )
       }
       
-      if(input$quiz2 != "Eine große Änderung der Standardabweichung erzeugt einen großen p-Wert" ){
+      if(input$quiz2 != "Eine größere Standardabweichung erzeugt einen großen p-Wert" ){
         removeTab(inputId = "tabselected",                                                           #Delete tab if the answer is wrong
                    target="3")
       }
