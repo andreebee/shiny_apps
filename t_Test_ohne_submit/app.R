@@ -229,7 +229,7 @@ ui <- shinyUI(pageWithSidebar(
                 
                 plotOutput("boxPlot1"),    #Box-Plot
                 HTML(paste0("<b>", "p-Wert", "</b>")),
-                textOutput("p1"),          #p-value
+                htmlOutput("p1") #p-value
                
             ), #End of TabPanel
             id = "tabselected"    #Important for event button and conditional sidebar
@@ -262,32 +262,43 @@ server = function(input, output, session) {
     
     #p-value calculation as a function
     #Input: Samples from which the p-value is to be calculated
-    #Output: short text: "p-value of the two-tailed t-test:" and the p-value
+    #Output: p-value and test result in a list
     p_Wert = function(Gruppe1, Gruppe2) {
         p = t.test(Gruppe1, Gruppe2, alternative = "two.sided")$p.value   #2-sided t-test
-        p = round(p, digits = 10) #round
+        p = round(p, digits = 3) #round
+        if (p < 0.05 ) {
+          test_result = "Die Nullhypothese wird abgelehnt."
+        }
+        else{
+          test_result = "Die Nullhypothese wird nicht abgelehnt."
+        }
         if (p < 0.001) {
             p = "<0.001"
         }
         else{
             p = p
         }
-        paste("p-Wert des zweiseitigen t-Tests: ", p)
+        list(p,test_result)
     } #End of p_Wert
     
     
     ######################### Define output for individual tabs #####################
     ##########################for first tab (MW difference)###########################
-    output$p1 = renderText({
+    output$p1 <- renderUI({
         #set seed to generate same random values
         set.seed(5)
         #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
         Gruppe2 = Gruppe2[1:500] + input$diff
-        p_Wert(Gruppe1, Gruppe2)
+        p <- p_Wert(Gruppe1, Gruppe2)
+        wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
+        result <- paste("<b>",p[[2]],"</b>")
+        HTML(paste(wert,result,sep="<br/>"))
     })
     
     #create the Boxplot and the values,only the differences of the MW is included
     output$boxPlot1 = renderPlot({
+        #set seed to generate same random values
+        set.seed(5)
         Gruppe2 = Gruppe2[1:500] + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
@@ -300,16 +311,21 @@ server = function(input, output, session) {
                           selected = "2")
     })
     
-    output$p2 <- renderText({
+    output$p2 <- renderUI({
         #set seed to generate same random values
         set.seed(5)
         #use transformation: z=x-mu/sigma -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
-        p_Wert(Gruppe1, Gruppe2)
+        p <- p_Wert(Gruppe1, Gruppe2)
+        wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
+        result <- paste("<b>",p[[2]],"</b>")
+        HTML(paste(wert,result,sep="<br/>"))
     })
     
     #Box plot of the values
     output$boxPlot2 = renderPlot({
+        #set seed to generate same random values
+        set.seed(5)
         ##use transformation: z=x-mu/sigam -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
         BoxPlot(Gruppe1, Gruppe2)
@@ -337,7 +353,7 @@ server = function(input, output, session) {
                       
                       plotOutput("boxPlot2"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
-                      textOutput("p2"),          #p-value
+                      htmlOutput("p2"),          #p-value
                       
                    
                   ) #End of the TabPanel
@@ -357,10 +373,15 @@ server = function(input, output, session) {
                           selected = "3")
     })
     
-    output$p3 = renderText({
+    output$p3 = renderUI({
+        #set seed to generate same random values
+        set.seed(5)
         #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
-        p_Wert(Gruppe1, Gruppe2)
+        p <- p_Wert(Gruppe1, Gruppe2)
+        wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
+        result <- paste("<b>",p[[2]],"</b>")
+        HTML(paste(wert,result,sep="<br/>"))
     })
     
     #Boxplot, of the Values
@@ -427,7 +448,7 @@ server = function(input, output, session) {
                       
                       plotOutput("boxPlot3"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
-                      textOutput("p3"),          #p-value
+                      htmlOutput("p3"),          #p-value
                       plotOutput("sigPlot"),     #Significance histogram
                       
                   )#End of TabPanel
