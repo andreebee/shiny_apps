@@ -13,6 +13,14 @@
 		"de": "Standardabweichung von var1"		       
 			},
 			{
+		"en": "Average of var2",
+		"de": "Durchschnitt von var2"		       
+			},
+			{
+		"en": "Standard Deviation of var2",
+		"de": "Standardabweichung von var2"		       
+			},
+			{
 		"en": "Plot",
 		"de": "Handlung"		       
 			}]

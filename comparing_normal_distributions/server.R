@@ -24,7 +24,9 @@ server <- function(input, output) {
       t()
       tagList(
         numericInput("mean1",i18n$t("Average of var1"),value=-2.5),
-        numericInput("sd1",i18n$t("Standard Deviation of var1"),value=3,min=0)
+        numericInput("sd1",i18n$t("Standard Deviation of var1"),value=3,min=0),
+        numericInput("mean2",i18n$t("Average of var2"),value=2),
+        numericInput("sd2",i18n$t("Standard Deviation of var2"),value=3.5,min=0)
       )
     })
     
