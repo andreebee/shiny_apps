@@ -223,7 +223,7 @@ ui <- shinyUI(pageWithSidebar(
                 titlePanel("Differenz"),
                 value = "1",    #Sidebar 1 is displayed, Value in " " so that you can jump to the next tab
                 
-                "Hier sieht man, welchen Effektes hat, wenn sich die
+                "Hier sieht man den Effekt auf den p-Wert, wenn sich die
                  Differenz der Mittelwerte zweier normalverteilten
                  Stichproben ändert.",
                 
