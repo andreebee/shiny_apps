@@ -97,7 +97,7 @@ ui <- shinyUI(pageWithSidebar(
             sliderInput(
                 inputId = "sd",
                 label = "Standardabweichung",
-                min = 0,
+                min = 0.1,
                 max = 10,
                 step = 0.1,
                 value = 1
@@ -158,7 +158,7 @@ ui <- shinyUI(pageWithSidebar(
             sliderInput(
                 inputId = "sd2",
                 label = "Standardabweichung",
-                min = 0,
+                min = 0.1,
                 max = 10,
                 step = 0.1,
                 value = 1
@@ -168,9 +168,9 @@ ui <- shinyUI(pageWithSidebar(
             sliderInput(
                 inputId = "n",
                 label = "Anzahl",
-                min = 0,
+                min = 5,
                 max = 1000,
-                value = 500
+                value = 300
             ),
             
             "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab.",
@@ -287,10 +287,10 @@ server = function(input, output, session) {
     output$p1 <- renderUI({
         #set seed to generate same random values
         set.seed(1)
-        Gruppe1 = Gruppe1[1:500]
+        Gruppe1 = Gruppe1[1:300]
         set.seed(2)
         #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
-        Gruppe2 = Gruppe2[1:500] + input$diff
+        Gruppe2 = Gruppe2[1:300] + input$diff
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
         result <- paste("<b>",p[[2]],"</b>")
@@ -300,9 +300,9 @@ server = function(input, output, session) {
     #create the Boxplot and the values,only the differences of the MW is included
     output$boxPlot1 = renderPlot({
         set.seed(1)
-        Gruppe1 = Gruppe1[1:500]
+        Gruppe1 = Gruppe1[1:300]
         set.seed(2)
-        Gruppe2 = Gruppe2[1:500] + input$diff
+        Gruppe2 = Gruppe2[1:300] + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
     
@@ -317,10 +317,10 @@ server = function(input, output, session) {
     output$p2 <- renderUI({
         #set seed to generate same random values
         set.seed(1)
-        Gruppe1 = Gruppe1[1:500] * input$sd
+        Gruppe1 = Gruppe1[1:300] * input$sd
         set.seed(2)
         #use transformation: z=x-mu/sigma -> x= z*sigma +mu
-        Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
+        Gruppe2 = Gruppe2[1:300] * input$sd + input$diff2
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
         result <- paste("<b>",p[[2]],"</b>")
@@ -331,10 +331,10 @@ server = function(input, output, session) {
     output$boxPlot2 = renderPlot({
         #set seed to generate same random values
         set.seed(1)
-        Gruppe1 = Gruppe1[1:500] * input$sd
+        Gruppe1 = Gruppe1[1:300] * input$sd
         set.seed(2)
         ##use transformation: z=x-mu/sigam -> x= z*sigma +mu
-        Gruppe2 = Gruppe2[1:500] * input$sd + input$diff2
+        Gruppe2 = Gruppe2[1:300] * input$sd + input$diff2
         BoxPlot(Gruppe1, Gruppe2)
     })
     
@@ -356,7 +356,7 @@ server = function(input, output, session) {
                     titlePanel("Differenz und Standardabweichung"),
                       
                       "Hier sieht man den Effekt auf den p-Wert, wenn sich die
-                     Standardabweichung ändert. Gruppe 1 bleibt fest.",
+                     Standardabweichung ändert.",
                       
                       plotOutput("boxPlot2"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
@@ -455,7 +455,7 @@ server = function(input, output, session) {
                    titlePanel("Differenz, Standardabweichung und Anzahl"),
                       
                       "Hier sieht man den Effekt auf den p-Wert, wenn sich die
-                     Anzahl der Merkmalsträger ändert. Gruppe 1 bleibt fest.",
+                     Anzahl der Merkmalsträger ändert.",
                       
                       plotOutput("boxPlot3"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
