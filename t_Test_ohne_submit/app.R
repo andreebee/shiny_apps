@@ -294,6 +294,13 @@ server = function(input, output, session) {
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
         result <- paste("<b>",p[[2]],"</b>")
+        #avg1 <- mean(Gruppe1)
+        #avg2 <- mean(Gruppe2)
+        #md1 <- median(Gruppe1)
+        #md2 <- median(Gruppe2)
+        #std1 <- sd(Gruppe1)
+        #std2 <- sd(Gruppe2)
+        #HTML(paste(wert,result,avg1,avg2,md1,md2,std1,std2,sep="<br/>"))
         HTML(paste(wert,result,sep="<br/>"))
     })
     
@@ -410,6 +417,10 @@ server = function(input, output, session) {
     #Vektor[i] = rnorm(input$n, input$diff, input$sd)
     
     output$sigPlot = renderPlot({
+        #set seed to generate same random values
+        set.seed(1)
+        Gruppe1 = Gruppe1[1:input$n] * input$sd2
+        set.seed(2)
         Stichproben = replicate(100, rnorm(input$n, input$diff3, input$sd2))     #Take 100 samples
         t = apply(Stichproben,
                   2 ,
