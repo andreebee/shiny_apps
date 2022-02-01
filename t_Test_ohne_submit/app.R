@@ -21,7 +21,9 @@ library(shiny)
 library(ggplot2)
 
 #Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
+set.seed(1)
 Gruppe1 = rnorm(1000)   
+set.seed(2)
 Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
 ui <- shinyUI(pageWithSidebar(
@@ -36,9 +38,9 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "diff",
                 label = "Differenz",
                 min = 0,
-                max = 1,
+                max = 2,
                 step = 0.1,
-                value = 0.5
+                value = 1
             ),
             
             "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab. ",
@@ -88,9 +90,9 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "diff2",
                 label = "Differenz",
                 min = 0,
-                max = 1,
+                max = 2,
                 step = 0.1,
-                value = 0.5
+                value = 1
             ),
             
             # Add a slider
@@ -100,7 +102,7 @@ ui <- shinyUI(pageWithSidebar(
                 min = 0.1,
                 max = 10,
                 step = 0.1,
-                value = 1
+                value = 5
             ),
             
             "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab.",
@@ -149,9 +151,9 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "diff3",
                 label = "Differenz",
                 min = 0,
-                max = 1,
+                max = 2,
                 step = 0.1,
-                value = 0.5
+                value = 1
             ),
             
             # Add a slider
@@ -161,16 +163,16 @@ ui <- shinyUI(pageWithSidebar(
                 min = 0.1,
                 max = 10,
                 step = 0.1,
-                value = 1
+                value = 5
             ),
             
             # Add a slider
             sliderInput(
                 inputId = "n",
                 label = "Anzahl",
-                min = 5,
+                min = 50,
                 max = 1000,
-                value = 300
+                value = 200
             ),
             
             "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab.",
@@ -256,7 +258,7 @@ server = function(input, output, session) {
         ggplot(daten, aes(x = Gruppe, y = Wert, fill = factor(Gruppe))) +   #need a DataFrame
             geom_boxplot() +
             labs(title = "Auswirkung der Änderung") +
-            ylim(-5, 5) +
+            ylim(-25, 25) +
             geom_jitter(width = 0.1, alpha = 0.2)
     } #End of BoxPlot
     
@@ -281,35 +283,37 @@ server = function(input, output, session) {
         list(p,test_result)
     } #End of p_Wert
     
+    #setting default values for sd and sample size
+    def_sd <- reactive({5})
+    def_n <- reactive({200})
     
     ######################### Define output for individual tabs #####################
     ##########################for first tab (MW difference)###########################
     output$p1 <- renderUI({
+        #using default values for sd and sample size
+        def_sd <- def_sd()
+        def_n <- def_n()
         #set seed to generate same random values
         set.seed(1)
-        Gruppe1 = Gruppe1[1:300]
+        Gruppe1 = Gruppe1[1:def_n] * def_sd
         set.seed(2)
         #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
-        Gruppe2 = Gruppe2[1:300] + input$diff
+        Gruppe2 = Gruppe2[1:def_n] * def_sd + input$diff
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
         result <- paste("<b>",p[[2]],"</b>")
-        #avg1 <- mean(Gruppe1)
-        #avg2 <- mean(Gruppe2)
-        #md1 <- median(Gruppe1)
-        #md2 <- median(Gruppe2)
-        #std1 <- sd(Gruppe1)
-        #std2 <- sd(Gruppe2)
-        #HTML(paste(wert,result,avg1,avg2,md1,md2,std1,std2,sep="<br/>"))
         HTML(paste(wert,result,sep="<br/>"))
     })
     
     #create the Boxplot and the values,only the differences of the MW is included
     output$boxPlot1 = renderPlot({
+        #using default values for sd and sample size
+        def_sd <- def_sd()
+        def_n <- def_n()
         set.seed(1)
-        Gruppe1 = Gruppe1[1:300]
+        Gruppe1 = Gruppe1[1:def_n] * def_sd
         set.seed(2)
-        Gruppe2 = Gruppe2[1:300] + input$diff
+        Gruppe2 = Gruppe2[1:def_n] * def_sd + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
     
@@ -322,12 +326,14 @@ server = function(input, output, session) {
     })
     
     output$p2 <- renderUI({
+        #using default values for sd and sample size
+        def_n <- def_n()
         #set seed to generate same random values
         set.seed(1)
-        Gruppe1 = Gruppe1[1:300] * input$sd
+        Gruppe1 = Gruppe1[1:def_n] * input$sd
         set.seed(2)
         #use transformation: z=x-mu/sigma -> x= z*sigma +mu
-        Gruppe2 = Gruppe2[1:300] * input$sd + input$diff2
+        Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff2
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
         result <- paste("<b>",p[[2]],"</b>")
@@ -336,12 +342,14 @@ server = function(input, output, session) {
     
     #Box plot of the values
     output$boxPlot2 = renderPlot({
+        #using default values for sd and sample size
+        def_n <- def_n()
         #set seed to generate same random values
         set.seed(1)
-        Gruppe1 = Gruppe1[1:300] * input$sd
+        Gruppe1 = Gruppe1[1:def_n] * input$sd
         set.seed(2)
         ##use transformation: z=x-mu/sigam -> x= z*sigma +mu
-        Gruppe2 = Gruppe2[1:300] * input$sd + input$diff2
+        Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff2
         BoxPlot(Gruppe1, Gruppe2)
     })
     
@@ -390,6 +398,7 @@ server = function(input, output, session) {
     output$p3 = renderUI({
         #set seed to generate same random values
         set.seed(1)
+        #Gruppe1 = rnorm(input$n)
         Gruppe1 = Gruppe1[1:input$n] * input$sd2
         set.seed(2)
         #Create group2 with transformation + cut
@@ -421,7 +430,7 @@ server = function(input, output, session) {
         set.seed(1)
         Gruppe1 = Gruppe1[1:input$n] * input$sd2
         set.seed(2)
-        Stichproben = replicate(100, rnorm(input$n, input$diff3, input$sd2))     #Take 100 samples
+        Stichproben = replicate(1000, rnorm(input$n, input$diff3, input$sd2))     #Take 1000 samples
         t = apply(Stichproben,
                   2 ,
                   t.test,
@@ -431,22 +440,44 @@ server = function(input, output, session) {
         p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
         signifikant = sum(p_Wert < 0.05)        #Number of significant and insignificant p-values
         nicht_signifikant = sum(p_Wert >= 0.05)
+        
+        #dot_df <- data.frame(no=seq(1,50,1),pWert=unlist(p_Wert))
+        
+        #ggplot(dot_df, aes(x=no, y=pWert)) +
+          #geom_point() +
+          #geom_hline(yintercept = 0.05)+
+          #ylim(0, 1)
+        
         #Plot mit Legende erzeugen
-        barplot(
-            c(signifikant, nicht_signifikant),
-            ylim = c(0, 100) ,
-            main = "Anzahl der signifikanten und nicht signifikanten Abweichungen",
-            xlab = "signifikant/nicht signifikant",
-            ylab = "Anzahl",
-            col = c(3, 7)
-        )
-        legend(
-            1,
-            95,
-            legend = c("signifikanter p-Wert", "kein signifikanter p-Wert"),
-            fill = c(3, 7),
-            cex = 0.8
-        )
+        
+        #barplot(
+            #c(signifikant, nicht_signifikant),
+            #ylim = c(0, 1000) ,
+            #main = "Anteil signifikanter P-Werte für 1000 Simulationen",
+            #xlab = "signifikant/nicht signifikant",
+            #ylab = "Anteil",
+            #col = c(3, 7)
+        #)
+        #legend(
+            #1,
+            #95,
+            #legend = c("signifikanter p-Wert", "kein signifikanter p-Wert"),
+            #fill = c(3, 7),
+            #cex = 0.8
+        #)
+        
+        bar_df <- data.frame(t_test=c("signifikant", "nicht signifikant"),
+                          anteil=c(signifikant,nicht_signifikant),
+                          result=c("P-Werte","P-Werte"))
+                          
+        ggplot(data=bar_df, aes(x=result,y=anteil,fill=t_test)) +
+          geom_bar(stat="identity",width = 0.5) +
+          ggtitle("Anteil signifikanter P-Werte für 1000 Simulationen")+
+          coord_flip()+
+          theme(plot.title = element_text(hjust = 0.5),aspect.ratio = 0.2)+
+          scale_fill_manual(values=c("#facf43", "#84f86d"))+
+          labs(x = "")+
+          guides(fill=guide_legend(title="t test result"))
     })
 
     #go to the previous tab
