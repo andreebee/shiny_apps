@@ -255,11 +255,13 @@ server = function(input, output, session) {
         daten = data.frame(Gruppe, Wert)
         
         #Create a box plot with two variables
-        ggplot(daten, aes(x = Gruppe, y = Wert, fill = factor(Gruppe))) +   #need a DataFrame
-            geom_boxplot() +
+        ggplot(daten, aes(x = Gruppe, y = Wert,fill = factor(Gruppe))) +   #need a DataFrame
+            geom_boxplot(width = 0.3, alpha = 0.05) +
             labs(title = "Auswirkung der Änderung") +
             ylim(-25, 25) +
-            geom_jitter(width = 0.1, alpha = 0.2)
+            geom_jitter(width = 0.3, alpha = 0.7,aes(colour=factor(Gruppe))) +
+            stat_summary(fun=mean, geom="point", shape="_", size=10, color="red", fill="red")
+        
     } #End of BoxPlot
     
     #p-value calculation as a function
