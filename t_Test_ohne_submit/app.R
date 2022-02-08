@@ -256,12 +256,14 @@ server = function(input, output, session) {
         
         #Create a box plot with two variables
         ggplot(daten, aes(x = Gruppe, y = Wert,fill = factor(Gruppe))) +   #need a DataFrame
-            geom_boxplot(width = 0.3, alpha = 0.0005) +
+            geom_boxplot(color="#c4c4c4",width = 0.3, alpha = 0.05) +
             labs(title = "Auswirkung der Änderung") +
             ylim(-25, 25) +
             geom_jitter(width = 0.3, alpha = 0.8,aes(colour=factor(Gruppe))) +
-            stat_summary(fun=mean, geom="point", shape="_", size=15, color="red", fill="red")
-        
+            #stat_summary(fun=mean, geom="point",shape="_",size=10,color="red", fill="red")+
+            geom_segment(aes(x=0.75,xend=1.6,y=mean(Gruppe1),yend=mean(Gruppe1)),color="red")+
+            geom_segment(aes(x=1.4,xend=2.25,y=mean(Gruppe2),yend=mean(Gruppe2)),color="blue")        
+          
     } #End of BoxPlot
     
     #p-value calculation as a function
@@ -471,15 +473,16 @@ server = function(input, output, session) {
         bar_df <- data.frame(t_test=c("signifikant", "nicht signifikant"),
                           Anzahl=c(signifikant,nicht_signifikant),
                           result=c("P-Werte","P-Werte"))
-
+        
         ggplot(data=bar_df, aes(x=result,y=Anzahl,fill=t_test)) +
           geom_bar(stat="identity",width = 0.5) +
           ggtitle("Anzahl signifikanter P-Werte für 1000 Simulationen")+
           coord_flip()+
-          theme(plot.title = element_text(hjust = 0.5),aspect.ratio = 0.2)+
-          scale_fill_manual(values=c("#fae9b4", "#84f86d"))+
-          labs(x = "",y="")+
-          guides(fill=guide_legend(title="Ergebnis t-Test"))
+          labs(x = "")+
+          theme(plot.title = element_text(hjust = 0.5),aspect.ratio = 0.2,
+                axis.text.y = element_blank(),axis.ticks.y = element_blank()) +
+          guides(fill=guide_legend(reverse=T,title="Ergebnis t-Test")) +
+          scale_fill_manual(values=c("#fae9b4","#84f86d"))
     })
 
     #go to the previous tab
