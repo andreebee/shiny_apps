@@ -256,11 +256,11 @@ server = function(input, output, session) {
         
         #Create a box plot with two variables
         ggplot(daten, aes(x = Gruppe, y = Wert,fill = factor(Gruppe))) +   #need a DataFrame
-            geom_boxplot(width = 0.3, alpha = 0.05) +
+            geom_boxplot(width = 0.3, alpha = 0.0005) +
             labs(title = "Auswirkung der Änderung") +
             ylim(-25, 25) +
-            geom_jitter(width = 0.3, alpha = 0.7,aes(colour=factor(Gruppe))) +
-            stat_summary(fun=mean, geom="point", shape="_", size=10, color="red", fill="red")
+            geom_jitter(width = 0.3, alpha = 0.8,aes(colour=factor(Gruppe))) +
+            stat_summary(fun=mean, geom="point", shape="_", size=15, color="red", fill="red")
         
     } #End of BoxPlot
     
@@ -432,7 +432,7 @@ server = function(input, output, session) {
         set.seed(1)
         Gruppe1 = Gruppe1[1:input$n] * input$sd2
         set.seed(2)
-        Stichproben = replicate(1000, rnorm(input$n, input$diff3, input$sd2))     #Take 1000 samples
+        Stichproben = replicate(50, rnorm(input$n, input$diff3, input$sd2))     #Take 1000 samples
         t = apply(Stichproben,
                   2 ,
                   t.test,
@@ -443,12 +443,12 @@ server = function(input, output, session) {
         signifikant = sum(p_Wert < 0.05)        #Number of significant and insignificant p-values
         nicht_signifikant = sum(p_Wert >= 0.05)
         
-        #dot_df <- data.frame(no=seq(1,50,1),pWert=unlist(p_Wert))
-        
-        #ggplot(dot_df, aes(x=no, y=pWert)) +
-          #geom_point() +
-          #geom_hline(yintercept = 0.05)+
-          #ylim(0, 1)
+        # dot_df <- data.frame(no=seq(1,50,1),pWert=unlist(p_Wert))
+        # 
+        # ggplot(dot_df, aes(x=no, y=pWert)) +
+        #   geom_point() +
+        #   geom_hline(yintercept = 0.05)+
+        #   ylim(0, 1)
         
         #Plot mit Legende erzeugen
         
@@ -469,17 +469,17 @@ server = function(input, output, session) {
         #)
         
         bar_df <- data.frame(t_test=c("signifikant", "nicht signifikant"),
-                          anteil=c(signifikant,nicht_signifikant),
+                          Anzahl=c(signifikant,nicht_signifikant),
                           result=c("P-Werte","P-Werte"))
-                          
-        ggplot(data=bar_df, aes(x=result,y=anteil,fill=t_test)) +
+
+        ggplot(data=bar_df, aes(x=result,y=Anzahl,fill=t_test)) +
           geom_bar(stat="identity",width = 0.5) +
-          ggtitle("Anteil signifikanter P-Werte für 1000 Simulationen")+
+          ggtitle("Anzahl signifikanter P-Werte für 1000 Simulationen")+
           coord_flip()+
           theme(plot.title = element_text(hjust = 0.5),aspect.ratio = 0.2)+
-          scale_fill_manual(values=c("#facf43", "#84f86d"))+
-          labs(x = "")+
-          guides(fill=guide_legend(title="t test result"))
+          scale_fill_manual(values=c("#fae9b4", "#84f86d"))+
+          labs(x = "",y="")+
+          guides(fill=guide_legend(title="Ergebnis t-Test"))
     })
 
     #go to the previous tab
