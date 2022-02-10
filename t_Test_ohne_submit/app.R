@@ -209,6 +209,37 @@ ui <- shinyUI(pageWithSidebar(
         
         conditionalPanel(
             "input.tabselected == 4",
+            #Condition for this sidebar to be displayed
+            #Add a Slider
+            sliderInput(
+              inputId = "diff4",
+              label = "Differenz",
+              min = 0,
+              max = 2,
+              step = 0.1,
+              value = 1
+            ),
+            
+            # Add a slider
+            sliderInput(
+              inputId = "sd3",
+              label = "Standardabweichung",
+              min = 0.1,
+              max = 10,
+              step = 0.1,
+              value = 5
+            ),
+            
+            # Add a slider
+            sliderInput(
+              inputId = "n2",
+              label = "Anzahl",
+              min = 50,
+              max = 1000,
+              value = 200
+            ),
+            # check box to show the plot for the p values
+            checkboxInput("showvalues", "Einzelne P-Werte anzeigen", value = FALSE, width = NULL),
             actionButton("vorher4", label = "Vorheriges Tab")
         )
     ), #End of the Sidebar Panel
@@ -423,67 +454,6 @@ server = function(input, output, session) {
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         BoxPlot(Gruppe1, Gruppe2)
     })
-    
-    #Idea: you draw group 2 100 times and see how often the result is significant
-    #Generate vector with b entries
-    #Vektor = rep(0, 100)
-    #Vektor[i] = rnorm(input$n, input$diff, input$sd)
-    
-    output$sigPlot = renderPlot({
-        #set seed to generate same random values
-        set.seed(1)
-        Gruppe1 = Gruppe1[1:input$n] * input$sd2
-        set.seed(2)
-        Stichproben = replicate(50, rnorm(input$n, input$diff3, input$sd2))     #Take 1000 samples
-        t = apply(Stichproben,
-                  2 ,
-                  t.test,
-                  y = Gruppe1,
-                  alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
-        #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
-        p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
-        signifikant = sum(p_Wert < 0.05)        #Number of significant and insignificant p-values
-        nicht_signifikant = sum(p_Wert >= 0.05)
-        
-        # dot_df <- data.frame(no=seq(1,50,1),pWert=unlist(p_Wert))
-        # 
-        # ggplot(dot_df, aes(x=no, y=pWert)) +
-        #   geom_point() +
-        #   geom_hline(yintercept = 0.05)+
-        #   ylim(0, 1)
-        
-        #Plot mit Legende erzeugen
-        
-        #barplot(
-            #c(signifikant, nicht_signifikant),
-            #ylim = c(0, 1000) ,
-            #main = "Anteil signifikanter P-Werte für 1000 Simulationen",
-            #xlab = "signifikant/nicht signifikant",
-            #ylab = "Anteil",
-            #col = c(3, 7)
-        #)
-        #legend(
-            #1,
-            #95,
-            #legend = c("signifikanter p-Wert", "kein signifikanter p-Wert"),
-            #fill = c(3, 7),
-            #cex = 0.8
-        #)
-        
-        bar_df <- data.frame(t_test=c("signifikant", "nicht signifikant"),
-                          Anzahl=c(signifikant,nicht_signifikant),
-                          result=c("P-Werte","P-Werte"))
-        
-        ggplot(data=bar_df, aes(x=result,y=Anzahl,fill=t_test)) +
-          geom_bar(stat="identity",width = 0.5) +
-          ggtitle("Anzahl signifikanter P-Werte für 1000 Simulationen")+
-          coord_flip()+
-          labs(x = "")+
-          theme(plot.title = element_text(hjust = 0.5),aspect.ratio = 0.2,
-                axis.text.y = element_blank(),axis.ticks.y = element_blank()) +
-          guides(fill=guide_legend(reverse=T,title="Ergebnis t-Test")) +
-          scale_fill_manual(values=c("#fae9b4","#84f86d"))
-    })
 
     #go to the previous tab
     observeEvent(input$vorher3, {
@@ -507,7 +477,7 @@ server = function(input, output, session) {
                       plotOutput("boxPlot3"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
                       htmlOutput("p3"),          #p-value
-                      plotOutput("sigPlot"),     #Significance histogram
+                      #plotOutput("sigPlot"),     #Significance histogram
                       
                   )#End of TabPanel
                   , target="2", position ="after" )
@@ -525,6 +495,98 @@ server = function(input, output, session) {
         updateTabsetPanel(session, "tabselected",
                           selected = "4")
     })
+    
+    #Idea: you draw group 2 1000 times and see how often the result is significant
+    #Generate vector with b entries
+    #Vektor = rep(0, 1000)
+    #Vektor[i] = rnorm(input$n, input$diff, input$sd)
+    
+    output$sigPlot = renderPlot({
+      #set seed to generate same random values
+      set.seed(1)
+      Gruppe1 = Gruppe1[1:input$n2] * input$sd3
+      set.seed(2)
+      Stichproben = replicate(1000, rnorm(input$n2, input$diff4, input$sd3))     #Take 1000 samples
+      t = apply(Stichproben,
+                2 ,
+                t.test,
+                y = Gruppe1,
+                alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
+      #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
+      p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
+      signifikant = sum(p_Wert < 0.05)        #Number of significant and insignificant p-values
+      nicht_signifikant = sum(p_Wert >= 0.05)
+      
+      #Plot mit Legende erzeugen
+      
+      #barplot(
+      #c(signifikant, nicht_signifikant),
+      #ylim = c(0, 1000) ,
+      #main = "Anteil signifikanter P-Werte für 1000 Simulationen",
+      #xlab = "signifikant/nicht signifikant",
+      #ylab = "Anteil",
+      #col = c(3, 7)
+      #)
+      #legend(
+      #1,
+      #95,
+      #legend = c("signifikanter p-Wert", "kein signifikanter p-Wert"),
+      #fill = c(3, 7),
+      #cex = 0.8
+      #)
+      
+      bar_df <- data.frame(t_test=c("signifikant", "nicht signifikant"),
+                           Anzahl=c(signifikant,nicht_signifikant),
+                           result=c("P-Werte","P-Werte"))
+      
+      ggplot(data=bar_df, aes(x=result,y=Anzahl,fill=t_test)) +
+        geom_bar(stat="identity",width = 0.5) +
+        ggtitle("Anzahl signifikanter P-Werte für 1000 Simulationen")+
+        coord_flip()+
+        labs(x = "")+
+        theme(plot.title = element_text(hjust = 0.5),
+              aspect.ratio = 0.2,
+              axis.text.y = element_blank(),axis.ticks.y = element_blank()) +
+        guides(fill=guide_legend(reverse=T,title="Ergebnis t-Test")) +
+        scale_fill_manual(values=c("#fae9b4","#84f86d"))
+    })
+    
+    output$pvalues = renderPlot({
+      
+      # show the plot if the check box is checked
+      if(input$showvalues == TRUE) {
+      
+      #set seed to generate same random values
+      set.seed(1)
+      Gruppe1 = Gruppe1[1:input$n2] * input$sd3
+      set.seed(2)
+      Stichproben = replicate(1000, rnorm(input$n2, input$diff4, input$sd3))     #Take 1000 samples
+      t = apply(Stichproben,
+                2 ,
+                t.test,
+                y = Gruppe1,
+                alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
+      #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
+      p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
+      
+      # dataframe for the p values
+      dot_df <- data.frame(no=seq(1,1000,1),pWert=unlist(p_Wert))
+      dot_df$g <- ifelse(dot_df$pWert >= 0.05,"nicht signifikant","signifikant")
+      
+      # plot the p values
+      ggplot(dot_df, aes(x=no, y=pWert,color=g)) +
+        geom_point() +
+        geom_hline(yintercept = 0.05,color="black")+
+        scale_y_continuous(breaks=sort(c(seq(from=0,to=1,by=0.25), 0.05)), limits = c(0, 1)) +
+        labs(x = "Test") +
+        ggtitle("Test") +
+        guides(color=guide_legend(reverse=T,title="Ergebnis t-Test")) +
+        scale_color_manual(values=c("#fae9b4","#84f86d"))
+      }
+      else {}
+      
+    })
+    
     #go to the previous tab
     observeEvent(input$vorher4, {
         updateTabsetPanel(session, "tabselected",
@@ -539,14 +601,16 @@ server = function(input, output, session) {
                   tabPanel(
                     title = "Ergebnis",
                     value = "4",   #Sidebar 4 is displayed
-                   titlePanel("Ergebnis"),
+                    titlePanel("Ergebnis"),
                       
-                      #Quelle Bild: https://www.pinterest.de/pin/819373725934792787/
-                      # HTML(paste0("<b>", "p-Wert", "</b>")),
-                     # img(src='Smiley.png', align = "bottomleft"),
-                      "Sie haben alle Fragen richtig beantwortet.  " 
+                    # Quelle Bild: https://www.pinterest.de/pin/819373725934792787/
+                    # HTML(paste0("<b>", "p-Wert", "</b>")),
+                    # img(src='Smiley.png', align = "bottomleft"),
+                      "Sie haben alle Fragen richtig beantwortet.  " ,
                     #)
-                  )
+                    plotOutput("sigPlot", height = 200),    #Significance histogram
+                    plotOutput("pvalues"),
+                  )#End of TabPanel
                   , target="3", position ="after" )
       }
       if(input$quiz3 != "Ein p-Wert < 0.05 ist signifikant" ){
