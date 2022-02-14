@@ -26,6 +26,14 @@ Gruppe1 = rnorm(1000)
 set.seed(2)
 Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
+# for the sake of development
+#def_answer1 <- 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'
+#def_answer2 <- 'Eine größere Standardabweichung erzeugt einen großen p-Wert'
+#def_answer3 <- 'Ein p-Wert < 0.05 ist signifikant'
+def_answer1 <- NULL
+def_answer2 <- NULL
+def_answer3 <- NULL
+
 ui <- shinyUI(pageWithSidebar(
     headerPanel("Zweiseitiger t-Test"),
     
@@ -49,7 +57,7 @@ ui <- shinyUI(pageWithSidebar(
             selectInput(
                 inputId = "quiz1",
                 label = "Welche Aussage stimmt",
-                selected = NULL,
+                selected = def_answer1,
                 choices = c(" ","Die Änderung der Differenz des Mittelwertes hat keine Auswirkung",
                             "Eine größe Differenz der Mittelwerte erzeugt einen großen p-Wert",
                             "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"     )
@@ -111,7 +119,7 @@ ui <- shinyUI(pageWithSidebar(
             selectInput(
                 inputId = "quiz2",
                 label = " Welche Aussage stimmt",
-                selected = NULL,
+                selected = def_answer2,
                 choices = c("",
                     "Die Änderung der Standardabweichung hat keine Auswirkung",
                     "Eine größere Standardabweichung erzeugt einen großen p-Wert",
@@ -181,7 +189,7 @@ ui <- shinyUI(pageWithSidebar(
             selectInput(
                 inputId = "quiz3",
                 label = " Welche Aussage stimmt",
-                selected = NULL,
+                selected = def_answer3,
                 choices = c("",
                     "Die Änderung der Anzahl der Beobachtungen hat keine Auswirkung",
                     "Ein p-Wert < 0.05 ist signifikant",
