@@ -44,7 +44,7 @@ ui <- shinyUI(pageWithSidebar(
             #Add a Slider
             sliderInput(
                 inputId = "diff",
-                label = "Differenz",
+                label = "Differenz der Erwartungswerte",
                 min = 0,
                 max = 2,
                 step = 0.1,
@@ -96,7 +96,7 @@ ui <- shinyUI(pageWithSidebar(
             # Add a slider
             sliderInput(
                 inputId = "diff2",
-                label = "Differenz",
+                label = "Differenz der Erwartungswerte",
                 min = 0,
                 max = 2,
                 step = 0.1,
@@ -157,7 +157,7 @@ ui <- shinyUI(pageWithSidebar(
             #Add a Slider
             sliderInput(
                 inputId = "diff3",
-                label = "Differenz",
+                label = "Differenz der Erwartungswerte",
                 min = 0,
                 max = 2,
                 step = 0.1,
@@ -177,7 +177,7 @@ ui <- shinyUI(pageWithSidebar(
             # Add a slider
             sliderInput(
                 inputId = "n",
-                label = "Anzahl",
+                label = "Fallzahl",
                 min = 50,
                 max = 1000,
                 value = 200
@@ -191,9 +191,9 @@ ui <- shinyUI(pageWithSidebar(
                 label = " Welche Aussage stimmt",
                 selected = def_answer3,
                 choices = c("",
-                    "Die Änderung der Anzahl der Beobachtungen hat keine Auswirkung",
+                    "Die Änderung der Fallzahl hat keine Auswirkung",
                     "Ein p-Wert < 0.05 ist signifikant",
-                    "Die Änderung der Anzahl der Beobachtungen hat eine mittelmäßige auswirkung auf den p-Wert"
+                    "Die Änderung der Fallzahl hat eine mittelmäßige auswirkung auf den p-Wert"
                 )
             ),
             
@@ -221,7 +221,7 @@ ui <- shinyUI(pageWithSidebar(
             #Add a Slider
             sliderInput(
               inputId = "diff4",
-              label = "Differenz",
+              label = "Differenz der Erwartungswerte",
               min = 0,
               max = 2,
               step = 0.1,
@@ -241,7 +241,7 @@ ui <- shinyUI(pageWithSidebar(
             # Add a slider
             sliderInput(
               inputId = "n2",
-              label = "Anzahl",
+              label = "Fallzahl",
               min = 50,
               max = 1000,
               value = 200
@@ -261,7 +261,7 @@ ui <- shinyUI(pageWithSidebar(
             
             tabPanel(
                 title = "Differenz",
-                titlePanel("Differenz"),
+                titlePanel("Effekt der Differenz der Erwartungswerte zweier Normalverteilungen"),
                 value = "1",    #Sidebar 1 is displayed, Value in " " so that you can jump to the next tab
                 
                 "Hier sieht man den Effekt auf den p-Wert, wenn sich die
@@ -411,7 +411,7 @@ server = function(input, output, session) {
                   tabPanel(
                     title = "Differenz und Standardabweichung" ,
                     value = "2",       #Sidebar 2 is displayed
-                    titlePanel("Differenz und Standardabweichung"),
+                    titlePanel("Effekt der Differenz der Erwartungswerte und der Standardabweichung zweier Normalverteilungen"),
                       
                       "Hier sieht man den Effekt auf den p-Wert, wenn sich die
                      Standardabweichung ändert.",
@@ -432,7 +432,7 @@ server = function(input, output, session) {
     })
     
     
-    ################################### for Tab 3: Anzahl #######################################
+    ################################### for Tab 3: Fallzahl #######################################
     observeEvent(input$Tab3, {
         updateTabsetPanel(session, "tabselected",
                           selected = "3")
@@ -475,12 +475,12 @@ server = function(input, output, session) {
       if(input$quiz2 == "Eine größere Standardabweichung erzeugt einen großen p-Wert" ){
         insertTab(inputId = "tabselected",                                                           #Insert tab
                   tabPanel(
-                    title = "Differenz, Standardabweichung und Anzahl",
+                    title = "Differenz, Standardabweichung und Fallzahl",
                     value = "3",  #Sidebar 3 is displayed
-                   titlePanel("Differenz, Standardabweichung und Anzahl"),
+                   titlePanel("Effekt der Differenz der Erwartungswerte, Standardabweichung und Fallzahl zweier Normalverteilungen"),
                       
                       "Hier sieht man den Effekt auf den p-Wert, wenn sich die
-                     Anzahl der Merkmalsträger ändert.",
+                     Fallzahl der Merkmalsträger ändert.",
                       
                       plotOutput("boxPlot3"),    #Box-Plot
                       HTML(paste0("<b>", "p-Wert", "</b>")),
