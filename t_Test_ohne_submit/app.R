@@ -51,40 +51,31 @@ ui <- shinyUI(pageWithSidebar(
                 value = 1
             ),
             
-            "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab. ",
+            "Beantworten Sie folgende Frage, um zum nächsten Tab zu gelangen. ",
             
             #Quiz
             selectInput(
                 inputId = "quiz1",
-                label = "Welche Aussage stimmt",
+                label = "Welche Aussage stimmt?",
                 selected = def_answer1,
                 choices = c(" ","Die Änderung der Differenz des Mittelwertes hat keine Auswirkung",
-                            "Eine größe Differenz der Mittelwerte erzeugt einen großen p-Wert",
-                            "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"     )
+                            "Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert",
+                            "Eine größere Differenz der Mittelwerte erzeugt einen größeren p-Wert"     )
             ),
            
             
             #Explanation
            
-                             conditionalPanel("input.quiz1 ===  'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
+                             conditionalPanel("input.quiz1 ===  'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'",   #richtige Antwort gegeben
                                               actionButton("Tab2", label = "Nächstes Tab"),
                                               HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
-                                              paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
-                             bei einem kleinem Effekt, sind diese nah ander und in dem p-Wert
-                             des t-Tests. Der p-Wert sagt aus, ob der Unterschied signifikant ist oder nicht,
-                             aber er sagt nichts über die Stärke des Unterschieds aus.
-                             Für den Vergleich der Mittelwerte liegt es nahe, 
-                            dass in die Teststatistik die Differenz der Mittelwerte eingeht. 
-                            Trotz gleicher Differenzen können sich jedoch die p-Werte und somit auch
-                            die Beurteilungen im Hinblick auf die Signifikanz unterscheiden.
-                            Die Streuung ist mit einem kleinerem Mittelwert geringer als 
-                            mit einem größerem."),
+                                              paste0("Größere Mittelwertunterschiede bzw. stärkere Effekte sind für den Test leichter zu erkennen und führen daher zu kleineren p-Werten."),
                                               
                       
             ),
             #Output if the answer is wrong
-            conditionalPanel("input.quiz1 !== 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'",   #richtige Antwort gegeben
+            conditionalPanel("input.quiz1 !== 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'",   #richtige Antwort gegeben
                             HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
                               )              
             
@@ -113,17 +104,17 @@ ui <- shinyUI(pageWithSidebar(
                 value = 5
             ),
             
-            "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab.",
+            "Beantworten Sie folgende Frage, um zum nächsten Tab zu gelangen. ",
             
             #Quiz
             selectInput(
                 inputId = "quiz2",
-                label = " Welche Aussage stimmt",
+                label = " Welche Aussage stimmt?",
                 selected = def_answer2,
                 choices = c("",
                     "Die Änderung der Standardabweichung hat keine Auswirkung",
-                    "Eine größere Standardabweichung erzeugt einen großen p-Wert",
-                    "Eine größere Standardabweichung erzeugt einen kleinen p-Wert"
+                    "Eine größere Standardabweichung erzeugt einen kleineren p-Wert",
+                    "Eine größere Standardabweichung erzeugt einen größeren p-Wert"
                 )
             ),
             
@@ -131,21 +122,16 @@ ui <- shinyUI(pageWithSidebar(
            
             
             #Explanation
-                             conditionalPanel("input.quiz2 === 'Eine größere Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
+                             conditionalPanel("input.quiz2 === 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'", #the answer is correct
                                               actionButton("Tab3", label = "Nächstes Tab"),
                                               HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
-                                              paste0("Der Effekt ist einmal in dem Boxplot zu erkennen,
-                             bei einem kleinem Effekt, sind diese nah ander und in dem p-Wert
-                             des t-Tests. Der p-Wert sagt aus, ob der Unterschied signifikant ist oder nicht,
-                             aber er sagt nichts über die Stärke des Unterschieds aus.
-                             Die Differenz der Mittelwerte wird in Relation zur 
-                             Standardabweichung des Merkmals beurteilt.")
+                                              paste0("Ein Mittelwertunterschied / ein Effekt ist bei größerer Standartabweichung schwerer für den Test zu erkennen. Dies führt zu einem größeren p-Wert.")
                                               
                              ) ,
             
             #Output if the answer is wrong
-            conditionalPanel("input.quiz2 !== 'Eine größere Standardabweichung erzeugt einen großen p-Wert'", #the answer is correct
+            conditionalPanel("input.quiz2 !== 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'", #the answer is correct
                              HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
             ) 
             
@@ -183,37 +169,36 @@ ui <- shinyUI(pageWithSidebar(
                 value = 200
             ),
             
-            "Nun eine Frage, wenn diese richtig beantworte ist, gelangen Sie zum nächsten Tab. Und bekommen eine Erklärung in diesem Tab.",
+            "Beantworten Sie folgende Frage, um zum nächsten Tab zu gelangen. ",
             
             #Quiz
             selectInput(
                 inputId = "quiz3",
-                label = " Welche Aussage stimmt",
+                label = " Welche Aussage stimmt?",
                 selected = def_answer3,
                 choices = c("",
                     "Die Änderung der Fallzahl hat keine Auswirkung",
-                    "Ein p-Wert < 0.05 ist signifikant",
-                    "Die Änderung der Fallzahl hat eine mittelmäßige auswirkung auf den p-Wert"
+                    "Höherere Fallzahlen führen zu kleineren p-Werten",
+                    "Höherere Fallzahlen führen zu größeren p-Werten"
                 )
             ),
             
             actionButton("vorher3", label = "Vorheriges Tab"), #Back Button
            
             #Explanation
-             conditionalPanel("input.quiz3 === 'Ein p-Wert < 0.05 ist signifikant'", #the answer is correct
+             conditionalPanel("input.quiz3 === 'Höherere Fallzahlen führen zu kleineren p-Werten'", #the answer is correct
                                               actionButton("Tab4", label = "Nächstes Tab"),
                                               HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                                               HTML(paste0("<b>", "Erklärung:", "</b>")),
-                                              paste0("Ist der p-Wert „klein“, das bedeutet kleiner als ein vorgegebenes Signifikanzniveau
-                                                    im allgemein < 0.05, so lässt sich die Nullhypothese ablehvnen.")
+                                              paste0("Je höher die Fallzahl, desto leichter kann ein Test einen Unterschied erkennen. Dies führt zu kleineren p-Werten")
                              ),
             
             #Output if the answer is wrong
-            conditionalPanel("input.quiz3 !== 'Ein p-Wert < 0.05 ist signifikant'", #the answer is correct
+            conditionalPanel("input.quiz3 !== 'Höherere Fallzahlen führen zu kleineren p-Werten'", #the answer is correct
                               HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>"))
             ) 
             
-        ), #End of the third contitonal panel
+        ), #End of the third conditonal panel
         
         conditionalPanel(
             "input.tabselected == 4",
@@ -247,7 +232,7 @@ ui <- shinyUI(pageWithSidebar(
               value = 200
             ),
             # check box to show the plot for the p values
-            checkboxInput("showvalues", "Einzelne P-Werte anzeigen", value = FALSE, width = NULL),
+            checkboxInput("showvalues", "Einzelne p-Werte anzeigen", value = FALSE, width = NULL),
             actionButton("vorher4", label = "Vorheriges Tab")
         )
     ), #End of the Sidebar Panel
@@ -406,7 +391,7 @@ server = function(input, output, session) {
     
     #Tab only visible after the correct answer
     observeEvent(input$quiz1,{
-      if(input$quiz1 == "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #condition
+      if(input$quiz1 == "Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert" ){  #condition
         insertTab(inputId = "tabselected",                                                      #The tab is inserted here
                   tabPanel(
                     title = "Differenz und Standardabweichung" ,
@@ -425,7 +410,7 @@ server = function(input, output, session) {
                   , target="1", position ="after" )
       }
       
-      if(input$quiz1 != "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert" ){  #condition
+      if(input$quiz1 != "Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert" ){  #condition
         removeTab(inputId = "tabselected",                                                      #Here the tab is cleared if the wrong answer is entered after the correct one
                    target="2" )
       }
@@ -472,7 +457,7 @@ server = function(input, output, session) {
     #Tab only visible after the correct answer is given
     observeEvent(input$quiz2,{
       
-      if(input$quiz2 == "Eine größere Standardabweichung erzeugt einen großen p-Wert" ){
+      if(input$quiz2 == "Eine größere Standardabweichung erzeugt einen größeren p-Wert" ){
         insertTab(inputId = "tabselected",                                                           #Insert tab
                   tabPanel(
                     title = "Differenz, Standardabweichung und Fallzahl",
@@ -491,7 +476,7 @@ server = function(input, output, session) {
                   , target="2", position ="after" )
       }
       
-      if(input$quiz2 != "Eine größere Standardabweichung erzeugt einen großen p-Wert" ){
+      if(input$quiz2 != "Eine größere Standardabweichung erzeugt einen größeren p-Wert" ){
         removeTab(inputId = "tabselected",                                                           #Delete tab if the answer is wrong
                    target="3")
       }
@@ -530,7 +515,7 @@ server = function(input, output, session) {
       #barplot(
       #c(signifikant, nicht_signifikant),
       #ylim = c(0, 1000) ,
-      #main = "Anteil signifikanter P-Werte für 1000 Simulationen",
+      #main = "Anteil signifikanter p-Werte für 1000 Simulationen",
       #xlab = "signifikant/nicht signifikant",
       #ylab = "Anteil",
       #col = c(3, 7)
@@ -545,11 +530,11 @@ server = function(input, output, session) {
       
       bar_df <- data.frame(t_test=c("signifikant", "nicht signifikant"),
                            Anzahl=c(signifikant,nicht_signifikant),
-                           result=c("P-Werte","P-Werte"))
+                           result=c("p-Werte","p-Werte"))
       
       ggplot(data=bar_df, aes(x=result,y=Anzahl,fill=t_test)) +
         geom_bar(stat="identity",width = 0.5) +
-        ggtitle("Anzahl signifikanter P-Werte für 1000 Simulationen")+
+        ggtitle("Anzahl signifikanter p-Werte für 1000 Simulationen")+
         coord_flip()+
         labs(x = "")+
         theme(plot.title = element_text(hjust = 0.5),
