@@ -64,16 +64,16 @@ ui <- shinyUI(pageWithSidebar(
             ),
             #correct answer -> give explanation
             conditionalPanel("input.quiz1 ===  'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'",   #richtige Antwort gegeben
-                             actionButton("Tab2", label = "Nächstes Tab"),
                              HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
                              HTML(paste0("<b>", "Erklärung:", "</b>")),
-                             paste0("Größere Mittelwertunterschiede bzw. stärkere Effekte sind für den Test leichter zu erkennen und führen daher zu kleineren p-Werten."),             
+                             paste0("Größere Mittelwertunterschiede bzw. stärkere Effekte sind für den Test leichter zu erkennen und führen daher zu kleineren p-Werten."),
+                             actionButton("Tab2", label = "Nächstes Tab")
             ),
             #wrong answer 
-            conditionalPanel("input.quiz1 !== 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'",   #richtige Antwort gegeben
+            conditionalPanel("input.quiz1 !== 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert' ",   #richtige Antwort gegeben
                             HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
                               )              
-            
+
         ), #End of the first conditional panel
         
         conditionalPanel(
@@ -113,18 +113,19 @@ ui <- shinyUI(pageWithSidebar(
                 )
             ),
             
-            actionButton("vorher2", label = "Vorheriges Tab"), #Back Button
+
             #correct answer -> give explanation
             conditionalPanel("input.quiz2 === 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'", #the answer is correct
-                             actionButton("Tab3", label = "Nächstes Tab"),
-                             HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
+                             HTML(paste0("<b>", "Richtige Antwort","</b>", "</br>")),
                              HTML(paste0("<b>", "Erklärung:", "</b>")),
-                             paste0("Ein Mittelwertunterschied / ein Effekt ist bei größerer Standartabweichung schwerer für den Test zu erkennen. Dies führt zu einem größeren p-Wert.")              
+                             HTML(paste0("Ein Mittelwertunterschied / ein Effekt ist bei größerer Standartabweichung schwerer für den Test zu erkennen. Dies führt zu einem größeren p-Wert.", "<br>")),
+                             actionButton("Tab3", label = "Nächstes Tab")
             ) ,
             #wrong answer 
             conditionalPanel("input.quiz2 !== 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'", #the answer is correct
                              HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
-            ) 
+            ),
+            actionButton("vorher2", label = "Vorheriges Tab") #Back Button
             
         ), #End of the second conditional panel
         
@@ -174,18 +175,18 @@ ui <- shinyUI(pageWithSidebar(
                 )
             ),
             
-            actionButton("vorher3", label = "Vorheriges Tab"), #Back Button
             #correct answer -> give explanation
             conditionalPanel("input.quiz3 === 'Höherere Fallzahlen führen zu kleineren p-Werten'", #the answer is correct
-                             actionButton("Tab4", label = "Nächstes Tab"),
-                             HTML(paste0("<br>","<b>", "Richtige Antwort","</b>", "</br>")),
+                             HTML(paste0("<b>", "Richtige Antwort","</b>", "</br>")),
                              HTML(paste0("<b>", "Erklärung:", "</b>")),
-                             paste0("Je höher die Fallzahl, desto leichter kann ein Test einen Unterschied erkennen. Dies führt zu kleineren p-Werten")
+                             HTML(paste0("Je höher die Fallzahl, desto leichter kann ein Test einen Unterschied erkennen. Dies führt zu kleineren p-Werten", "<br>")),
+                             actionButton("Tab4", label = "Nächstes Tab")
             ),
             #wrong answer
             conditionalPanel("input.quiz3 !== 'Höherere Fallzahlen führen zu kleineren p-Werten'", #the answer is correct
                               HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>"))
-            ) 
+            ),
+            actionButton("vorher3", label = "Vorheriges Tab") #Back Button
             
         ), #End of the third conditonal panel
         
