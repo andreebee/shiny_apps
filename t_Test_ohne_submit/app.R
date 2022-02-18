@@ -27,9 +27,9 @@ set.seed(2)
 Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
 # for the sake of development
-#def_answer1 <- 'Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert'
-#def_answer2 <- 'Eine größere Standardabweichung erzeugt einen großen p-Wert'
-#def_answer3 <- 'Ein p-Wert < 0.05 ist signifikant'
+#def_answer1 <- 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'
+#def_answer2 <- 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'
+#def_answer3 <- 'Höherere Fallzahlen führen zu kleineren p-Werten'
 def_answer1 <- NULL
 def_answer2 <- NULL
 def_answer3 <- NULL
@@ -71,9 +71,8 @@ ui <- shinyUI(pageWithSidebar(
             ),
             #wrong answer 
             conditionalPanel("input.quiz1 !== 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert' ",   #richtige Antwort gegeben
-                            HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
-                              )              
-
+                             htmlOutput("q1")
+            )
         ), #End of the first conditional panel
         
         conditionalPanel(
@@ -95,7 +94,7 @@ ui <- shinyUI(pageWithSidebar(
                 label = "Standardabweichung",
                 min = 0.1,
                 max = 10,
-                step = 0.1,
+                step = 1,
                 value = 5
             ),
             
@@ -123,7 +122,7 @@ ui <- shinyUI(pageWithSidebar(
             ) ,
             #wrong answer 
             conditionalPanel("input.quiz2 !== 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'", #the answer is correct
-                             HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>")),
+                             htmlOutput("q2")
             ),
             actionButton("vorher2", label = "Vorheriges Tab") #Back Button
             
@@ -148,7 +147,7 @@ ui <- shinyUI(pageWithSidebar(
                 label = "Standardabweichung",
                 min = 0.1,
                 max = 10,
-                step = 0.1,
+                step = 1,
                 value = 5
             ),
             
@@ -184,7 +183,7 @@ ui <- shinyUI(pageWithSidebar(
             ),
             #wrong answer
             conditionalPanel("input.quiz3 !== 'Höherere Fallzahlen führen zu kleineren p-Werten'", #the answer is correct
-                              HTML(paste0("<br>","<b>", "Falsche Antwort","</b>", "</br>"))
+                             htmlOutput("q3")
             ),
             actionButton("vorher3", label = "Vorheriges Tab") #Back Button
             
@@ -209,7 +208,7 @@ ui <- shinyUI(pageWithSidebar(
               label = "Standardabweichung",
               min = 0.1,
               max = 10,
-              step = 0.1,
+              step = 1,
               value = 5
             ),
             
@@ -275,8 +274,8 @@ server = function(input, output, session) {
             ylim(-25, 25) +
             geom_jitter(width = 0.3, alpha = 0.8,aes(colour=factor(Gruppe))) +
             #stat_summary(fun=mean, geom="point",shape="_",size=10,color="red", fill="red")+
-            geom_segment(aes(x=0.75,xend=1.6,y=mean(Gruppe1),yend=mean(Gruppe1)),color="red")+
-            geom_segment(aes(x=1.4,xend=2.25,y=mean(Gruppe2),yend=mean(Gruppe2)),color="blue")        
+            geom_segment(aes(x=0.65,xend=1.35,y=mean(Gruppe1),yend=mean(Gruppe1)),color="red")+
+            geom_segment(aes(x=1.65,xend=2.35,y=mean(Gruppe2),yend=mean(Gruppe2)),color="blue")        
           
     } #End of BoxPlot
     
@@ -306,6 +305,31 @@ server = function(input, output, session) {
     def_n <- reactive({200})
     
     ######################### Define output for individual tabs #####################
+    
+    output$q1 <- renderUI({
+      if(as.character(input$quiz1)==" "){
+        HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
+      } else {
+        HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
+      }
+    })
+    
+    output$q2 <- renderUI({
+      if(as.character(input$quiz2)==""){
+        HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
+      } else {
+        HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
+      }
+    })
+    
+    output$q3 <- renderUI({
+      if(as.character(input$quiz3)==""){
+        HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
+      } else {
+        HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
+      }
+    })
+    
     ##########################for first tab (MW difference)###########################
     output$p1 <- renderUI({
         #using default values for sd and sample size
@@ -579,7 +603,7 @@ server = function(input, output, session) {
     #Tab only visible after the correct answer is given
     observeEvent(input$quiz3,{
       
-      if(input$quiz3 == "Ein p-Wert < 0.05 ist signifikant" ){
+      if(input$quiz3 == "Höherere Fallzahlen führen zu kleineren p-Werten" ){
         insertTab(inputId = "tabselected",                                    #Insert tab
                   tabPanel(
                     title = "Ergebnis",
@@ -596,8 +620,8 @@ server = function(input, output, session) {
                   )#End of TabPanel
                   , target="3", position ="after" )
       }
-      if(input$quiz3 != "Ein p-Wert < 0.05 ist signifikant" ){
-        removeTab(inputId = "tabselected",                                    #Delete tab if the wrong answer is given
+      if(input$quiz3 != "Höherere Fallzahlen führen zu kleineren p-Werten" ){
+        removeTab(inputId = "tabselected",        #Delete tab if the wrong answer is given
                    target="4" )
       }
       
