@@ -45,12 +45,16 @@ shinyServer(function(input, output) {
     }
   }
   
+  output$text <- renderText({
+    session$request$REMOTE_ADDR
+    })
+  
+  
   # to load data
   loadData <- function() {
     if (exists("responses")) {
       datatable(data.frame(
-        responses,
-        row.names = session$request$REMOTE_ADDR
+        responses
         ),
         # to remove search bar
         options = list(dom = 't'))
