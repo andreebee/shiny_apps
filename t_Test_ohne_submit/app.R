@@ -306,6 +306,9 @@ server = function(input, output, session) {
     
     ######################### Define output for individual tabs #####################
     
+    ##########################for first tab (MW difference)###########################
+    
+    # avoid showing wrong answer before selecting a choice
     output$q1 <- renderUI({
       if(as.character(input$quiz1)==" "){
         HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
@@ -314,23 +317,6 @@ server = function(input, output, session) {
       }
     })
     
-    output$q2 <- renderUI({
-      if(as.character(input$quiz2)==""){
-        HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
-      } else {
-        HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
-      }
-    })
-    
-    output$q3 <- renderUI({
-      if(as.character(input$quiz3)==""){
-        HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
-      } else {
-        HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
-      }
-    })
-    
-    ##########################for first tab (MW difference)###########################
     output$p1 <- renderUI({
         #using default values for sd and sample size
         def_sd <- def_sd()
@@ -366,7 +352,16 @@ server = function(input, output, session) {
         updateTabsetPanel(session, "tabselected",
                           selected = "2")
     })
-    
+
+    # avoid showing wrong answer before selecting a choice
+    output$q2 <- renderUI({
+      if(as.character(input$quiz2)==""){
+        HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
+      } else {
+        HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
+      }
+    })    
+        
     output$p2 <- renderUI({
         #using default values for sd and sample size
         def_n <- def_n()
@@ -436,6 +431,15 @@ server = function(input, output, session) {
         updateTabsetPanel(session, "tabselected",
                           selected = "3")
     })
+    
+    # avoid showing wrong answer before selecting a choice
+    output$q3 <- renderUI({
+      if(as.character(input$quiz3)==""){
+        HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
+      } else {
+        HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
+      }
+    })    
     
     output$p3 = renderUI({
         #set seed to generate same random values
