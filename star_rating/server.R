@@ -8,6 +8,7 @@
 #
 
 library(shiny)
+library(DT)
 
 # Define the fields we want to save from the form
 fields <- c("name","n_stars")
@@ -45,11 +46,6 @@ shinyServer(function(input, output) {
     }
   }
   
-  output$text <- renderText({
-    session$request$REMOTE_ADDR
-    })
-  
-  
   # to load data
   loadData <- function() {
     if (exists("responses")) {
@@ -74,7 +70,7 @@ shinyServer(function(input, output) {
   
   # Show the previous responses
   # (update with current response when Submit is clicked)
-  output$responses <- DT::renderDataTable({
+  output$responses <- renderDataTable({
     input$submit
     loadData()
   })
