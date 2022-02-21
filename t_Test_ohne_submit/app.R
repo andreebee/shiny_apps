@@ -559,7 +559,7 @@ server = function(input, output, session) {
               aspect.ratio = 0.2,
               axis.text.y = element_blank(),axis.ticks.y = element_blank()) +
         guides(fill=guide_legend(reverse=T,title="Ergebnis t-Test")) +
-        scale_fill_manual(values=c("#fae9b4","#84f86d"))
+        scale_fill_manual(values=c("#fad784","#84f86d"))
     })
     
     output$pvalues = renderPlot({
@@ -589,10 +589,10 @@ server = function(input, output, session) {
         geom_point() +
         geom_hline(yintercept = 0.05,color="black")+
         scale_y_continuous(breaks=sort(c(seq(from=0,to=1,by=0.25), 0.05)), limits = c(0, 1)) +
-        labs(x = "Test") +
-        ggtitle("Test") +
+        labs(x = "Simulation") +
+        ggtitle("Einzelne p-Werte") +
         guides(color=guide_legend(reverse=T,title="Ergebnis t-Test")) +
-        scale_color_manual(values=c("#fae9b4","#84f86d"))
+        scale_color_manual(values=c("#fad784","#84f86d"))
       }
       else {}
       
