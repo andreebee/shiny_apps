@@ -15,7 +15,8 @@
 # Antwort1_1 = "Die Änderung der Differenz des Mittelwertes hat keine Auswirkung"
 # Antwort1_2 = "Eine größe Differenz der Mittelwerte erzeugt einen großen p-Wert"
 # Antwort1_3_R = "Eine kleine Differenz der Mittelwerte erzeugt einen großen p-Wert"
-#   
+
+# It is important not to have same wording for the right answer of different question  
 
 library(shiny)
 library(ggplot2)
@@ -27,12 +28,12 @@ set.seed(2)
 Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
 # for the sake of development
-#def_answer1 <- 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'
-#def_answer2 <- 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'
-#def_answer3 <- 'Höherere Fallzahlen führen zu kleineren p-Werten'
-def_answer1 <- NULL
-def_answer2 <- NULL
-def_answer3 <- NULL
+def_answer1 <- 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'
+def_answer2 <- 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'
+def_answer3 <- 'Höherere Fallzahlen führen zu kleineren p-Werten'
+#def_answer1 <- NULL
+#def_answer2 <- NULL
+#def_answer3 <- NULL
 
 ui <- shinyUI(pageWithSidebar(
     headerPanel("Zweiseitiger t-Test"),
@@ -275,7 +276,12 @@ server = function(input, output, session) {
             geom_jitter(width = 0.3, alpha = 0.8,aes(colour=factor(Gruppe))) +
             #stat_summary(fun=mean, geom="point",shape="_",size=10,color="red", fill="red")+
             geom_segment(aes(x=0.65,xend=1.35,y=mean(Gruppe1),yend=mean(Gruppe1)),color="red")+
-            geom_segment(aes(x=1.65,xend=2.35,y=mean(Gruppe2),yend=mean(Gruppe2)),color="blue")        
+            geom_segment(aes(x=1.65,xend=2.35,y=mean(Gruppe2),yend=mean(Gruppe2)),color="blue")+
+            geom_text(aes(x=0.6, y=mean(Gruppe1),
+                          label = "Erwartungswert \n Gruppe 1"),colour="#F8766D") +
+            geom_text(aes(x=2.4, y=mean(Gruppe2),
+                          label = "Erwartungswert \n Gruppe 2"),colour="#00BFC4")
+                       
           
     } #End of BoxPlot
     

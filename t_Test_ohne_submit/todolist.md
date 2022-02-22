@@ -8,6 +8,7 @@
 **Andre Feb 18, 2022:** Looks good. Please check start and endpoint again, seems to be moved in my case: Horizontal lines should be symmetric wrt. vertical lines within groups.  
 **Behzad Feb 19, 2022:** Done.  
 **Andre Feb 21, 2022:**  Add "Erwartungswert Gruppe 1" on the left and right side of the lines  
+**Behzad Feb 22, 2022:** Done.  
 
 2a. It is not clear what happens when you change the difference. Do you only shift the existing sample? It looks like it, but sometimes the data shifts up, but the box seems to move down.  
 - Test it to avoid this.  
@@ -16,6 +17,7 @@
 **Andre Feb 18, 2022:**  can we make steps in sd larger (e.g. by 1) to avoid  this or make it less likely?  
 **Behzad Feb 19, 2022:** Done.  
 **Andre Feb 21, 2022:**  will talk to Martin  
+**Behzad Feb 22, 2022:** max: 9 per group!  
 
 2b. I assume the difference is the difference of the theoretical normal distributions?  
 - Yes, reformulate: Differenz der Erwartungswerte zweier Populationen + Effekt der.  
@@ -55,6 +57,7 @@
 **Behzad Feb 15, 2022:** Done.  
 
 9. Update documentation regarding not having same wording for the right answer of different questions  
+**Behzad Feb 22, 2022:** ?  
 
 # Short term To do:
 
