@@ -72,6 +72,6 @@
 -	create a score for correct answers, give back at last tab  
 **Andre Feb 21, 2022:**  ?  
 -	integrate with moodle, so we can see the results for each student  
-**Andre Feb 21, 2022:**  ?  nly questions and the third tab  
+**Andre Feb 21, 2022:**  ?  only questions and the third tab  
 -	add star rating for the app  
 **Andre Feb 21, 2022:**  change the slider, start from 1 and only integer, only one submission should be possible and save the submissions on dropbox    
