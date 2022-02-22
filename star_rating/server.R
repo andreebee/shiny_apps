@@ -10,6 +10,7 @@
 library(shiny)
 library(DT)
 library(rdrop2)
+library(digest)
 
 # Define the fields we want to save from the form
 fields <- c("n_stars")
@@ -64,7 +65,7 @@ shinyServer(function(input, output) {
   saveData <- function(data) {
     data <- t(data)
     # Create a unique file name
-    fileName <- sprintf("%s_%s.csv", as.integer(Sys.time()), digest::digest(data))
+    fileName <- sprintf("%s_%s.csv", as.integer(Sys.time()), digest(data))
     # Write the data to a temporary file locally
     filePath <- file.path(tempdir(), fileName)
     write.csv(data, filePath, row.names = FALSE, quote = TRUE)

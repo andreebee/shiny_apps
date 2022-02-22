@@ -9,6 +9,8 @@
 
 library(shiny)
 library(DT)
+library(rdrop2)
+library(digest)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -40,9 +42,10 @@ shinyUI(fluidPage(
       uiOutput("submit")
     ),
     
-    # Show a plot of the generated distribution
     mainPanel(
+      # Show a plot of the generated distribution
       plotOutput("distPlot"),
+      # ratings
       dataTableOutput("responses", width = 300), tags$hr()
     )
   )
