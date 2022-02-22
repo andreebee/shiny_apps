@@ -100,6 +100,6 @@ shinyServer(function(input, output) {
   output$responses <- renderDataTable({
     input$submit
     loadData()
-  })
+  },options = list(dom = 't'))
 
 })
