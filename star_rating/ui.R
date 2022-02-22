@@ -25,19 +25,19 @@ shinyUI(fluidPage(
                   max = 50,
                   value = 30),
       
-      # name
-      textInput("name","Name"),
-      
       # rate the app
       includeCSS("www/stars.css"),
-      sliderInput(inputId = "n_stars", label = "Ratings", min = 0,  max = 5, value = 3, step = 0.5),
+      
+      # to rate using slider input
+      uiOutput("n_stars"),
+      
       tags$div(class = "ratings",
-               tags$div(class = "empty-stars",
-                        uiOutput("stars_ui")
-               )
+      tags$div(class = "empty-stars",
+             uiOutput("stars_ui")
+      )
       ),
       # to save the rating
-      actionButton("submit", "Submit")
+      uiOutput("submit")
     ),
     
     # Show a plot of the generated distribution

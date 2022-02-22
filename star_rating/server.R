@@ -11,10 +11,31 @@ library(shiny)
 library(DT)
 
 # Define the fields we want to save from the form
-fields <- c("name","n_stars")
+fields <- c("n_stars")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+  
+  hide <- reactiveVal(0)
+  
+  observeEvent(input$submit, {
+    hide(hide() + 1)
+  })
+  
+    output$n_stars <- renderUI({
+      if(hide()==0){
+        sliderInput(inputId = "n_stars", label = "Ratings",
+                    min = 1,  max = 5, value = 3, step = 1)   
+      }
+    })
+    
+    output$submit <- renderUI({
+      if(hide()==0){
+        actionButton("submit", "Submit")   
+      } else {
+        HTML(paste("<b>","Thank you!","</b>"))
+      }
+    })
   
   output$distPlot <- renderPlot({
     
