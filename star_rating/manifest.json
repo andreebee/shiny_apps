@@ -2083,14 +2083,8 @@
     }
   },
   "files": {
-    ".httr-oauth": {
-      "checksum": "332978609a02d15311f22fb24270518d"
-    },
-    "droptoken.rds": {
-      "checksum": "c12d5d3d1a60b3528649d3a8b4e83ed0"
-    },
     "server.R": {
-      "checksum": "349a1469e6df1c585c647a5466a1ef5a"
+      "checksum": "1dea8cf217272c60dda7f14246ad7e0e"
     },
     "ui.R": {
       "checksum": "ccc486012552616d23cc5e33f168fc57"
