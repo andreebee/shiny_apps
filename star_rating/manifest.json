@@ -2083,6 +2083,12 @@
     }
   },
   "files": {
+    ".httr-oauth": {
+      "checksum": "332978609a02d15311f22fb24270518d"
+    },
+    "droptoken.rds": {
+      "checksum": "c12d5d3d1a60b3528649d3a8b4e83ed0"
+    },
     "server.R": {
       "checksum": "1dea8cf217272c60dda7f14246ad7e0e"
     },
