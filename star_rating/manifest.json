@@ -2083,11 +2083,14 @@
     }
   },
   "files": {
-    "server.R": {
-      "checksum": "421ed1ff81a613f0a8a0c65007c9e94d"
+    ".httr-oauth": {
+      "checksum": "332978609a02d15311f22fb24270518d"
     },
-    "token.rds": {
-      "checksum": "18757ab2e86380c1ebbf5897aaa46599"
+    "droptoken.rds": {
+      "checksum": "c12d5d3d1a60b3528649d3a8b4e83ed0"
+    },
+    "server.R": {
+      "checksum": "349a1469e6df1c585c647a5466a1ef5a"
     },
     "ui.R": {
       "checksum": "ccc486012552616d23cc5e33f168fc57"

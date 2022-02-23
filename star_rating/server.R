@@ -58,11 +58,10 @@ shinyServer(function(input, output) {
     style_value <- sprintf("width:%s%%", n_fill)
     tags$div(class = "full-stars", style = style_value)
   })
-  
-  token <- readRDS("token.rds")
 
   # to save data
   saveData <- function(data) {
+    token <- readRDS("droptoken.rds")
     data <- t(data)
     # Create a unique file name
     fileName <- sprintf("%s_%s.csv", as.integer(Sys.time()), digest(data))
@@ -75,6 +74,7 @@ shinyServer(function(input, output) {
   
   # to load data
   loadData <- function() {
+    token <- readRDS("droptoken.rds")
     # Read all the files into a list
     filesInfo <- drop_dir("shinyapp")
     filePaths <- filesInfo$path_display
