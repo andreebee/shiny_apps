@@ -23,7 +23,6 @@ shinyServer(function(input, output) {
   observeEvent(input$submit, {
     hide(hide() + 1)
   })
-  
     output$n_stars <- renderUI({
       if(hide()==0){
         sliderInput(inputId = "n_stars", label = "Ratings",
@@ -40,14 +39,11 @@ shinyServer(function(input, output) {
     })
   
   output$distPlot <- renderPlot({
-    
     # generate bins based on input$bins from ui.R
     x    <- faithful[, 2]
     bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
     # draw the histogram with the specified number of bins
     hist(x, breaks = bins, col = 'darkgray', border = 'white')
-    
   })
 
   # to show the stars
@@ -69,16 +65,16 @@ shinyServer(function(input, output) {
     filePath <- file.path(tempdir(), fileName)
     write.csv(data, filePath, row.names = FALSE, quote = TRUE)
     # Upload the file to Dropbox
-    drop_upload(filePath, path = "shinyapp")
+    drop_upload(dtoken=token,filePath, path = "shinyapp")
   }
   
   # to load data
   loadData <- function() {
     token <- readRDS("droptoken.rds")
     # Read all the files into a list
-    filesInfo <- drop_dir("shinyapp")
+    filesInfo <- drop_dir(dtoken=token,"shinyapp")
     filePaths <- filesInfo$path_display
-    data <- lapply(filePaths, drop_read_csv, stringsAsFactors = FALSE)
+    data <- lapply(filePaths, drop_read_csv,dtoken=token, stringsAsFactors = FALSE)
     # Concatenate all data together into one data.frame
     data <- do.call(rbind, data)
     data
