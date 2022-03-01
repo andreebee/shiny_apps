@@ -76,6 +76,9 @@ ui <- fluidPage(
           value=0,
           min=0, 
           max=maxPercentage),
+        checkboxInput("outlier",
+                      "Ausreißer mit 1 Milliarde US-Dollar Jahresgehalt hinzufügen",
+                      value = FALSE),
         style="margin-top:-36px;")
     ),
   ),
@@ -86,22 +89,27 @@ ui <- fluidPage(
 
 
 server <- function(input, output) {
+  
   set.seed(10)
   
   # Histogram
   output$plot <-  renderPlot({
     rowsToKeep <- getRowsToKeep(input$percentage)
     filteredData <- rbind(incomes, tail(upIncomes, rowsToKeep))
-    
-    # Calculates and creates the label for the mean value to be 
+      
+    # Calculates and creates the label for the mean and median value to be 
     # displayed in the legend.
-    meanValue <- mean(filteredData$TotalPay, na.rm =T) 
-    meanAnnotation <- paste('Mittelwert (', formatNumK(meanValue), ')')  
-    
-    # Calculates and creates the label for the median value to be 
-    # displayed in the legend.
-    medianValue <- median(filteredData$TotalPay, na.rm =T)
-    medianAnnotation <- paste('Median (', formatNumK(medianValue), ')')
+    if(input$outlier == TRUE){
+      # with adding 1 billion as an outlier to the values
+      meanValue <- mean(c(filteredData$TotalPay,1e9), na.rm =T)
+      medianValue <- median(c(filteredData$TotalPay,1e9), na.rm =T)
+    } else if (input$outlier == FALSE) {
+      # without adding 1 billion as an outlier to the values
+      meanValue <- mean(filteredData$TotalPay, na.rm =T)
+      medianValue <- median(filteredData$TotalPay, na.rm =T)
+    } else {NULL}
+      meanAnnotation <- paste('Mittelwert (', formatNumK(meanValue), ')')  
+      medianAnnotation <- paste('Median (', formatNumK(medianValue), ')')
     
     ggplot(filteredData, aes(x=TotalPay)) +
       
@@ -167,7 +175,7 @@ server <- function(input, output) {
       ) 
       
   }) %>% 
-    bindCache(input$percentage)
+    bindCache(input$percentage,input$outlier)
 }
 
 shinyApp(ui = ui, server = server)

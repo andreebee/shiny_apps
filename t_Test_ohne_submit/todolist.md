@@ -68,7 +68,7 @@ Behzad Feb 19, 2022: Done, It was because of changing the right answers only in 
 11. Long term To do:  
 -	create a score for correct answers, give back at last tab  
 Behzad Feb 21, 2022:**  Done.  
-**Andre March 1, 2022:** Change the scoring calculation: for each question user gain 1 only if they answer correctly at their first attempt.  
+**Andre March 1, 2022:** Change the scoring calculation: for each question user gain 1 only if they answer correctly at their first attempt. And add a readme file  
 
 -	integrate with moodle, so we can see the results for each student  
 **Andre Feb 21, 2022:**  Only questions and the third tab.  
