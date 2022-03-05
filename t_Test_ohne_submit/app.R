@@ -28,12 +28,12 @@ set.seed(2)
 Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
 # for the sake of development
-def_answer1 <- 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'
-def_answer2 <- 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'
-def_answer3 <- 'Höherere Fallzahlen führen zu kleineren p-Werten'
-#def_answer1 <- NULL
-#def_answer2 <- NULL
-#def_answer3 <- NULL
+#def_answer1 <- 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'
+#def_answer2 <- 'Eine größere Standardabweichung erzeugt einen größeren p-Wert'
+#def_answer3 <- 'Höherere Fallzahlen führen zu kleineren p-Werten'
+def_answer1 <- NULL
+def_answer2 <- NULL
+def_answer3 <- NULL
 
 ui <- shinyUI(pageWithSidebar(
     headerPanel("Zweiseitiger t-Test"),
