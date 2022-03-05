@@ -16,7 +16,7 @@ library(digest)
 fields <- c("n_stars")
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+server <- function(input, output, session) {
   
   hide <- reactiveVal(0)
   
@@ -55,9 +55,13 @@ shinyServer(function(input, output) {
     tags$div(class = "full-stars", style = style_value)
   })
 
+  token <- reactive({
+    readRDS("droptoken.rds")
+  })
+  
   # to save data
   saveData <- function(data) {
-    token <- readRDS("droptoken.rds")
+    token <- token()
     data <- t(data)
     # Create a unique file name
     fileName <- sprintf("%s_%s.csv", as.integer(Sys.time()), digest(data))
@@ -65,13 +69,15 @@ shinyServer(function(input, output) {
     filePath <- file.path(tempdir(), fileName)
     write.csv(data, filePath, row.names = FALSE, quote = TRUE)
     # Upload the file to Dropbox
+    drop_acc(dtoken = token)
     drop_upload(dtoken=token,filePath, path = "shinyapp")
   }
   
   # to load data
   loadData <- function() {
-    token <- readRDS("droptoken.rds")
+    token <- token()
     # Read all the files into a list
+    drop_acc(dtoken = token)
     filesInfo <- drop_dir(dtoken=token,"shinyapp")
     filePaths <- filesInfo$path_display
     data <- lapply(filePaths, drop_read_csv,dtoken=token, stringsAsFactors = FALSE)
@@ -97,5 +103,5 @@ shinyServer(function(input, output) {
     input$submit
     loadData()
   })
-
-})
+  
+}

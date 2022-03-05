@@ -13,7 +13,7 @@ library(rdrop2)
 library(digest)
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
+ui <- fluidPage(
   
   # Application title
   titlePanel("Old Faithful Geyser Data"),
@@ -43,14 +43,14 @@ shinyUI(fluidPage(
     ),
     
     mainPanel(
-      # Show a plot of the generated distribution
-      plotOutput("distPlot"),
-      # ratings
-      dataTableOutput("responses", width = 300), tags$hr()
+      tabsetPanel(
+        type = "tabs",
+        # Show a plot of the generated distribution
+        tabPanel("Plot", plotOutput("distPlot")),
+        # ratings
+        tabPanel("Table", dataTableOutput("responses", width = 300), tags$hr())
     )
   )
   
-  
-    
-  
-))
+  ) 
+)
