@@ -63,7 +63,7 @@ server = function(input, output, session) {
       insertTab(inputId = "tabselected",    #The tab is inserted here
                 tabPanel(
                   title = "Title2",
-                  titlePanel("Title22"),
+                  titlePanel("Title2"),
                   value = "2",       #Sidebar 2 is displayed
                   
                   "Explanation2.",
@@ -104,7 +104,7 @@ server = function(input, output, session) {
       insertTab(inputId = "tabselected",    #The tab is inserted here
                 tabPanel(
                   title = "Title3",
-                  titlePanel("Title33"),
+                  titlePanel("Title3"),
                   value = "3",       #Sidebar 3 is displayed
                   
                   "Explanation3.",
@@ -140,7 +140,7 @@ server = function(input, output, session) {
       insertTab(inputId = "tabselected",           #Insert tab
                 tabPanel(
                   title = "Title4",
-                  titlePanel("Title44"),
+                  titlePanel("Title4"),
                   value = "4", #Sidebar 4 is displayed
                   
                   "You have answered all the questions correctly.",
@@ -156,24 +156,29 @@ server = function(input, output, session) {
   })
   
   #  Defining & initializing the reactiveValues object
-  counter <- reactiveValues(countervalue = -1)
+  attempts <- reactiveValues(a_q1 = -1, a_q2 = -1, a_q3 = -1)
+  scores <- reactiveValues(s_q1 = 0, s_q2 = 0, s_q3 = 0)
+  # add 1 to the attempt counter when user answers a question
+  # set 1 for the score if users answers correctly at their first attempt
+  observeEvent(input$quiz1, {
+    attempts$a_q1 <- attempts$a_q1 + 1
+    if (input$quiz1 == "statementn1" & attempts$a_q1 == 1){scores$s_q1 <- 1}})
+  observeEvent(input$quiz2, {
+    attempts$a_q2 <- attempts$a_q2 + 1
+    if (input$quiz2 == "statementn2" & attempts$a_q2 == 1){scores$s_q2 <- 1}})
+  observeEvent(input$quiz3, {
+    attempts$a_q3 <- attempts$a_q3 + 1
+    if (input$quiz3 == "statementn3" & attempts$a_q3 == 1){scores$s_q3 <- 1}})
   
-  # list of the events to change the counter
-  toListen <- reactive({
-    list(input$quiz1,input$quiz2,input$quiz3)
-  })
-  
-  # add 1 to the counter when user answers a question
-  observeEvent(toListen(), {
-    counter$countervalue <- counter$countervalue + 1
-    })
-  
-  # calculating the number of wrong answers
+  # score table
   output$score <- renderDataTable({
     score_df <- datatable(
       data.frame(
-        ForAllQuestions=counter$countervalue-3,
-        row.names = 'number of wrong answers'
+        Question1 = scores$s_q1,
+        Question2 = scores$s_q2,
+        Question3 = scores$s_q3,
+        TotalScore = scores$s_q1 + scores$s_q2 + scores$s_q3,
+        row.names = 'score out of 3:'
         ),
       options = list(dom = 't'))
   })

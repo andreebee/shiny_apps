@@ -133,7 +133,7 @@ ui <- shinyUI(pageWithSidebar(
       
       tabPanel(
         title = "Title1",
-        titlePanel("Title11"),
+        titlePanel("Title1"),
         value = "1",    #Sidebar 1 is displayed, Value in " " so that you can jump to the next tab
         
         "Explanation1.",
