@@ -164,7 +164,8 @@ while ((round(mean(Gruppe1),3) != round(mean(Gruppe2),3)) | (round(sd(Gruppe1),3
   Gruppe2 <- rnorm(n=250,m=0,sd=1)
   seed_2 <- seed_2 + 1 
 }
-print(seed_2)
+
+print(seed_2-1)
 
 # g1_attach <- {}
 # j <- 1
@@ -209,6 +210,9 @@ sd(Gruppe2)
 
 write.csv(Gruppe1,"t_Test_ohne_submit/Gruppe1.csv", row.names = FALSE)
 write.csv(Gruppe2,"t_Test_ohne_submit/Gruppe2.csv", row.names = FALSE)
+
+Gruppe1 <- read.csv("t_Test_ohne_submit/Gruppe1.csv")$x
+Gruppe2 <- read.csv("t_Test_ohne_submit/Gruppe2.csv")$x
 
 p_val <- function(a,b,c) {
   t.test((Gruppe1[1:c]*b),(Gruppe2[1:c]*b+a), alternative = "two.sided")$p.value }
