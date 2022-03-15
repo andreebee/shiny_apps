@@ -5,9 +5,9 @@ library("tidyverse")
 # visualization ################################################################
 
 set.seed(1)
-Gruppe1 <- rnorm(1250)   
+Gruppe1 <- rnorm(1000)   
 set.seed(2)
-Gruppe2 <- rnorm(1250)
+Gruppe2 <- rnorm(1000)
 
 p_val <- function(a,b,c) {
   t.test((Gruppe1[1:c]*b),(Gruppe2[1:c]*b+a), alternative = "two.sided")$p.value }
@@ -15,9 +15,9 @@ p_val <- function(a,b,c) {
 p_val(1,5,200)
 
 variables <- list(
-  d = seq(0,10,0.5),
-  sd = seq(1,20,1),
-  n = seq(100,1250,1)
+  d = seq(0,2,0.1),
+  sd = c(0.1,seq(1,10,1)),
+  n = seq(50,1000,1)
   )
 df <- expand.grid(variables)
 
