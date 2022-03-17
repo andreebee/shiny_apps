@@ -7,7 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
-install.packages("RMySQL")
+if (!require("RMySQL")) install.packages("RMySQL")
 
 library(shiny)
 library(DT)
