@@ -7,6 +7,8 @@
 #    http://shiny.rstudio.com/
 #
 
+install.packages("RMySQL")
+
 library(shiny)
 library(DT)
 library(rdrop2)
