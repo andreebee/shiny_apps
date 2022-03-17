@@ -11,7 +11,6 @@ library(shiny)
 library(DT)
 library(rdrop2)
 library(digest)
-library(odbc)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
