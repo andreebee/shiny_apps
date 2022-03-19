@@ -59,7 +59,7 @@ ui <- shinyUI(pageWithSidebar(
                 inputId = "quiz1",
                 label = "Welche Aussage stimmt?",
                 selected = def_answer1,
-                choices = c(" ","Die Änderung der Differenz des Mittelwertes hat keine Auswirkung",
+                choices = c("","Die Änderung der Differenz des Mittelwertes hat keine Auswirkung",
                             "Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert",
                             "Eine größere Differenz der Mittelwerte erzeugt einen größeren p-Wert"     )
             ),
@@ -179,7 +179,7 @@ ui <- shinyUI(pageWithSidebar(
             conditionalPanel("input.quiz3 === 'Höherere Fallzahlen führen zu kleineren p-Werten'", #the answer is correct
                              HTML(paste0("<b>", "Richtige Antwort","</b>", "</br>")),
                              HTML(paste0("<b>", "Erklärung:", "</b>")),
-                             HTML(paste0("Je höher die Fallzahl, desto leichter kann ein Test einen Unterschied erkennen. Dies führt zu kleineren p-Werten", "<br>")),
+                             HTML(paste0("Je höher die Fallzahl, desto leichter kann ein Test einen Unterschied erkennen. Dies führt zu kleineren p-Werten.", "<br>")),
                              actionButton("Tab4", label = "Nächstes Tab")
             ),
             #wrong answer
@@ -316,7 +316,7 @@ server = function(input, output, session) {
     
     # avoid showing wrong answer before selecting a choice
     output$q1 <- renderUI({
-      if(as.character(input$quiz1)==" "){
+      if(as.character(input$quiz1)==""){
         HTML(paste0("<br>","<b>","Bitte treffen Sie eine Auswahl","</b>", "</br>"))
       } else {
         HTML(paste0("<br>","<b>","Falsche Antwort","</b>", "</br>"))
