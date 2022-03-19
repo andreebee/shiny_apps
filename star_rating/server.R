@@ -11,6 +11,7 @@ library(shiny)
 library(DT)
 library(rdrop2)
 library(digest)
+library(RMySQL)
 
 # Define the fields we want to save from the form
 fields <- c("n_stars")
@@ -82,7 +83,7 @@ server <- function(input, output, session) {
   # to save data on sql
   saveData <- function(data) {
     # Connect to the database
-    db <- dbConnect(RMySQL::MySQL(), dbname = "sql11479738", host = mysql$host, 
+    db <- dbConnect(MySQL(), dbname = "sql11479738", host = mysql$host, 
                     port = mysql$port, user = mysql$user, 
                     password = mysql$password)
     # Construct the update query by looping over the data fields
@@ -113,7 +114,7 @@ server <- function(input, output, session) {
   # to load data from sql
   loadData <- function() {
     # Connect to the database
-    db <- dbConnect(RMySQL::MySQL(), dbname = "sql11479738", host = mysql$host, 
+    db <- dbConnect(MySQL(), dbname = "sql11479738", host = mysql$host, 
                     port = mysql$port, user = mysql$user, 
                     password = mysql$password)
     # Construct the fetching query
