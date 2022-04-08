@@ -18,7 +18,7 @@ Behzad Feb 19, 2022: Done, It was because of changing the right answers only in 
  
 3. integrate with moodle, so we can see the results for each student  
 Andre March 8, 2022:  3rd tab of the app without questions as a new version embedded in moodle, and having questions in the moodle.  
-**Behzad April 5, 2022:** It does not look nice in moodle.  
+**Behzad April 8, 2022:** Done.  
 
 4. add star rating for the app  
 Andre Feb 21, 2022:  change the slider, start from 1 and only integer, only one submission should be possible and save the submissions on dropbox  
