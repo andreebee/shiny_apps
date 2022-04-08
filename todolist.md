@@ -1,17 +1,6 @@
 # To do:  
 
-1. It is not clear what happens when you change the difference. Do you only shift the existing sample? It looks like it, but sometimes the data shifts up, but the box seems to move down.  
-- Test it to avoid this.  
-- Try test packages for shiny apps.  
-Behzad Feb 15, 2022: For each combination of: difference, standard deviation and sample size, I calculated the p-value, and save them in a dataset. unfortunately even for the same sample size and difference it is possible that increasing the sd leads to a lower p value!  
-Andre Feb 18, 2022:  can we make steps in sd larger (e.g. by 1) to avoid  this or make it less likely?  
-Behzad Feb 19, 2022: Done.  
-Andre Feb 21, 2022:  will talk to Martin  
-Behzad Feb 22, 2022: max: 9 per group!  
-Andre March 1, 2022:  Add actual mean and sd and visualization to investigate the reason and find relevant combinations.  
-**Andre March 8, 2022:**  Try different seeds and large step for sample size  
-
-2. We do not understand the bar chart about the probabilities of significant p-values  
+1. We do not understand the bar chart about the probabilities of significant p-values  
 - Anzahl -> Anteil, remove yellow chart, title: Anteil signifikanter P-Werte für 1000 Simulationen, maybe transpose figure so scale is horizontally, maybe move to next tab? Explain simulation idea  
 - Removing p value on y and change the order in the legend  
 - Moving it to a new tab and adding a check box to add to the bar chart the p values > Checkbox: Einzelne P-Werte anzeigen  
@@ -20,19 +9,25 @@ Andre Feb 18, 2022: I cannot see the checkbox and I cannot access the 4th tab.
 Behzad Feb 19, 2022: Done, It was because of changing the right answers only in the UI.  
 **Andre March 1, 2022:** will add explanation for the 4th tab.  
 
-3. 
+2. 
 -	sketch tab zero (Andre).  
 -	think of having one tail test instead if 2-sided (Andre).  
 -	Add tab 0 about not difference.  
 -	explain that we talk about diff of population (Andre).  
 **Andre March 1, 2022:** will find an example to give users the chance to have better understanding  
  
-4. integrate with moodle, so we can see the results for each student  
-**Andre March 8, 2022:**  3rd tab of the app without questions as a new version embedded in moodle, and having questions in the moodle.  
+3. integrate with moodle, so we can see the results for each student  
+Andre March 8, 2022:  3rd tab of the app without questions as a new version embedded in moodle, and having questions in the moodle.  
+**Behzad April 5, 2022:** It does not look nice in moodle.  
 
-5. add star rating for the app  
+4. add star rating for the app  
 Andre Feb 21, 2022:  change the slider, start from 1 and only integer, only one submission should be possible and save the submissions on dropbox  
-**Andre March 8, 2022:** find a better way to save submissions, use rconnect    
+Andre March 8, 2022: find a better way to save submissions, use rconnect    
+**Behzad April 5, 2022:** I could not find a free PostgreSQL. Sql does not work on rConnect and dropbox is too slow.   
+
+5. add a zero tab A to the t-test app, showing different combination with plat button  
+
+6. add a zero tab B to the t-test app, showing one sample from each population without slider inputs  
 
 # Done:  
 
@@ -78,3 +73,15 @@ Andre Feb 18, 2022: Done. I simplified the formulations of the choices and expla
 Behzad Feb 21, 2022:  Done.  
 Andre March 1, 2022: Change the scoring calculation: for each question user gain 1 only if they answer correctly at their first attempt. And add a readme file  
 **Behzad March 8, 2022:**  Done.  
+
+10. It is not clear what happens when you change the difference. Do you only shift the existing sample? It looks like it, but sometimes the data shifts up, but the box seems to move down.  
+- Test it to avoid this.  
+- Try test packages for shiny apps.  
+Behzad Feb 15, 2022: For each combination of: difference, standard deviation and sample size, I calculated the p-value, and save them in a dataset. unfortunately even for the same sample size and difference it is possible that increasing the sd leads to a lower p value!  
+Andre Feb 18, 2022:  can we make steps in sd larger (e.g. by 1) to avoid  this or make it less likely?  
+Behzad Feb 19, 2022: Done.  
+Andre Feb 21, 2022:  will talk to Martin  
+Behzad Feb 22, 2022: max: 9 per group!  
+Andre March 1, 2022:  Add actual mean and sd and visualization to investigate the reason and find relevant combinations.  
+Andre March 8, 2022:  Try different seeds and large step for sample size  
+**Behzad April 5, 2022:** Done! by creating samples with 50 data points with same mean and std.  
