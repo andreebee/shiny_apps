@@ -10,8 +10,8 @@
 library(shiny)
 library(DT)
 library(rdrop2)
-library(digest)
-library(RMySQL)
+#library(digest)
+#library(RMySQL)
 
 # Define the fields we want to save from the form
 fields <- c("n_stars")
