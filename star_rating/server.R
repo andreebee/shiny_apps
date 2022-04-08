@@ -56,74 +56,82 @@ server <- function(input, output, session) {
     tags$div(class = "full-stars", style = style_value)
   })
 
-  # # dropbox token
-  # token <- reactive({
-  #   readRDS("droptoken.rds")
-  # })
+# using dropbox to save and load users ratings #################################  
   
-  # # to save data on dropbox
-  # saveData <- function(data) {
-  #   token <- token()
-  #   data <- t(data)
-  #   # Create a unique file name
-  #   fileName <- sprintf("%s_%s.csv", as.integer(Sys.time()), digest(data))
-  #   # Write the data to a temporary file locally
-  #   filePath <- file.path(tempdir(), fileName)
-  #   write.csv(data, filePath, row.names = FALSE, quote = TRUE)
-  #   # Upload the file to Dropbox
-  #   drop_acc(dtoken = token)
-  #   drop_upload(dtoken=token,filePath, path = "shinyapp")
-  # }
+  # dropbox token
+  token <- reactive({
+    readRDS("droptoken.rds")
+  })
   
-  mysql <- reactiveValues("host" = "sql11.freesqldatabase.com",
-                          "port" = 3306,
-                          "user" = "sql11479738",
-                          "password" = "gnZSKvIxXT")
-  
-  # to save data on sql
+  # to save data on dropbox
   saveData <- function(data) {
-    # Connect to the database
-    db <- dbConnect(MySQL(), dbname = "sql11479738", host = mysql$host, 
-                    port = mysql$port, user = mysql$user, 
-                    password = mysql$password)
-    # Construct the update query by looping over the data fields
-    query <- sprintf(
-      "INSERT INTO %s (%s) VALUES ('%s')",
-      "responses", 
-      paste(names(data), collapse = ", "),
-      paste(data, collapse = "', '")
-    )
-    # Submit the update query and disconnect
-    dbGetQuery(db, query)
-    dbDisconnect(db)
+    token <- token()
+    data <- t(data)
+    # Create a unique file name
+    fileName <- sprintf("%s_%s.csv", as.integer(Sys.time()), digest(data))
+    # Write the data to a temporary file locally
+    filePath <- file.path(tempdir(), fileName)
+    write.csv(data, filePath, row.names = FALSE, quote = TRUE)
+    # Upload the file to Dropbox
+    drop_acc(dtoken = token)
+    drop_upload(dtoken=token,filePath, path = "shinyapp")
   }
   
-  # # to load data from dropbox
+  # to load data from dropbox
+  loadData <- function() {
+    token <- token()
+    # Read all the files into a list
+    drop_acc(dtoken = token)
+    filesInfo <- drop_dir(dtoken=token,"shinyapp")
+    filePaths <- filesInfo$path_display
+    data <- lapply(filePaths, drop_read_csv,dtoken=token, stringsAsFactors = FALSE)
+    # Concatenate all data together into one data.frame
+    data <- do.call(rbind, data)
+    data
+  }
+
+################################################################################    
+  
+# using sql to save and load users ratings (rconnect does not support sql) #####
+  
+  # mysql <- reactiveValues("host" = "sql11.freesqldatabase.com",
+  #                         "port" = 3306,
+  #                         "user" = "sql11479738",
+  #                         "password" = "gnZSKvIxXT")
+  
+  # # to save data on sql
+  # saveData <- function(data) {
+  #   # Connect to the database
+  #   db <- dbConnect(MySQL(), dbname = "sql11479738", host = mysql$host, 
+  #                   port = mysql$port, user = mysql$user, 
+  #                   password = mysql$password)
+  #   # Construct the update query by looping over the data fields
+  #   query <- sprintf(
+  #     "INSERT INTO %s (%s) VALUES ('%s')",
+  #     "responses", 
+  #     paste(names(data), collapse = ", "),
+  #     paste(data, collapse = "', '")
+  #   )
+  #   # Submit the update query and disconnect
+  #   dbGetQuery(db, query)
+  #   dbDisconnect(db)
+  # }
+  
+  # # to load data from sql
   # loadData <- function() {
-  #   token <- token()
-  #   # Read all the files into a list
-  #   drop_acc(dtoken = token)
-  #   filesInfo <- drop_dir(dtoken=token,"shinyapp")
-  #   filePaths <- filesInfo$path_display
-  #   data <- lapply(filePaths, drop_read_csv,dtoken=token, stringsAsFactors = FALSE)
-  #   # Concatenate all data together into one data.frame
-  #   data <- do.call(rbind, data)
+  #   # Connect to the database
+  #   db <- dbConnect(MySQL(), dbname = "sql11479738", host = mysql$host, 
+  #                   port = mysql$port, user = mysql$user, 
+  #                   password = mysql$password)
+  #   # Construct the fetching query
+  #   query <- sprintf("SELECT * FROM %s", "responses")
+  #   # Submit the fetch query and disconnect
+  #   data <- dbGetQuery(db, query)
+  #   dbDisconnect(db)
   #   data
   # }
   
-  # to load data from sql
-  loadData <- function() {
-    # Connect to the database
-    db <- dbConnect(MySQL(), dbname = "sql11479738", host = mysql$host, 
-                    port = mysql$port, user = mysql$user, 
-                    password = mysql$password)
-    # Construct the fetching query
-    query <- sprintf("SELECT * FROM %s", "responses")
-    # Submit the fetch query and disconnect
-    data <- dbGetQuery(db, query)
-    dbDisconnect(db)
-    data
-  }
+################################################################################
   
   # Whenever a field is filled, aggregate all form data
   formData <- reactive({
