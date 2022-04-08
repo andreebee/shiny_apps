@@ -22,10 +22,10 @@ library(shiny)
 library(ggplot2)
 
 #Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
-set.seed(1)
-Gruppe1 = rnorm(1000)   
-set.seed(2)
-Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
+#set.seed(1)
+#Gruppe1 = rnorm(1000)   
+#set.seed(2)
+#Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
 
 # for the sake of development
 #def_answer1 <- 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert'
@@ -93,10 +93,10 @@ ui <- shinyUI(pageWithSidebar(
             sliderInput(
                 inputId = "sd",
                 label = "Standardabweichung",
-                min = 0.1,
-                max = 10,
+                min = 1,
+                max = 15,
                 step = 1,
-                value = 5
+                value = 8
             ),
             
             "Beantworten Sie folgende Frage, um zum nächsten Tab zu gelangen. ",
@@ -146,19 +146,20 @@ ui <- shinyUI(pageWithSidebar(
             sliderInput(
                 inputId = "sd2",
                 label = "Standardabweichung",
-                min = 0.1,
-                max = 10,
+                min = 1,
+                max = 15,
                 step = 1,
-                value = 5
+                value = 8
             ),
             
             # Add a slider
             sliderInput(
                 inputId = "n",
                 label = "Fallzahl",
-                min = 50,
-                max = 1000,
-                value = 200
+                min = 250,
+                max = 1250,
+                step = 50,
+                value = 500
             ),
             
             "Beantworten Sie folgende Frage, um zum nächsten Tab zu gelangen. ",
@@ -207,19 +208,20 @@ ui <- shinyUI(pageWithSidebar(
             sliderInput(
               inputId = "sd3",
               label = "Standardabweichung",
-              min = 0.1,
-              max = 10,
+              min = 1,
+              max = 15,
               step = 1,
-              value = 5
+              value = 8
             ),
             
             # Add a slider
             sliderInput(
               inputId = "n2",
               label = "Fallzahl",
-              min = 50,
-              max = 1000,
-              value = 200
+              min = 250,
+              max = 1250,
+              step = 50,
+              value = 500
             ),
             # check box to show the plot for the p values
             checkboxInput("showvalues", "Einzelne p-Werte anzeigen", value = FALSE, width = NULL),
@@ -258,6 +260,11 @@ ui <- shinyUI(pageWithSidebar(
 
 
 server = function(input, output, session) {
+  
+    # read Gruppe1 and Gruppe2
+    Gruppe1 <- reactive({read.csv("Gruppe1.csv")$x})
+    Gruppe2 <- reactive({read.csv("Gruppe2.csv")$x})
+  
     ################### Create function #########################################
     #Create a box plot with the help of a function
     #Input: two samples
@@ -268,11 +275,13 @@ server = function(input, output, session) {
         Gruppe = c(rep("1", length(Gruppe1)), rep("2", length(Gruppe2)))
         daten = data.frame(Gruppe, Wert)
         
+        # to keep the places of data points (jitter)
+        set.seed(1)
         #Create a box plot with two variables
         ggplot(daten, aes(x = Gruppe, y = Wert,fill = factor(Gruppe))) +   #need a DataFrame
             geom_boxplot(color="#c4c4c4",width = 0.3, alpha = 0.05) +
             labs(title = "Auswirkung der Änderung") +
-            ylim(-25, 25) +
+            ylim(-40, 40) +
             geom_jitter(width = 0.3, alpha = 0.8,aes(colour=factor(Gruppe))) +
             #stat_summary(fun=mean, geom="point",shape="_",size=10,color="red", fill="red")+
             geom_segment(aes(x=0.65,xend=1.35,y=mean(Gruppe1),yend=mean(Gruppe1)),color="red")+
@@ -307,8 +316,8 @@ server = function(input, output, session) {
     } #End of p_Wert
     
     #setting default values for sd and sample size
-    def_sd <- reactive({5})
-    def_n <- reactive({200})
+    def_sd <- reactive({8})
+    def_n <- reactive({500})
     
     ######################### Define output for individual tabs #####################
     
@@ -327,10 +336,10 @@ server = function(input, output, session) {
         #using default values for sd and sample size
         def_sd <- def_sd()
         def_n <- def_n()
-        #set seed to generate same random values
-        set.seed(1)
+        #calling Gruppe1 and Gruppe2
+        Gruppe1 <- Gruppe1()
+        Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:def_n] * def_sd
-        set.seed(2)
         #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
         Gruppe2 = Gruppe2[1:def_n] * def_sd + input$diff
         p <- p_Wert(Gruppe1, Gruppe2)
@@ -344,9 +353,10 @@ server = function(input, output, session) {
         #using default values for sd and sample size
         def_sd <- def_sd()
         def_n <- def_n()
-        set.seed(1)
+        #calling Gruppe1 and Gruppe2
+        Gruppe1 <- Gruppe1()
+        Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:def_n] * def_sd
-        set.seed(2)
         Gruppe2 = Gruppe2[1:def_n] * def_sd + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
@@ -371,11 +381,11 @@ server = function(input, output, session) {
     output$p2 <- renderUI({
         #using default values for sd and sample size
         def_n <- def_n()
-        #set seed to generate same random values
-        set.seed(1)
+        #calling Gruppe1 and Gruppe2
+        Gruppe1 <- Gruppe1()
+        Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:def_n] * input$sd
-        set.seed(2)
-        #use transformation: z=x-mu/sigma -> x= z*sigma +mu
+                #use transformation: z=x-mu/sigma -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff2
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
@@ -387,10 +397,10 @@ server = function(input, output, session) {
     output$boxPlot2 = renderPlot({
         #using default values for sd and sample size
         def_n <- def_n()
-        #set seed to generate same random values
-        set.seed(1)
+        #calling Gruppe1 and Gruppe2
+        Gruppe1 <- Gruppe1()
+        Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:def_n] * input$sd
-        set.seed(2)
         ##use transformation: z=x-mu/sigam -> x= z*sigma +mu
         Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff2
         BoxPlot(Gruppe1, Gruppe2)
@@ -449,10 +459,10 @@ server = function(input, output, session) {
     
     output$p3 = renderUI({
         #set seed to generate same random values
-        set.seed(1)
-        #Gruppe1 = rnorm(input$n)
+        #calling Gruppe1 and Gruppe2
+        Gruppe1 <- Gruppe1()
+        Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:input$n] * input$sd2
-        set.seed(2)
         #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         p <- p_Wert(Gruppe1, Gruppe2)
@@ -463,10 +473,10 @@ server = function(input, output, session) {
     
     #Boxplot, of the Values
     output$boxPlot3 = renderPlot({
-        #set seed to generate same random values
-        set.seed(1)
+        #calling Gruppe1 and Gruppe2
+        Gruppe1 <- Gruppe1()
+        Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:input$n] * input$sd2
-        set.seed(2)
         #Create group2 with transformation + cut
         Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
         BoxPlot(Gruppe1, Gruppe2)
@@ -519,10 +529,10 @@ server = function(input, output, session) {
     #Vektor[i] = rnorm(input$n, input$diff, input$sd)
     
     output$sigPlot = renderPlot({
-      #set seed to generate same random values
-      set.seed(1)
+      #calling Gruppe1 and Gruppe2
+      Gruppe1 <- Gruppe1()
+      Gruppe2 <- Gruppe2()
       Gruppe1 = Gruppe1[1:input$n2] * input$sd3
-      set.seed(2)
       Stichproben = replicate(1000, rnorm(input$n2, input$diff4, input$sd3))     #Take 1000 samples
       t = apply(Stichproben,
                 2 ,
@@ -573,10 +583,10 @@ server = function(input, output, session) {
       # show the plot if the check box is checked
       if(input$showvalues == TRUE) {
       
-      #set seed to generate same random values
-      set.seed(1)
+      #calling Gruppe1 and Gruppe2
+      Gruppe1 <- Gruppe1()
+      Gruppe2 <- Gruppe2()
       Gruppe1 = Gruppe1[1:input$n2] * input$sd3
-      set.seed(2)
       Stichproben = replicate(1000, rnorm(input$n2, input$diff4, input$sd3))     #Take 1000 samples
       t = apply(Stichproben,
                 2 ,
@@ -643,12 +653,3 @@ server = function(input, output, session) {
 
 
 shinyApp(ui = ui, server = server)
-
-
-
-
-
-
-
-
-
