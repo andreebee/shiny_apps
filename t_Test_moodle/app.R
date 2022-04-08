@@ -17,7 +17,7 @@ ui <- fluidPage(
     tags$style(HTML('.shiny-split-layout>div {overflow: hidden;}')),
   ),
   
-  h1("Zweiseitiger t-Test"),
+  h2("Zweiseitiger t-Test"),
   titlePanel(h4("Effekt der Differenz der Erwartungswerte, Standardabweichung und Fallzahl zweier Normalverteilungen")),
   splitLayout(cellArgs = list(style = "padding: 20px"),cellWidths = c("35%", "65%"), uiOutput("sliders"), plotOutput("boxPlot"))
 )
