@@ -10,73 +10,26 @@
 library(shiny)
 library(ggplot2)
 
-#Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
-set.seed(1)
-Gruppe1 = rnorm(1000)   
-set.seed(2)
-Gruppe2 = rnorm(1000) # Generate more so that the sample remains the same even if the number varies
-
 ui <- fluidPage(
-  headerPanel("Zweiseitiger t-Test"),
   
-  sidebarLayout(
-    sidebarPanel(width=4,
-                 #Add a Slider
-                 sliderInput(
-                   inputId = "diff",
-                   label = "Differenz der Erwartungswerte",
-                   min = 0,
-                   max = 2,
-                   step = 0.1,
-                   value = 1
-                 ),
-                 
-                 # Add a slider
-                 sliderInput(
-                   inputId = "sd",
-                   label = "Standardabweichung",
-                   min = 0.1,
-                   max = 10,
-                   step = 1,
-                   value = 5
-                 ),
-                 
-                 # Add a slider
-                 sliderInput(
-                   inputId = "n",
-                   label = "Fallzahl",
-                   min = 50,
-                   max = 1000,
-                   value = 200
-                 )
-                 
-    ), #End of the third conditional panel
-    
-    mainPanel(width=8,
-              #Output: Tabset with plots
-              tabsetPanel(
-                type = "tabs",
-                
-                tabPanel(
-                  title = "Differenz, Standardabweichung und Fallzah",
-                  titlePanel(h4("Effekt der Differenz der Erwartungswerte, Standardabweichung und Fallzahl zweier Normalverteilungen")),
-                  value = "1",
-                  
-                  "Hier sieht man den Effekt auf den p-Wert, wenn sich die Fallzahl der Merkmalsträger ändert.",
-                  
-                  plotOutput("boxPlot"),    #Box-Plot
-                  HTML(paste0("<b>", "p-Wert", "</b>")),
-                  htmlOutput("p") #p-value
-                  
-                ), #End of TabPanel
-                id = "tabselected"    #Important for event button and conditional sidebar
-                
-              ) #End of TabsetPanel
-    )
-  )
+  # Include custom CSS to remove scroll bar
+  tags$head(
+    tags$style(HTML('.shiny-split-layout>div {overflow: hidden;}')),
+  ),
+  
+  h1("Zweiseitiger t-Test"),
+  titlePanel(h4("Effekt der Differenz der Erwartungswerte, Standardabweichung und Fallzahl zweier Normalverteilungen")),
+  splitLayout(cellArgs = list(style = "padding: 20px"),cellWidths = c("35%", "65%"), uiOutput("sliders"), plotOutput("boxPlot")),
+  HTML(paste0("<b>", "p-Wert", "</b>")),
+  htmlOutput("p") #p-value
 )
 
 server <- function(input, output, session) {
+  
+  # read Gruppe1 and Gruppe2
+  Gruppe1 <- reactive({read.csv("Gruppe1.csv")$x})
+  Gruppe2 <- reactive({read.csv("Gruppe2.csv")$x})
+  
   ################### Create function #########################################
   #Create a box plot with the help of a function
   #Input: two samples
@@ -87,11 +40,13 @@ server <- function(input, output, session) {
     Gruppe = c(rep("1", length(Gruppe1)), rep("2", length(Gruppe2)))
     daten = data.frame(Gruppe, Wert)
     
+    # to keep the places of data points (jitter)
+    set.seed(1)
     #Create a box plot with two variables
     ggplot(daten, aes(x = Gruppe, y = Wert,fill = factor(Gruppe))) +   #need a DataFrame
       geom_boxplot(color="#c4c4c4",width = 0.3, alpha = 0.05) +
       labs(title = "Auswirkung der Änderung") +
-      ylim(-25, 25) +
+      ylim(-40, 40) +
       geom_jitter(width = 0.3, alpha = 0.8,aes(colour=factor(Gruppe))) +
       #stat_summary(fun=mean, geom="point",shape="_",size=10,color="red", fill="red")+
       geom_segment(aes(x=0.65,xend=1.35,y=mean(Gruppe1),yend=mean(Gruppe1)),color="red")+
@@ -127,13 +82,45 @@ server <- function(input, output, session) {
   
   ########################## for the tab ###########################
   
+  output$sliders = renderUI({
+    tagList(
+      sliderInput(
+        inputId = "diff",
+        label = "Differenz der Erwartungswerte",
+        min = 0,
+        max = 2,
+        step = 0.1,
+        value = 1
+      ),
+      
+      # Add a slider
+      sliderInput(
+        inputId = "sd",
+        label = "Standardabweichung",
+        min = 1,
+        max = 15,
+        step = 1,
+        value = 8
+      ),
+      
+      # Add a slider
+      sliderInput(
+        inputId = "n",
+        label = "Fallzahl",
+        min = 250,
+        max = 1250,
+        step = 50,
+        value = 500
+      )
+    )
+  })
+  
+  
   output$p = renderUI({
-    #set seed to generate same random values
-    set.seed(1)
-    #Gruppe1 = rnorm(input$n)
+    #calling Gruppe1 and Gruppe2
+    Gruppe1 <- Gruppe1()
+    Gruppe2 <- Gruppe2()
     Gruppe1 = Gruppe1[1:input$n] * input$sd
-    set.seed(2)
-    #Create group2 with transformation + cut
     Gruppe2 = Gruppe2[1:input$n] * input$sd + input$diff
     p <- p_Wert(Gruppe1, Gruppe2)
     wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
@@ -143,11 +130,10 @@ server <- function(input, output, session) {
   
   #Boxplot, of the Values
   output$boxPlot = renderPlot({
-    #set seed to generate same random values
-    set.seed(1)
+    #calling Gruppe1 and Gruppe2
+    Gruppe1 <- Gruppe1()
+    Gruppe2 <- Gruppe2()
     Gruppe1 = Gruppe1[1:input$n] * input$sd
-    set.seed(2)
-    #Create group2 with transformation + cut
     Gruppe2 = Gruppe2[1:input$n] * input$sd + input$diff
     BoxPlot(Gruppe1, Gruppe2)
   })
