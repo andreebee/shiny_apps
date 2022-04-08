@@ -19,9 +19,7 @@ ui <- fluidPage(
   
   h1("Zweiseitiger t-Test"),
   titlePanel(h4("Effekt der Differenz der Erwartungswerte, Standardabweichung und Fallzahl zweier Normalverteilungen")),
-  splitLayout(cellArgs = list(style = "padding: 20px"),cellWidths = c("35%", "65%"), uiOutput("sliders"), plotOutput("boxPlot")),
-  HTML(paste0("<b>", "p-Wert", "</b>")),
-  htmlOutput("p") #p-value
+  splitLayout(cellArgs = list(style = "padding: 20px"),cellWidths = c("35%", "65%"), uiOutput("sliders"), plotOutput("boxPlot"))
 )
 
 server <- function(input, output, session) {
@@ -54,7 +52,8 @@ server <- function(input, output, session) {
       geom_text(aes(x=0.6, y=mean(Gruppe1),
                     label = "Erwartungswert \n Gruppe 1"),colour="#F8766D") +
       geom_text(aes(x=2.4, y=mean(Gruppe2),
-                    label = "Erwartungswert \n Gruppe 2"),colour="#00BFC4")
+                    label = "Erwartungswert \n Gruppe 2"),colour="#00BFC4") +
+      theme(legend.position='bottom') 
     
     
   } #End of BoxPlot
@@ -111,7 +110,9 @@ server <- function(input, output, session) {
         max = 1250,
         step = 50,
         value = 500
-      )
+      ),
+      HTML(paste0("<b>", "p-Wert", "</b>")),
+      htmlOutput("p") #p-value
     )
   })
   
