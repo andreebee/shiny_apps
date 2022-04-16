@@ -25,7 +25,7 @@ Andre Feb 21, 2022:  change the slider, start from 1 and only integer, only one 
 Andre March 8, 2022: find a better way to save submissions, use rconnect    
 **Behzad April 5, 2022:** I could not find a free PostgreSQL. Sql does not work on rConnect and dropbox is too slow.   
 
-5. add a zero tab A to the t-test app, showing different combination with plat button  
+5. add a zero tab A to the t-test app, showing different combination with play button  
 
 6. add a zero tab B to the t-test app, showing one sample from each population without slider inputs  
 
