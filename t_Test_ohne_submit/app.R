@@ -39,6 +39,60 @@ ui <- shinyUI(pageWithSidebar(
     headerPanel("Zweiseitiger t-Test"),
     
     sidebarPanel(
+      
+      # From here Tab -1 sidebar panel #########################################
+       conditionalPanel(
+         condition = "input.tabselected ==-1",
+         
+         #Add a Slider
+         sliderInput(
+           inputId = "diff0",
+           label = "Differenz der Erwartungswerte",
+           min = 0,
+           max = 2,
+           step = 0.1,
+           value = 1
+         ),
+         # Add a slider
+         sliderInput(
+           inputId = "sd0",
+           label = "Standardabweichung",
+           min = 1,
+           max = 15,
+           step = 1,
+           value = 8
+         ),
+         # Add a slider
+         sliderInput(
+           inputId = "n0",
+           label = "Fallzahl",
+           min = 250,
+           max = 1250,
+           step = 50,
+           value = 500
+         ),
+         # Add a slider
+         sliderInput(
+           inputId = "nn",
+           label = "Stichprobengröße",
+           min = 50,
+           max = 500,
+           step = 1,
+           value = 100
+         ),
+         
+         actionButton("Tab0", label = "Nächstes Tab")
+       ),
+       # End of Tab -1 sidebar panel ###########################################
+        
+      # From here Tab 0 sidebar panel #########################################
+       conditionalPanel(
+         condition = "input.tabselected ==0",
+         actionButton("Tab1", label = "Nächstes Tab"),
+         actionButton("vorher_1", label = "Vorheriges Tab")
+       ),
+      # End of Tab 0 sidebar panel #############################################
+         
         conditionalPanel(
             condition = "input.tabselected ==1",
             #Condition for this sidebar to be displayed
@@ -73,7 +127,8 @@ ui <- shinyUI(pageWithSidebar(
             #wrong answer 
             conditionalPanel("input.quiz1 !== 'Eine größere Differenz der Mittelwerte erzeugt einen kleineren p-Wert' ",   #richtige Antwort gegeben
                              htmlOutput("q1")
-            )
+            ),
+            actionButton("vorher0", label = "Vorheriges Tab")
         ), #End of the first conditional panel
         
         conditionalPanel(
@@ -234,6 +289,27 @@ ui <- shinyUI(pageWithSidebar(
         tabsetPanel(
             type = "tabs",
             
+            # From here Tab -1 main panel ######################################
+            tabPanel(
+              title = "-1",
+              titlePanel("-1"),
+              value =  "-1",
+              plotOutput("barplot"),
+              plotOutput("playplot")
+            ),
+            # End of Tab -1 main panel #########################################
+            
+            # From here Tab 0  main panel ######################################
+            tabPanel(
+              title = "0",
+              titlePanel("0"),
+              value =  "0",
+              plotOutput("boxPlot0"),    #Box-Plot
+              HTML(paste0("<b>", "p-Wert", "</b>")),
+              htmlOutput("p0") #p-value
+            ),
+            # End of Tab 0 main panel ##########################################
+            
             #From here  Tab 1 #########################################################################
             
             tabPanel(
@@ -321,7 +397,125 @@ server = function(input, output, session) {
     
     ######################### Define output for individual tabs #####################
     
+    ########################## for tab -1 ######################################
+    observeEvent(input$Tab0, {
+      updateTabsetPanel(session, "tabselected",
+                        selected = "0")
+    })
+    
+    output$barplot <- renderPlot({
+      
+      #calling Gruppe1 and Gruppe2
+      Gruppe1 <- Gruppe1()
+      Gruppe2 <- Gruppe2()
+      Gruppe1 = Gruppe1[1:input$n0] * input$sd0
+      #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
+      Gruppe2 = Gruppe2[1:input$n0] * input$sd0 + input$diff0
+      set.seed(1)
+      Stichproben1 = replicate(100, sample(Gruppe1,size = input$nn, replace = FALSE))
+      set.seed(2)
+      Stichproben2 = replicate(1, sample(Gruppe2,size = input$nn, replace = FALSE))
+      t = apply(Stichproben1,
+                2 ,
+                t.test,
+                y = Stichproben2,
+                alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
+      #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
+      p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
+      signifikant = sum(p_Wert < 0.05)        #Number of significant and insignificant p-values
+      nicht_signifikant = sum(p_Wert >= 0.05)
+      
+      bar_df <- data.frame(t_test=c("signifikant", "nicht signifikant"),
+                           Anzahl=c(signifikant,nicht_signifikant),
+                           result=c("p-Werte","p-Werte"))
+      
+      ggplot(data=bar_df, aes(x=result,y=Anzahl,fill=t_test)) +
+        geom_bar(stat="identity",width = 0.5) +
+        ggtitle("Anzahl signifikanter p-Werte für 1000 Simulationen")+
+        coord_flip()+
+        labs(x = "")+
+        theme(plot.title = element_text(hjust = 0.5),
+              aspect.ratio = 0.2,
+              axis.text.y = element_blank(),axis.ticks.y = element_blank()) +
+        guides(fill=guide_legend(reverse=T,title="Ergebnis t-Test")) +
+        scale_fill_manual(values=c("#ffb300","#2aff00"))
+    })
+    
+    output$playplot <- renderPlot({
+        
+        #calling Gruppe1 and Gruppe2
+        Gruppe1 <- Gruppe1()
+        Gruppe2 <- Gruppe2()
+        Gruppe1 = Gruppe1[1:input$n0] * input$sd0
+        #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
+        Gruppe2 = Gruppe2[1:input$n0] * input$sd0 + input$diff0
+        set.seed(1)
+        Stichproben1 = replicate(100, sample(Gruppe1,size = input$nn, replace = FALSE))
+        set.seed(2)
+        Stichproben2 = replicate(1, sample(Gruppe2,size = input$nn, replace = FALSE)) 
+        t = apply(Stichproben1,
+                  2 ,
+                  t.test,
+                  y = Stichproben2,
+                  alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
+        #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
+        p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
+        
+        # dataframe for the p values
+        dot_df <- data.frame(no=seq(1,100,1),pWert=unlist(p_Wert))
+        dot_df$g <- ifelse(dot_df$pWert >= 0.05,"nicht signifikant","signifikant")
+        
+        # plot the p values
+        ggplot(dot_df, aes(x=no, y=pWert,color=g)) +
+          geom_point() +
+          geom_hline(yintercept = 0.05,color="black")+
+          scale_y_continuous(breaks=sort(c(seq(from=0,to=1,by=0.25), 0.05)), limits = c(0, 1)) +
+          labs(x = "Simulation") +
+          ggtitle("Einzelne p-Werte") +
+          guides(color=guide_legend(reverse=T,title="Ergebnis t-Test")) +
+          scale_color_manual(values=c("#ffb300","#2aff00"))
+      
+    })
+    
+    ########################## for tab 0 #######################################
+    observeEvent(input$Tab1, {
+      updateTabsetPanel(session, "tabselected",
+                        selected = "1")
+    })
+    
+    observeEvent(input$vorher_1, {
+      updateTabsetPanel(session, "tabselected",
+                        selected = "-1")
+    })
+    
+    output$p0 <- renderUI({
+      #calling Gruppe1 and Gruppe2
+      Gruppe1 <- Gruppe1()
+      Gruppe2 <- Gruppe2()
+      Gruppe1 = Gruppe1[1:input$n0] * input$sd0
+      #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
+      Gruppe2 = Gruppe2[1:input$n0] * input$sd0 + input$diff0
+      p <- p_Wert(Gruppe1, Gruppe2)
+      wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
+      result <- paste("<b>",p[[2]],"</b>")
+      HTML(paste(wert,result,sep="<br/>"))
+    })
+    
+    #create the Boxplot and the values,only the differences of the MW is included
+    output$boxPlot0 = renderPlot({
+      #calling Gruppe1 and Gruppe2
+      Gruppe1 <- Gruppe1()
+      Gruppe2 <- Gruppe2()
+      Gruppe1 = Gruppe1[1:input$n0] * input$sd0
+      Gruppe2 = Gruppe2[1:input$n0] * input$sd0 + input$diff0
+      BoxPlot(Gruppe1, Gruppe2)
+    })
+    
     ##########################for first tab (MW difference)###########################
+    observeEvent(input$vorher0, {
+      updateTabsetPanel(session, "tabselected",
+                        selected = "0")
+    })
     
     # avoid showing wrong answer before selecting a choice
     output$q1 <- renderUI({
