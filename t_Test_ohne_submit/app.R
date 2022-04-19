@@ -20,6 +20,7 @@
 
 library(shiny)
 library(ggplot2)
+library(plotly)
 
 #Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
 #set.seed(1)
@@ -80,7 +81,6 @@ ui <- shinyUI(pageWithSidebar(
            step = 1,
            value = 100
          ),
-         
          actionButton("Tab0", label = "Nächstes Tab")
        ),
        # End of Tab -1 sidebar panel ###########################################
@@ -294,8 +294,8 @@ ui <- shinyUI(pageWithSidebar(
               title = "-1",
               titlePanel("-1"),
               value =  "-1",
-              plotOutput("barplot"),
-              plotOutput("playplot")
+              plotlyOutput("playplot"),
+              plotOutput("barplot")
             ),
             # End of Tab -1 main panel #########################################
             
@@ -403,6 +403,52 @@ server = function(input, output, session) {
                         selected = "0")
     })
     
+    output$playplot <- renderPlotly({
+      
+      #calling Gruppe1 and Gruppe2
+      Gruppe1 <- Gruppe1()
+      Gruppe2 <- Gruppe2()
+      Gruppe1 = Gruppe1[1:input$n0] * input$sd0
+      #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
+      Gruppe2 = Gruppe2[1:input$n0] * input$sd0 + input$diff0
+      set.seed(1)
+      Stichproben1 = replicate(100, sample(Gruppe1,size = input$nn, replace = FALSE))
+      set.seed(2)
+      Stichproben2 = replicate(1, sample(Gruppe2,size = input$nn, replace = FALSE)) 
+      t = apply(Stichproben1,
+                2 ,
+                t.test,
+                y = Stichproben2,
+                alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
+      #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
+      p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
+      
+      # dataframe for the p values
+      dot_df <- data.frame(no=seq(1,100,1),pWert=unlist(p_Wert))
+      dot_df$g <- ifelse(dot_df$pWert >= 0.05,"nicht signifikant","signifikant")
+      
+      fig <- dot_df %>%
+        plot_ly(
+          x = ~no,
+          y = ~pWert,
+          frame = ~no,
+          #color = ~g,
+          type = 'scatter',
+          mode = 'markers',
+          showlegend = F
+        )
+
+      # # plot the p values
+      # ggplot(dot_df, aes(x=no, y=pWert,color=g)) +
+      #   geom_point() +
+      #   geom_hline(yintercept = 0.05,color="black")+
+      #   scale_y_continuous(breaks=sort(c(seq(from=0,to=1,by=0.25), 0.05)), limits = c(0, 1)) +
+      #   labs(x = "Simulation") +
+      #   ggtitle("Einzelne p-Werte") +
+      #   guides(color=guide_legend(reverse=T,title="Ergebnis t-Test")) +
+      #   scale_color_manual(values=c("#ffb300","#2aff00"))
+    })
+    
     output$barplot <- renderPlot({
       
       #calling Gruppe1 and Gruppe2
@@ -439,42 +485,6 @@ server = function(input, output, session) {
               axis.text.y = element_blank(),axis.ticks.y = element_blank()) +
         guides(fill=guide_legend(reverse=T,title="Ergebnis t-Test")) +
         scale_fill_manual(values=c("#ffb300","#2aff00"))
-    })
-    
-    output$playplot <- renderPlot({
-        
-        #calling Gruppe1 and Gruppe2
-        Gruppe1 <- Gruppe1()
-        Gruppe2 <- Gruppe2()
-        Gruppe1 = Gruppe1[1:input$n0] * input$sd0
-        #Create group 2 by adding the difference between the mean values, cut off so that group 1 and group 2 have the same number of values
-        Gruppe2 = Gruppe2[1:input$n0] * input$sd0 + input$diff0
-        set.seed(1)
-        Stichproben1 = replicate(100, sample(Gruppe1,size = input$nn, replace = FALSE))
-        set.seed(2)
-        Stichproben2 = replicate(1, sample(Gruppe2,size = input$nn, replace = FALSE)) 
-        t = apply(Stichproben1,
-                  2 ,
-                  t.test,
-                  y = Stichproben2,
-                  alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
-        #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
-        p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
-        
-        # dataframe for the p values
-        dot_df <- data.frame(no=seq(1,100,1),pWert=unlist(p_Wert))
-        dot_df$g <- ifelse(dot_df$pWert >= 0.05,"nicht signifikant","signifikant")
-        
-        # plot the p values
-        ggplot(dot_df, aes(x=no, y=pWert,color=g)) +
-          geom_point() +
-          geom_hline(yintercept = 0.05,color="black")+
-          scale_y_continuous(breaks=sort(c(seq(from=0,to=1,by=0.25), 0.05)), limits = c(0, 1)) +
-          labs(x = "Simulation") +
-          ggtitle("Einzelne p-Werte") +
-          guides(color=guide_legend(reverse=T,title="Ergebnis t-Test")) +
-          scale_color_manual(values=c("#ffb300","#2aff00"))
-      
     })
     
     ########################## for tab 0 #######################################
