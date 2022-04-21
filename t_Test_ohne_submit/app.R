@@ -21,6 +21,8 @@
 library(shiny)
 library(ggplot2)
 library(plotly)
+library(gganimate)
+library(datasauRus)
 
 #Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
 #set.seed(1)
@@ -294,6 +296,7 @@ ui <- shinyUI(pageWithSidebar(
               title = "-1",
               titlePanel("-1"),
               value =  "-1",
+              #plotOutput("playplot"),
               plotlyOutput("playplot"),
               plotOutput("barplot")
             ),
@@ -403,6 +406,7 @@ server = function(input, output, session) {
                         selected = "0")
     })
     
+    #output$playplot <- renderPlot({
     output$playplot <- renderPlotly({
       
       #calling Gruppe1 and Gruppe2
@@ -414,7 +418,7 @@ server = function(input, output, session) {
       set.seed(1)
       Stichproben1 = replicate(100, sample(Gruppe1,size = input$nn, replace = FALSE))
       set.seed(2)
-      Stichproben2 = replicate(1, sample(Gruppe2,size = input$nn, replace = FALSE)) 
+      Stichproben2 = replicate(1, sample(Gruppe2,size = input$nn, replace = FALSE))
       t = apply(Stichproben1,
                 2 ,
                 t.test,
@@ -422,21 +426,34 @@ server = function(input, output, session) {
                 alternative = "two.sided")    #List that contains lists, do the t-test for all samples for Group1
       #https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list fuer lapply Befehl
       p_Wert = lapply(t, '[[', 3)             #Generate vector with the p-values
-      
-      # dataframe for the p values
+
+      #dataframe for the p values
       dot_df <- data.frame(no=seq(1,100,1),pWert=unlist(p_Wert))
-      dot_df$g <- ifelse(dot_df$pWert >= 0.05,"nicht signifikant","signifikant")
+      dot_df$g <- ifelse(dot_df$pWert >= 0.05,"#nicht signifikant","#signifikant")
       
-      fig <- dot_df %>%
+      df <- dot_df
+      db <- dot_df
+      df$frame <- 100
+      i <- 1
+      for (i in seq(1,99,1)){
+        db$frame <- i
+        df <- rbind(df,db[1:i,])
+      }
+      
+      fig <- df %>%
         plot_ly(
           x = ~no,
           y = ~pWert,
-          frame = ~no,
-          #color = ~g,
+          frame = ~frame,
           type = 'scatter',
           mode = 'markers',
+          color = ~g,
+          colors = c("#ffb300", "#2aff00"),
           showlegend = F
-        )
+        ) %>%
+        add_segments(x = 0, xend = 101, y = 0.05 , yend = 0.05,color = I("gray")) %>%
+        layout( xaxis = list(range = c(0,101)), yaxis = list(range = c(0, 1)))
+        
 
       # # plot the p values
       # ggplot(dot_df, aes(x=no, y=pWert,color=g)) +
