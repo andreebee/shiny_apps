@@ -21,8 +21,7 @@
 library(shiny)
 library(ggplot2)
 library(plotly)
-library(gganimate)
-library(datasauRus)
+#library(gganimate)
 
 #Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
 #set.seed(1)
