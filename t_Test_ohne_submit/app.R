@@ -20,8 +20,8 @@
 
 library(shiny)
 library(ggplot2)
-#library(plotly)
-library(gganimate)
+library(plotly)
+#library(gganimate)
 
 #Draw groups at the beginning so that they stay the same and only the changes in the parameters have an influence and not chance
 #set.seed(1)
@@ -295,8 +295,8 @@ ui <- shinyUI(pageWithSidebar(
               title = "-1",
               titlePanel("-1"),
               value =  "-1",
-              plotOutput("playplot"),
-              #plotlyOutput("playplot"),
+              #plotOutput("playplot"),
+              plotlyOutput("playplot"),
               plotOutput("barplot")
             ),
             # End of Tab -1 main panel #########################################
@@ -405,8 +405,8 @@ server = function(input, output, session) {
                         selected = "0")
     })
     
-    output$playplot <- renderPlot({
-    #output$playplot <- renderPlotly({
+    #output$playplot <- renderPlot({
+    output$playplot <- renderPlotly({
       
       #calling Gruppe1 and Gruppe2
       Gruppe1 <- Gruppe1()
@@ -439,31 +439,31 @@ server = function(input, output, session) {
         df <- rbind(df,db[1:i,])
       }
       
-      # fig <- df %>%
-      #   plot_ly(
-      #     x = ~no,
-      #     y = ~pWert,
-      #     frame = ~frame,
-      #     type = 'scatter',
-      #     mode = 'markers',
-      #     color = ~g,
-      #     colors = c("#ffb300", "#2aff00"),
-      #     showlegend = F
-      #   ) %>%
-      #   add_segments(x = 0, xend = 101, y = 0.05 , yend = 0.05,color = I("gray")) %>%
-      #   layout( xaxis = list(range = c(0,101)), yaxis = list(range = c(0, 1)))
-      #   
-
       # plot the p values
-      ggplot(df, aes(x=no, y=pWert,color=g)) +
-        geom_point() +
-        geom_hline(yintercept = 0.05,color="black")+
-        scale_y_continuous(breaks=sort(c(seq(from=0,to=1,by=0.25), 0.05)), limits = c(0, 1)) +
-        labs(x = "Simulation") +
-        ggtitle("Einzelne p-Werte") +
-        guides(color=guide_legend(reverse=T,title="Ergebnis t-Test")) +
-        scale_color_manual(values=c("#ffb300","#2aff00")) +
-        transition_time(frame)
+      fig <- df %>%
+        plot_ly(
+          x = ~no,
+          y = ~pWert,
+          frame = ~frame,
+          type = 'scatter',
+          mode = 'markers',
+          color = ~g,
+          colors = c("#ffb300", "#2aff00"),
+          showlegend = F
+        ) %>%
+        add_segments(x = 0, xend = 101, y = 0.05 , yend = 0.05,color = I("gray")) %>%
+        layout( xaxis = list(range = c(0,101)), yaxis = list(range = c(0, 1)))
+
+      # # plot the p values
+      # ggplot(df, aes(x=no, y=pWert,color=g)) +
+      #   geom_point() +
+      #   geom_hline(yintercept = 0.05,color="black")+
+      #   scale_y_continuous(breaks=sort(c(seq(from=0,to=1,by=0.25), 0.05)), limits = c(0, 1)) +
+      #   labs(x = "Simulation") +
+      #   ggtitle("Einzelne p-Werte") +
+      #   guides(color=guide_legend(reverse=T,title="Ergebnis t-Test")) +
+      #   scale_color_manual(values=c("#ffb300","#2aff00")) +
+      #   transition_time(frame)
       
     })
     
