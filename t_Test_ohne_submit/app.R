@@ -135,15 +135,15 @@ ui <- shinyUI(pageWithSidebar(
         conditionalPanel(
             condition = "input.tabselected == 2", #Condition for this sidebar to be displayed
             
-            # Add a slider
-            sliderInput(
-                inputId = "diff2",
-                label = "Differenz der Erwartungswerte",
-                min = 0,
-                max = 2,
-                step = 0.1,
-                value = 1
-            ),
+            # # Add a slider
+            # sliderInput(
+            #     inputId = "diff2",
+            #     label = "Differenz der Erwartungswerte",
+            #     min = 0,
+            #     max = 2,
+            #     step = 0.1,
+            #     value = 1
+            # ),
             
             # Add a slider
             sliderInput(
@@ -188,25 +188,25 @@ ui <- shinyUI(pageWithSidebar(
         conditionalPanel(
             "input.tabselected == 3",
             #Condition for this sidebar to be displayed
-            #Add a Slider
-            sliderInput(
-                inputId = "diff3",
-                label = "Differenz der Erwartungswerte",
-                min = 0,
-                max = 2,
-                step = 0.1,
-                value = 1
-            ),
+            # #Add a Slider
+            # sliderInput(
+            #     inputId = "diff3",
+            #     label = "Differenz der Erwartungswerte",
+            #     min = 0,
+            #     max = 2,
+            #     step = 0.1,
+            #     value = 1
+            # ),
             
-            # Add a slider
-            sliderInput(
-                inputId = "sd2",
-                label = "Standardabweichung",
-                min = 1,
-                max = 15,
-                step = 1,
-                value = 8
-            ),
+            # # Add a slider
+            # sliderInput(
+            #     inputId = "sd2",
+            #     label = "Standardabweichung",
+            #     min = 1,
+            #     max = 15,
+            #     step = 1,
+            #     value = 8
+            # ),
             
             # Add a slider
             sliderInput(
@@ -608,7 +608,7 @@ server = function(input, output, session) {
         Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:def_n] * input$sd
                 #use transformation: z=x-mu/sigma -> x= z*sigma +mu
-        Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff2
+        Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
         result <- paste("<b>",p[[2]],"</b>")
@@ -624,7 +624,7 @@ server = function(input, output, session) {
         Gruppe2 <- Gruppe2()
         Gruppe1 = Gruppe1[1:def_n] * input$sd
         ##use transformation: z=x-mu/sigam -> x= z*sigma +mu
-        Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff2
+        Gruppe2 = Gruppe2[1:def_n] * input$sd + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
     
@@ -684,9 +684,9 @@ server = function(input, output, session) {
         #calling Gruppe1 and Gruppe2
         Gruppe1 <- Gruppe1()
         Gruppe2 <- Gruppe2()
-        Gruppe1 = Gruppe1[1:input$n] * input$sd2
+        Gruppe1 = Gruppe1[1:input$n] * input$sd
         #Create group2 with transformation + cut
-        Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
+        Gruppe2 = Gruppe2[1:input$n] * input$sd + input$diff
         p <- p_Wert(Gruppe1, Gruppe2)
         wert <- paste("p-Wert des zweiseitigen t-Tests: ","<b>",p[[1]],"</b>")
         result <- paste("<b>",p[[2]],"</b>")
@@ -698,9 +698,9 @@ server = function(input, output, session) {
         #calling Gruppe1 and Gruppe2
         Gruppe1 <- Gruppe1()
         Gruppe2 <- Gruppe2()
-        Gruppe1 = Gruppe1[1:input$n] * input$sd2
+        Gruppe1 = Gruppe1[1:input$n] * input$sd
         #Create group2 with transformation + cut
-        Gruppe2 = Gruppe2[1:input$n] * input$sd2 + input$diff3
+        Gruppe2 = Gruppe2[1:input$n] * input$sd + input$diff
         BoxPlot(Gruppe1, Gruppe2)
     })
 
