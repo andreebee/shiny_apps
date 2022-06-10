@@ -29,7 +29,23 @@ Andre March 8, 2022: find a better way to save submissions, use rconnect
 5. add a zero tab A to the t-test app, showing different combination with play button  
 
 6. add a zero tab B to the t-test app, showing one sample from each population without slider inputs  
+
 7. Testing the apps on shinyapps.io  
+
+- 4Momente
+- AR_2_Prozess
+- Archive/test_stack
+- Box_Cox_Trafo_Einfluss_lambda
+- i18n-app-test
+- Korrelationen **same as rconnect could not find global.R! (translator)**
+- Signal_Noise_Ratio
+- star_rating
+- Statistik/wuerfeln **worked with Multiple file!**
+- Stuetzbereich_Moving_Average
+- t_Test_moodle
+- t_Test_ohne_submit **not showing the graphs!**
+- Test
+- verteilung_Gehalter
 
 8. Using one slider in each tab for the t-test app  
 **Behzad June 2, 2022:** Done!  
