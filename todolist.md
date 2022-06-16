@@ -41,14 +41,13 @@ Andre March 8, 2022: find a better way to save submissions, use rconnect
 - Signal_Noise_Ratio
 - star_rating
 - Statistik/wuerfeln **worked with Multiple file!**
+*https://groups.google.com/g/shinyapps-users/c/S8iJs7MerEE*
+
 - Stuetzbereich_Moving_Average
 - t_Test_moodle
-- t_Test_ohne_submit **not showing the graphs!**
+- t_Test_ohne_submit
 - Test
 - verteilung_Gehalter
-
-8. Using one slider in each tab for the t-test app  
-**Behzad June 2, 2022:** Done!  
 
 # Done:  
 
@@ -106,3 +105,6 @@ Behzad Feb 22, 2022: max: 9 per group!
 Andre March 1, 2022:  Add actual mean and sd and visualization to investigate the reason and find relevant combinations.  
 Andre March 8, 2022:  Try different seeds and large step for sample size  
 **Behzad April 5, 2022:** Done! by creating samples with 50 data points with same mean and std.  
+
+11. Using one slider in each tab for the t-test app  
+**Behzad June 2, 2022:** Done!  
