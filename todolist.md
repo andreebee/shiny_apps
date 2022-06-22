@@ -40,12 +40,10 @@ Andre March 8, 2022: find a better way to save submissions, use rconnect
 - Korrelationen **same as rconnect could not find global.R! (translator)**
 - Signal_Noise_Ratio
 - star_rating
-- Statistik/wuerfeln **worked with Multiple file!**
-*https://groups.google.com/g/shinyapps-users/c/S8iJs7MerEE*
-
+- Statistik/wuerfeln **worked with Multiple file!** *https://groups.google.com/g/shinyapps-users/c/S8iJs7MerEE*
 - Stuetzbereich_Moving_Average
-- t_Test_moodle
-- t_Test_ohne_submit
+- t_Test_moodle 
+- t_Test_ohne_submit **does not show the graphs**
 - Test
 - verteilung_Gehalter
 

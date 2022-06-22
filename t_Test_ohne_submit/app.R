@@ -406,7 +406,8 @@ server = function(input, output, session) {
     })
     
     #output$playplot <- renderPlot({
-    output$playplot <- renderPlotly({
+    #output$playplot <- renderPlotly({
+    myplot <- reactive({  
       
       #calling Gruppe1 and Gruppe2
       Gruppe1 <- Gruppe1()
@@ -439,20 +440,7 @@ server = function(input, output, session) {
         df <- rbind(df,db[1:i,])
       }
       
-      # plot the p values
-      fig <- df %>%
-        plot_ly(
-          x = ~no,
-          y = ~pWert,
-          frame = ~frame,
-          type = 'scatter',
-          mode = 'markers',
-          color = ~g,
-          colors = c("#ffb300", "#2aff00"),
-          showlegend = F
-        ) %>%
-        add_segments(x = 0, xend = 101, y = 0.05 , yend = 0.05,color = I("gray")) %>%
-        layout( xaxis = list(range = c(0,101)), yaxis = list(range = c(0, 1)))
+      return(df)
 
       # # plot the p values
       # ggplot(df, aes(x=no, y=pWert,color=g)) +
@@ -466,6 +454,26 @@ server = function(input, output, session) {
       #   transition_time(frame)
       
     })
+    
+    # plot the p values
+    fig <- function(){
+      myplot() %>%
+      plot_ly(
+        x = ~no,
+        y = ~pWert,
+        frame = ~frame,
+        type = 'scatter',
+        mode = 'markers',
+        color = ~g,
+        colors = c("#ffb300", "#2aff00"),
+        showlegend = F
+      ) %>%
+      add_segments(x = 0, xend = 101, y = 0.05 , yend = 0.05,color = I("gray")) %>%
+      layout( xaxis = list(range = c(0,101)), yaxis = list(range = c(0, 1)))
+    }
+    
+    output$playplot <- renderPlotly(fig())
+
     
     output$barplot <- renderPlot({
       
