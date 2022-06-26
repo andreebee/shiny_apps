@@ -32,20 +32,22 @@ Andre March 8, 2022: find a better way to save submissions, use rconnect
 
 7. Testing the apps on shinyapps.io  
 
+- gaus_prozess **?**
 - 4Momente
-- AR_2_Prozess
+- AR_2_Prozess **deployed**
 - Archive/test_stack
-- Box_Cox_Trafo_Einfluss_lambda
+- Box_Cox_Trafo_Einfluss_lambda **deployed**
+- comparing_normal_distribution **deployed**
 - i18n-app-test
 - Korrelationen **same as rconnect could not find global.R! (translator)**
-- Signal_Noise_Ratio
+- Signal_Noise_Ratio **deployed**
 - star_rating
 - Statistik/wuerfeln **worked with Multiple file!** *https://groups.google.com/g/shinyapps-users/c/S8iJs7MerEE*
-- Stuetzbereich_Moving_Average
-- t_Test_moodle 
+- Stuetzbereich_Moving_Average **deployed**
+- t_Test_moodle **does not show the graphs**
 - t_Test_ohne_submit **does not show the graphs**
 - Test
-- verteilung_Gehalter
+- verteilung_Gehalter **deployed**
 
 # Done:  
 
