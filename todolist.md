@@ -44,7 +44,7 @@ Andre March 8, 2022: find a better way to save submissions, use rconnect
 - star_rating
 - Statistik/wuerfeln **worked with Multiple file!** *https://groups.google.com/g/shinyapps-users/c/S8iJs7MerEE*
 - Stuetzbereich_Moving_Average **deployed**
-- t_Test_moodle **does not show the graphs**
+- t_Test_moodle
 - t_Test_ohne_submit **does not show the graphs**
 - Test
 - verteilung_Gehalter **deployed**
