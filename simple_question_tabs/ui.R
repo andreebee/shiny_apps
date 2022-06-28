@@ -1,0 +1,82 @@
+library(shiny)
+library(plotly)
+
+def_answer1 <- NULL
+
+ui <- shinyUI(pageWithSidebar(
+  headerPanel("Question Tabs"),
+  
+  # Start of the Sidebar Panel ####
+  sidebarPanel(
+    
+    ## Start of the first conditional panel ####
+    conditionalPanel(
+      condition = "input.tabselected ==1",
+      #Condition for this sidebar to be displayed
+      #Add an input
+      uiOutput('page_content1'),
+      "Now a question, if you answer correctly you can move to the next tab.",
+      #Quiz
+      selectInput(
+        inputId = "quiz1",
+        label = "Which statement is true?",
+        selected = def_answer1,
+        choices = c(" ","statement1",
+                    "statement2",
+                    "statementn1")
+      ),
+      #Explanation
+      conditionalPanel("input.quiz1 ===  'statementn1'",   #correct answer given
+                       actionButton("Tab2", label = "Next Tab"),
+                       HTML(paste0("<br>","<b>", "Correct Answer","</b>", "</br>")),
+                       HTML(paste0("<b>", "Explanation:", "</b>")),
+                       paste0("explanation1."),
+      ),
+      #Output if the answer is wrong
+      conditionalPanel("input.quiz1 !== 'statementn1'",   #correct answer given
+                       htmlOutput("q1"),
+      )              
+    ),
+    
+    ## End of the first conditional panel ####
+    
+    ## Start of the 2 conditional panel ####
+    
+    conditionalPanel(
+      condition = "input.tabselected == 2",
+      #Condition for this sidebar to be displayed
+      # Add an input
+      uiOutput('page_content2'),
+      "Now a question, if you answer correctly you can move to the next tab.",
+      actionButton("before2", label = "Previous Tab") #Back Button
+    ),
+    
+    ## End of the 2 conditional panel ####
+    
+  ),
+  
+  # End of the Sidebar Panel ####
+  
+  mainPanel(
+    #Output: Tabset with plots
+    tabsetPanel(
+      type = "tabs",
+      
+      # From here Tab 1 ####
+      
+      tabPanel(
+        title = "Title1",
+        titlePanel("Title1"),
+        value = "1",    #Sidebar 1 is displayed, Value in " " so that you can jump to the next tab
+        
+        "Explanation1.",
+        
+        textOutput("test1"),
+        plotlyOutput("playplot")
+        
+      ), #End of TabPanel
+      id = "tabselected"    #Important for event button and conditional sidebar
+    ) #End of TabsetPanel
+  )
+)
+)

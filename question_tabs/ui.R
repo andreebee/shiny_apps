@@ -1,5 +1,6 @@
 library(shiny)
 library(DT)
+library(plotly)
 
 # for the sake of development
 #def_answer1 <- 'statementn1'
@@ -138,7 +139,8 @@ ui <- shinyUI(pageWithSidebar(
         
         "Explanation1.",
         
-        textOutput("test1")
+        textOutput("test1"),
+        plotlyOutput("playplot")
         
       ), #End of TabPanel
       id = "tabselected"    #Important for event button and conditional sidebar
