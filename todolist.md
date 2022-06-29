@@ -45,9 +45,12 @@ Andre March 8, 2022: find a better way to save submissions, use rconnect
 - Statistik/wuerfeln **worked with Multiple file!** *https://groups.google.com/g/shinyapps-users/c/S8iJs7MerEE*
 - Stuetzbereich_Moving_Average **deployed**
 - t_Test_moodle
-- t_Test_ohne_submit **does not show the graphs**
+- t_Test_ohne_submit **does not show the graphs on all browsers!**
 - Test
 - verteilung_Gehalter **deployed**
+
+8. Find a way to deploy an app to shinyapp.io from GitHub  
+https://www.r-bloggers.com/2021/02/deploy-to-shinyapps-io-from-github-actions/
 
 # Done:  
 
