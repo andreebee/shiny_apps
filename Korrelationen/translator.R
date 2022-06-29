@@ -1,4 +1,4 @@
-# A copy of this file is added to the Korrelationen app folder
+# This is a copy of the global.r file, added to the app folder
 #so that the app has access to it after deployment.
 
 library(shiny)

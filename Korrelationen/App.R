@@ -13,7 +13,7 @@ library(tidyverse)
 library(plotly)
 # Library MASS used for mvrnorm
 library(MASS)
-source("../global.R")
+source("translator.R")
 
 # Planting a seed so that random values 
 # will be the same on every computer

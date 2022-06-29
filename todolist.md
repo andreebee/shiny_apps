@@ -39,7 +39,7 @@ Andre March 8, 2022: find a better way to save submissions, use rconnect
 - Box_Cox_Trafo_Einfluss_lambda **deployed**
 - comparing_normal_distribution **deployed**
 - i18n-app-test
-- Korrelationen **same as rconnect could not find global.R! (translator)**
+- Korrelationen **global.R is added as translator.r to the app folder**
 - Signal_Noise_Ratio **deployed**
 - star_rating
 - Statistik/wuerfeln **worked with Multiple file!** *https://groups.google.com/g/shinyapps-users/c/S8iJs7MerEE*
