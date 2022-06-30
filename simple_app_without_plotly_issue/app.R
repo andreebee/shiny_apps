@@ -14,6 +14,7 @@ ui <- fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
+          textOutput("issue"),
           plotlyOutput("playplot")
         )
     )
@@ -21,6 +22,10 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  
+  output$issue <- renderText({
+    "It does show the plot after deployment!"
+  })
 
   myplot <- reactive({
     db <- data.frame(no=seq(1,100,1),p=runif(100,0,1))

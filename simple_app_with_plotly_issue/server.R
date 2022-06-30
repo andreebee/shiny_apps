@@ -51,6 +51,10 @@ server = function(input, output, session) {
     "test1"
   })
   
+  output$issue <- renderText({
+    "It does not show the plot after deployment!"
+  })
+  
   ##  for Tab 2 ####
   
   #When you click the "next tab button" in tab 1, you jump to tab 2

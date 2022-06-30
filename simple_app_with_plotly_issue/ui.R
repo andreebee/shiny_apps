@@ -72,6 +72,7 @@ ui <- shinyUI(pageWithSidebar(
         "Explanation1.",
         
         textOutput("test1"),
+        textOutput("issue"),
         plotlyOutput("playplot")
         
       ), #End of TabPanel
