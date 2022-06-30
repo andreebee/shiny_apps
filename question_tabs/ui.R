@@ -139,8 +139,7 @@ ui <- shinyUI(pageWithSidebar(
         
         "Explanation1.",
         
-        textOutput("test1"),
-        plotlyOutput("playplot")
+        textOutput("test1")
         
       ), #End of TabPanel
       id = "tabselected"    #Important for event button and conditional sidebar
